@@ -46,7 +46,7 @@ Install PyYAML, which is required for building the internal documentation:
 sudo pip install pyyaml
 ```
 
-If you are using Ubuntu >= 13.04, you need to upgrade node and npm. One easy way to do it is with `n`.
+If you are using Ubuntu <= 13.04, you need to upgrade node and npm. One easy way to do it is with `n`.
 
 ```
 sudo npm install -g n
