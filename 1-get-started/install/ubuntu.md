@@ -32,7 +32,8 @@ If you do not have the `add-apt-repository` command, install it first:
 
 ## Get the build dependencies ##
 
-There are a number of packages required for the build process. On Ubuntu, you can install build dependencies with apt-get:
+There are a number of packages required for the build process. On Ubuntu, you can
+install build dependencies with apt-get:
 
 ```bash
 sudo apt-get install g++ protobuf-compiler protobuf-c-compiler libprotobuf-dev
@@ -44,6 +45,15 @@ Install PyYAML, which is required for building the internal documentation:
 
 ```bash
 sudo pip install pyyaml
+```
+
+If you are using Ubuntu <= 13.04, you need to upgrade node and npm. One easy way to do it
+is with `n` (`n` requires `curl` or `wget`).
+
+```
+sudo npm install -g n
+sudo apt-get install curl
+sudo n stable
 ```
 
 ## Get the source code ##
