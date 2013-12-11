@@ -1572,11 +1572,15 @@ __Example:__ It's as easy as 2 % 2 = 0.
 (r.expr(2) % 2).run(conn)
 ```
 
-## [&](and/) ##
+## [&, and](and/) ##
 
 {% apibody %}
 bool & bool &rarr; bool
+bool.and(bool) &rarr; bool
+r.and(bool, bool) &rarr; bool
 {% endapibody %}
+
+# Description #
 
 Compute the logical and of two values.
 
@@ -1584,14 +1588,20 @@ __Example:__ True and false anded is false?
 
 ```rb
 (r.expr(True) & False).run(conn)
+r.expr(True).and(False).run(conn)
+r.and(True, False).run(conn)
 ```
 
 
-## [|](or/) ##
+## [|, or](or/) ##
 
 {% apibody %}
 bool | bool &rarr; bool
+bool.or(bool) &rarr; bool
+r.or(bool, bool) &rarr; bool
 {% endapibody %}
+
+# Description #
 
 Compute the logical or of two values.
 
@@ -1599,6 +1609,8 @@ __Example:__ True or false ored is true?
 
 ```rb
 (r.expr(True) | False).run(conn)
+r.expr(True).or(False).run(conn)
+r.or(True, False).run(conn)
 ```
 
 
