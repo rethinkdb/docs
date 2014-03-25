@@ -36,7 +36,7 @@ r.table("users").index_wait("last_name").run(conn)
 
 {% infobox info %}
 <strong>Note:</strong> The JavaScript driver uses the camelCase convention.   
-So the commands are [indexCreate](/api/javascript/index_create/) and
+The relevant commands are [indexCreate](/api/javascript/index_create/) and
 [indexWait](/api/javascript/index_wait/) 
 {% endinfobox %}
 
