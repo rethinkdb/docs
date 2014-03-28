@@ -34,9 +34,8 @@ RethinkDB supports different types of secondary indexes:
 The function you give to `indexCreate` must be deterministic. In practice this means that
 that you cannot use a function that contains a sub-query or the `r.js` command.
 
-If you are not familiar with secondary indexes, read
-[the article about secondary indexes](http://www.rethinkdb.com/docs/secondary-indexes/)
-to learn more about them.
+Read the [guide to secondary indexes](http://www.rethinkdb.com/docs/secondary-indexes/)
+to learn more about how they work in RethinkDB.
 
 __Example:__ Create a simple index based on the field `postId`.
 
