@@ -44,7 +44,7 @@ r.table('comments').index_create('author_name', r.row["author"]["name"]).run(con
 ```
 
 
-__Example:__ Create a compount index based on the fields `post_id` and `date`.
+__Example:__ Create a compound index based on the fields `post_id` and `date`.
 
 ```py
 r.table('comments').index_create('post_and_date', [r.row["post_id"], r.row["date"]]).run(conn)

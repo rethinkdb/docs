@@ -46,7 +46,7 @@ r.table('comments').index_create('author_name'){ |doc|
 ```
 
 
-__Example:__ Create a compount index based on the fields `post_id` and `date`.
+__Example:__ Create a compound index based on the fields `post_id` and `date`.
 
 ```rb
 r.table('comments').index_create('post_and_date'){ |doc|

@@ -48,7 +48,7 @@ r.table('comments').indexCreate('authorName', r.row("author")("name")).run(conn,
 ```
 
 
-__Example:__ Create a compount index based on the fields `postId` and `date`.
+__Example:__ Create a compound index based on the fields `postId` and `date`.
 
 ```js
 r.table('comments').indexCreate('postAndDate', [r.row("postId"), r.row("date")]).run(conn, callback)
