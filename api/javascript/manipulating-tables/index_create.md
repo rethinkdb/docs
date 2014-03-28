@@ -29,7 +29,10 @@ RethinkDB supports different types of secondary indexes:
 - Simple indexes based on the value of a single field.
 - Compound indexes based on multiple fields.
 - Multi indexes based on arrays of values.
-- Indexes based on arbitrary expressions.
+- Indexes based on arbitrary expressions
+
+The function you give to `indexCreate` must be deterministic. In practice this means that
+that you cannot use a function that contains a sub-query or the `r.js` command.
 
 If you are not familiar with secondary indexes, read
 [the article about secondary indexes](http://www.rethinkdb.com/docs/secondary-indexes/)
