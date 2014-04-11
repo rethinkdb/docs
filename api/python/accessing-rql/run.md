@@ -18,7 +18,7 @@ query.run(conn, use_outdated=False, time_format='native', profile=False, durabil
 # Description #
 
 Run a query on a connection, returning either a single JSON result or
-a cursor, depending on the query.
+a cursor, depending on the query. If no documents match the query, it returns a NoneType object.
 
 The optional arguments are:
 
