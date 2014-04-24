@@ -1809,6 +1809,30 @@ __Example:__ Not true is false.
 r(true).not.run(conn)
 ```
 
+## [random](random/) ##
+
+{% apibody %}
+r.random() &rarr number
+r.random(integer) &rarr integer
+r.random(integer, integer) &rarr integer
+r.random(number, number, :float => true) &rarr number
+{% endapibody %}
+
+# Description #
+
+Generate a random number between the given bounds.  If no arguments are given, the result
+will be a floating-point number in the range `[0,1)`.
+
+When passing a single argument, the result will be in the range `[0,x)`, and when passing
+two arguments, the range is `[x,y)`.
+
+__Example:__ Generate a random number in the range `(-2.24,1.59]`
+
+```rb
+r.random(1.59, -2.24, :float => true).run(conn)
+```
+
+[Read more about this command &rarr;](random/)
 
 {% endapisection %}
 
