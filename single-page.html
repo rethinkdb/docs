@@ -1,0 +1,23 @@
+---
+layout: default
+title: RethinkDB Manual
+active: docs
+alias: docs/single-page
+---
+
+<ul>
+{% for p in site.pages %}
+  {% comment %} {{ p.docs_active }} {% endcomment %}
+  {% if p.active == 'docs' or p.command %}
+    <li> <a href="#{{ p.url }}">{{ p.title }}{{ p.command }} {{ p.language }}</a>
+  {% endif %}
+{% endfor %}
+<ul>
+<hr>
+{% for p in site.pages %}
+  {% if p.active == 'docs' or p.command %}
+    <a name="{{ p.url }}"><h2>{{ p.title }}{{ p.command }} {{ p.language }}</h2></a>
+      {{ p.content }}
+    <hr>
+  {% endif %}
+{% endfor %}
