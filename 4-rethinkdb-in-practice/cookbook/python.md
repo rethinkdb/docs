@@ -10,6 +10,8 @@ language: Python
 ---
 {% include recipe-forms.html %}
 
+<img src="/assets/images/docs/api_illustrations/cookbook.png" class="api_command_illustration" />
+
 <div id="faqcontents"></div>
 ---
 {% faqsection Basic commands %}
@@ -395,12 +397,12 @@ the comments for the relevant post retrieved from the `comments`
 table. We could do this using a subquery:
 
 ```python
-r.table("posts").map(lambda post:
-    post.merge({
+r.table("posts").merge(lambda post:
+    {
         "comments": r.table("comments").filter(lambda comment:
-            comment["id_post"] == post["id"])
-        })
-    ).run()
+            comment["id_post"] == post["id"]).coerce_to("ARRAY")
+    }
+).run()
 ```
 
 ## Performing a pivot operation ##
@@ -474,8 +476,8 @@ progress.
 
 ## Performing an unpivot operation ##
 
-Doing an unpivot operation to "cancel" a pivot one can be done with the `concatMap`,
-`map` and `coerceTo` commands:
+Doing an unpivot operation to "cancel" a pivot one can be done with the `concat_map`,
+`map` and `coerce_to` commands:
 
 ```py
 r.table("pivoted_marks").concat_map(lambda doc:

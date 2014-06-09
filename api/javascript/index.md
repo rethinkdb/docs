@@ -545,9 +545,6 @@ Update JSON documents in a table. Accepts a JSON document, a ReQL expression, or
 combination of the two. You can pass options like `returnVals` that will return the old
 and new values of the row you have modified.
 
-__Example:__ Update Superman's age to 30. If attribute 'age' doesn't exist, adds it to
-the document.
-
 __Example:__ Update the status of the post with `id` of `1` to `published`.
 
 ```js
@@ -676,12 +673,15 @@ table.get(key) &rarr; singleRowSelection
 
 Get a document by primary key.
 
-__Example:__ Find a document with the primary key 'superman'.
+If no document exists with that primary key, `get` will return `null`.
+
+__Example:__ Find a document by UUID.
 
 ```js
-r.table('marvel').get('superman').run(conn, callback)
+r.table('posts').get('a9849eef-7176-4411-935b-79a6e3c56a74').run(conn, callback)
 ```
 
+[Read more about this command &rarr;](get/)
 
 ## [getAll](get_all/) ##
 
@@ -882,14 +882,13 @@ r.table('marvel').withFields('id', 'nemesis')
 ## [concatMap](concat_map/) ##
 
 {% apibody %}
-sequence.concatMap(mappingFunction) &rarr; stream
+stream.concatMap(mappingFunction) &rarr; stream
 array.concatMap(mappingFunction) &rarr; array
 {% endapibody %}
 
-Flattens a sequence of arrays returned by the mappingFunction into a single sequence.
+Concatenate one or more elements into a single sequence using a mapping function.
 
-__Example:__ Construct a sequence of all monsters defeated by Marvel heroes. Here the field
-'defeatedMonsters' is a list that is concatenated to the sequence.
+__Example:__ Construct a sequence of all monsters defeated by Marvel heroes. The field "defeatedMonsters" is an array of one or more monster names.
 
 ```js
 r.table('marvel').concatMap(function(hero) {
@@ -897,6 +896,7 @@ r.table('marvel').concatMap(function(hero) {
 }).run(conn, callback)
 ```
 
+[Read more about this command &rarr;](concat_map/)
 
 ## [orderBy](order_by/) ##
 
@@ -906,15 +906,33 @@ selection.orderBy(key1, [key2...]) -> selection<array>
 sequence.orderBy(key1, [key2...]) -> array
 {% endapibody %}
 
-Sort the sequence by document values of the given key(s). `orderBy` defaults to ascending
-ordering. To explicitly specify the ordering, wrap the attribute with either `r.asc` or
-`r.desc`.
+Sort the sequence by document values of the given key(s). To specify
+the ordering, wrap the attribute with either `r.asc` or `r.desc`
+(defaults to ascending).
 
-__Example:__ Order our heroes by a series of performance metrics.
+Sorting without an index requires the server to hold the sequence in
+memory, and is limited to 100,000 documents. Sorting with an index can
+be done on arbitrarily large tables, or after a `between` command
+using the same index.
+
+__Example:__ Order all the posts using the index `date`.   
 
 ```js
-r.table('marvel').orderBy('enemiesVanquished', 'damselsSaved').run(conn, callback)
+r.table('posts').orderBy({index: 'date'}).run(conn, callback)
 ```
+
+The index must have been previously created with [indexCreate](/api/javascript/index_create/).
+
+```js
+r.table('posts').indexCreate('date').run(conn, callback)
+```
+
+You can also select a descending ordering:
+
+```js
+r.table('posts').orderBy({index: r.desc('date')}).run(conn, callback)
+```
+
 
 [Read more about this command &rarr;](order_by/)
 
@@ -953,16 +971,17 @@ r.table('marvel').orderBy('belovedness').limit(10).run(conn, callback)
 ## [slice](slice/) ##
 
 {% apibody %}
-sequence.slice(startIndex[, endIndex]) &rarr; stream
-array.slice(startIndex[, endIndex]) &rarr; array
+selection.slice(startIndex[, endIndex, {leftBound:'closed', rightBound:'open'}]) &rarr; selection
+stream.slice(startIndex[, endIndex, {leftBound:'closed', rightBound:'open'}]) &rarr; stream
+array.slice(startIndex[, endIndex, {leftBound:'closed', rightBound:'open'}]) &rarr; array
 {% endapibody %}
 
-Trim the sequence to within the bounds provided.
+Return the elements of a sequence within the specified range.
 
-__Example:__ For this fight, we need heroes with a good mix of strength and agility.
+**Example:** Return the fourth, fifth and sixth youngest players. (The youngest player is at index 0, so those are elements 3&ndash;5.)
 
 ```js
-r.table('marvel').orderBy('strength').slice(5, 10).run(conn, callback)
+r.table('players').orderBy({index: 'age'}).slice(3,6).run(conn, callback)
 ```
 
 ## [nth](nth/) ##
@@ -1484,18 +1503,15 @@ r.table('marvel').get('IronMan')('firstAppearance').run(conn, callback)
 {% apibody %}
 sequence.hasFields([selector1, selector2...]) &rarr; stream
 array.hasFields([selector1, selector2...]) &rarr; array
-singleSelection.hasFields([selector1, selector2...]) &rarr; boolean
 object.hasFields([selector1, selector2...]) &rarr; boolean
 {% endapibody %}
 
-Test if an object has all of the specified fields. An object has a field if it has the
-specified key and that key maps to a non-null value. For instance, the object
-`{'a':1,'b':2,'c':null}` has the fields `a` and `b`.
+Test if an object has one or more fields. An object has a field if it has that key and the key has a non-null value. For instance, the object `{'a': 1,'b': 2,'c': null}` has the fields `a` and `b`.
 
-__Example:__ Which heroes are married?
+__Example:__ Return the players who have won games.
 
 ```js
-r.table('marvel').hasFields('spouse')
+r.table('players').hasFields('games_won').run(conn, callback)
 ```
 
 [Read more about this command &rarr;](has_fields/)
@@ -1891,14 +1907,21 @@ r.expr(2).le(2).run(conn, callback)
 
 {% apibody %}
 bool.not() &rarr; bool
+not(bool) &rarr; bool
 {% endapibody %}
-Compute the logical inverse (not).
+
+Compute the logical inverse (not) of an expression.
+
+`not` can be called either via method chaining, immediately after an expression that evaluates as a boolean value, or by passing the expression as a parameter to `not`.
 
 __Example:__ Not true is false.
 
 ```js
-r.expr(true).not().run(conn, callback)
+r(true).not().run(conn, callback)
+r.not(true).run(conn, callback)
 ```
+
+[Read more about this command &rarr;](not/)
 
 ## [random](random/) ##
 
@@ -2285,21 +2308,25 @@ r.now().toEpochTime()
 ## [do](do/) ##
 
 {% apibody %}
-any.do(arg [, args]*, expr) &rarr; any
+any.do(function) &rarr; any
+r.do([args]*, function) &rarr; any
+any.do(expr) &rarr; any
+r.do([args]*, expr) &rarr; any
 {% endapibody %}
 
-Evaluate the expr in the context of one or more value bindings.
+Evaluate an expression and pass its values as arguments to a function or to an expression.
 
-The type of the result is the type of the value returned from expr.
-
-__Example:__ The object(s) passed to do() can be bound to name(s). The last argument is the expression to evaluate in the context of the bindings.
+ __Example:__ Compute a golfer's net score for a game.
 
 ```js
-r.do(r.table('marvel').get('IronMan'),
-    function (ironman) { return ironman('name'); }
-).run(conn, callback)
+r.table('players').get('f19b5f16-ef14-468f-bd48-e194761df255').do(
+    function (player) {
+        return player('gross_score').sub(player('course_handicap'));
+    }
+).run(conn, callback);
 ```
 
+[Read more about this command &rarr;](do/)
 
 ## [branch](branch/) ##
 

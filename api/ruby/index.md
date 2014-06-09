@@ -582,12 +582,15 @@ table.get(key) &rarr; singleRowSelection
 
 Get a document by primary key.
 
-__Example:__ Find a document with the primary key 'superman'.
+If no document exists with that primary key, `get` will return `nil`.
+
+__Example:__ Find a document by UUID.
 
 ```rb
-r.table('marvel').get('superman').run(conn)
+r.table('posts').get('a9849eef-7176-4411-935b-79a6e3c56a74').run(conn)
 ```
 
+[Read more about this command &rarr;](get/)
 
 ## [get_all](get_all/) ##
 
@@ -789,14 +792,13 @@ r.table('marvel').with_fields('id', 'nemesis')
 ## [concat_map](concat_map/) ##
 
 {% apibody %}
-sequence.concat_map(mapping_function) &rarr; stream
+stream.concat_map(mapping_function) &rarr; stream
 array.concat_map(mapping_function) &rarr; array
 {% endapibody %}
 
-Flattens a sequence of arrays returned by the mappingFunction into a single sequence.
+Concatenate one or more elements into a single sequence using a mapping function.
 
-__Example:__ Construct a sequence of all monsters defeated by Marvel heroes. Here the field
-'defeatedMonsters' is a list that is concatenated to the sequence.
+__Example:__ Construct a sequence of all monsters defeated by Marvel heroes. The field "defeatedMonsters" is an array of one or more monster names.
 
 ```rb
 r.table('marvel').concat_map {|hero|
@@ -804,6 +806,8 @@ r.table('marvel').concat_map {|hero|
 }.run(conn)
 
 ```
+
+[Read more about this command &rarr;](concat_map/)
 
 
 ## [order_by](order_by/) ##
@@ -814,14 +818,31 @@ selection.order_by(key1, [key2...]) -> selection<array>
 sequence.order_by(key1, [key2...]) -> array
 {% endapibody %}
 
-Sort the sequence by document values of the given key(s). `orderBy` defaults to ascending
-ordering. To explicitly specify the ordering, wrap the attribute with either `r.asc` or
-`r.desc`.
+Sort the sequence by document values of the given key(s). To specify
+the ordering, wrap the attribute with either `r.asc` or `r.desc`
+(defaults to ascending).
 
-__Example:__ Order our heroes by a series of performance metrics.
+Sorting without an index requires the server to hold the sequence in
+memory, and is limited to 100,000 documents. Sorting with an index can
+be done on arbitrarily large tables, or after a `between` command
+using the same index.
+
+__Example:__ Order all the posts using the index `date`.   
 
 ```rb
-r.table('marvel').order_by(:enemies_vanquished, :damsels_saved).run(conn)
+r.table('posts').order_by(:index => 'date').run(conn)
+```
+
+The index must have been previously created with [index_create](/api/ruby/index_create/).
+
+```rb
+r.table('posts').index_create('date').run(conn)
+```
+
+You can also select a descending ordering:
+
+```rb
+r.table('posts').order_by(:index => r.desc('date')).run(conn, callback)
 ```
 
 [Read more about this command &rarr;](order_by/)
@@ -859,22 +880,23 @@ __Example:__ Only so many can fit in our Pantheon of heroes.
 r.table('marvel').order_by(:belovedness).limit(10).run(conn)
 ```
 
-## [\[\]](slice/) ##
+## [slice](slice/) ##
 
 {% apibody %}
-sequence[start_index[..end_index]] &rarr; stream
-array[start_index[..end_index]] &rarr; array
+selection.slice(start_index[, end_index, :left_bound => 'closed', :right_bound =>'open']) &rarr; selection
+stream.slice(start_index[, end_index, :left_bound => 'closed', :right_bound =>'open']) &rarr; stream
+array.slice(start_index[, end_index, :left_bound => 'closed', :right_bound =>'open']) &rarr; array
 {% endapibody %}
 
-Trim the sequence to within the bounds provided.
+Return the elements of a sequence within the specified range.
 
-__Example:__ For this fight, we need heroes with a good mix of strength and agility.
+**Example:** Return the fourth, fifth and sixth youngest players. (The youngest player is at index 0, so those are elements 3&ndash;5.)
 
 ```rb
-r.table('marvel').order_by(:strength)[5..10].run(conn)
+r.table('players').order_by(:index => 'age').slice(3,6).run(conn)
 ```
 
-## [\[\]](nth/) ##
+## [nth](nth/) ##
 
 {% apibody %}
 sequence[index] &rarr; object
@@ -1375,18 +1397,15 @@ r.table('marvel').get('IronMan')[:first_appearance].run(conn)
 {% apibody %}
 sequence.has_fields([selector1, selector2...]) &rarr; stream
 array.has_fields([selector1, selector2...]) &rarr; array
-singleSelection.has_fields([selector1, selector2...]) &rarr; boolean
 object.has_fields([selector1, selector2...]) &rarr; boolean
 {% endapibody %}
 
-Test if an object has all of the specified fields. An object has a field if it has the
-specified key and that key maps to a non-nil value. For instance, the object
-`{:a => 1, :b => 2, :c => nil}` has the fields `a` and `b`.
+Test if an object has one or more fields. An object has a field if it has that key and the key has a non-null value. For instance, the object `{'a': 1,'b': 2,'c': null}` has the fields `a` and `b`.
 
-__Example:__ Which heroes are married?
+__Example:__ Return the players who have won games.
 
 ```rb
-r.table('marvel').has_fields(:spouse).run(conn)
+r.table('players').has_fields(:games_won).run(conn)
 ```
 
 [Read more about this command &rarr;](has_fields/)
@@ -1800,14 +1819,21 @@ r.expr(2).le(2).run(conn)
 
 {% apibody %}
 bool.not() &rarr; bool
+not(bool) &rarr; bool
 {% endapibody %}
-Compute the logical inverse (not).
+
+Compute the logical inverse (not) of an expression.
+
+`not` can be called either via method chaining, immediately after an expression that evaluates as a boolean value, or by passing the expression as a parameter to `not`.
 
 __Example:__ Not true is false.
 
-```rb
-r(true).not.run(conn)
+```ruby
+r(true).not().run(conn)
+r.not(true).run(conn)
 ```
+
+[Read more about this command &rarr;](not/)
 
 ## [random](random/) ##
 
@@ -2197,19 +2223,24 @@ r.now().to_epoch_time()
 ## [do](do/) ##
 
 {% apibody %}
-any.do(arg [, args]*, expr) &rarr; any
+any.do(function) &rarr; any
+r.do([args]*, function) &rarr; any
+any.do(expr) &rarr; any
+r.do([args]*, expr) &rarr; any
 {% endapibody %}
 
-Evaluate the expr in the context of one or more value bindings.
+Evaluate an expression and pass its values as arguments to a function or to an expression.
 
-The type of the result is the type of the value returned from expr.
+__Example:__ Compute a golfer's net score for a game.
 
-__Example:__ The object(s) passed to do() can be bound to name(s). The last argument is the expression to evaluate in the context of the bindings.
 
 ```rb
-r.do(r.table('marvel').get('IronMan')) { |ironman| ironman[:name] }.run(conn)
+r.table('players').get('f19b5f16-ef14-468f-bd48-e194761df255').do { |player|
+    player['gross_score'] - player['course_handicap']
+}.run(conn)
 ```
 
+[Read more about this command &rarr;](do/)
 
 ## [branch](branch/) ##
 

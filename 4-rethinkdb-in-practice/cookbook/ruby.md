@@ -10,6 +10,8 @@ language : Ruby
 ---
 {% include recipe-forms.html %}
 
+<img src="/assets/images/docs/api_illustrations/cookbook.png" class="api_command_illustration" />
+
 <div id="faqcontents"></div>
 ---
 {% faqsection Basic commands %}
@@ -398,12 +400,13 @@ the comments for the relevant post retrieved from the `comments`
 table. We could do this using a subquery:
 
 ```ruby
-r.table("posts").map{|post|
-    post.merge({"comments" => r.table("comments").filter{|comment|
-                comment["id_post"].eq(post["id"])
-            }
-        })
-    }.run
+r.table("posts").merge{ |post|
+    {
+        "comments" => r.table("comments").filter{ |comment|
+            comment["id_post"].eq(post["id"])
+        }.coerce_to("ARRAY")
+    }
+}.run
 ```
 
 ## Performing a pivot operation ##
@@ -477,7 +480,7 @@ progress.
 
 ## Performing an unpivot operation ##
 
-Doing an unpivot operation to "cancel" a pivot one can be done with the `concatMap`,
+Doing an unpivot operation to "cancel" a pivot one can be done with the `concat_map`,
 `map` and `coerce_to` commands:
 
 ```rb
