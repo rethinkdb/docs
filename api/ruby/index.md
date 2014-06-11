@@ -2457,11 +2457,27 @@ r.json(json_string) &rarr; value
 
 Parse a JSON string on the server.
 
-__Example:__ Send an array to the server'
+__Example:__ Send an array to the server.
 
 ```rb
 r.json("[1,2,3]").run(conn)
 ```
+
+## [http](http/) ##
+
+{% apibody %}
+r.http(url [, options]) &rarr; value
+{% endapibody %}
+
+Retrieve data from the specified URL over HTTP.  The return type depends on what the response contains, as well as the `result_format` option.
+
+__Example:__ Perform a simple HTTP `GET` request, and store the result in a table.
+
+```py
+r.table('posts').insert(r.http('httpbin.org/get').run(conn)
+```
+
+[Read more about this command &rarr;](http/)
 
 
 {% endapisection %}
