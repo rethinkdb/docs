@@ -60,6 +60,13 @@ command:
 sudo apt-get install libprotobuf-dev protobuf-compiler
 ```
 
+On Mac OSX, using homebrew they can be installed with homebrew:
+```
+brew install protobuf --with-python
+```
+Then you can proceed reinstalling RethinkDB driver via pip as showed in step four.
+
+
 On platforms other than Ubuntu, if the package manager does not have
 the protobuf development files, they can be downloaded from
 http://code.google.com/p/protobuf/downloads/list.
