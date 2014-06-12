@@ -203,7 +203,7 @@ def add_doc(file_name, result_file, result_file3):
 
             result_file3.write("\n")
             result_file3.write(parent + name + ".__doc__" + " = ")
-            result_file3.write(repr(re.sub("(__Example:__)|(__Example__:)", "*Example:*", re.sub("^\n+", "", re.sub("\n{2,}", "\n\n", text)))))
+            result_file3.write("'''{}'''".format(re.sub("(__Example:__)|(__Example__:)", "*Example:*", re.sub("^\n+", "", re.sub("\n{2,}", "\n\n", text)))))
     else: # If the command has just one name and one parent
         if has_methods.get(parent, True):
             func = '.__func__'
@@ -216,7 +216,7 @@ def add_doc(file_name, result_file, result_file3):
 
         result_file3.write("\n")
         result_file3.write(parent + name + ".__doc__" + " = ")
-        result_file3.write(repr(re.sub("(__Example:__)|(__Example__:)", "*Example*", re.sub("^\n+", "", re.sub("\n{2,}", "\n\n", text)))))
+        result_file3.write("'''{}'''".format(re.sub("(__Example:__)|(__Example__:)", "*Example*", re.sub("^\n+", "", re.sub("\n{2,}", "\n\n", text)))))
 
 
 if __name__ == "__main__":
