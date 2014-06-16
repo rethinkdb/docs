@@ -39,7 +39,7 @@ parents = {
 tags = {
     '[] (get_field)': [(query, '__getitem__')],
     '[] (nth)': [(query, 'nth')],
-    '[] (slice)': [(query, 'slice')],
+    'slice, []': [(query, 'slice')],
     '+': [(query, '__add__'), ('rethinkdb.', 'add')],
     '-': [(query, '__sub__'), ('rethinkdb.', 'sub')],
     '*': [(query, '__mul__'), ('rethinkdb.', 'mul')],
