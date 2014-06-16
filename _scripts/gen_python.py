@@ -20,6 +20,7 @@ parents = {
     'sequence': query,
     'query': query,
     'stream': query,
+    'grouped_stream': query,
     'singleSelection': query,
     'array': query,
     'number': query,
