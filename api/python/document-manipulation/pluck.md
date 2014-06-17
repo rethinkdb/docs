@@ -42,7 +42,7 @@ r.table('marvel').pluck('beauty', 'muscleTone', 'charm').run(conn)
 __Example:__ Pluck can also be used on nested objects.
 
 ```py
-r.table('marvel').pluck({'abilities' : {'damage' : True, 'mana_cost' : True}, 'weapons' : True}).run(conn)
+r.table('marvel').pluck({'abilities': {'damage': True, 'mana_cost': True}, 'weapons': True}).run(conn)
 ```
 
 
@@ -50,6 +50,5 @@ __Example:__ The nested syntax can quickly become overly verbose so there's a sh
 for it.
 
 ```py
-r.table('marvel').pluck({'abilities' : ['damage', 'mana_cost']}, 'weapons').run(conn)
+r.table('marvel').pluck({'abilities': ['damage', 'mana_cost']}, 'weapons').run(conn)
 ```
-

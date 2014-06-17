@@ -25,5 +25,5 @@ specify the database when referencing a table.
 
 ```py
 conn.use('marvel')
-r.table('heroes').run(conn) # refers to r.db('marvel').table('heroes')
+r.table('heroes').run(conn)  # refers to r.db('marvel').table('heroes')
 ```

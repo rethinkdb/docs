@@ -36,48 +36,48 @@ __Example:__ Get all users whose name starts with "A". Because `None` evaluates 
 
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("^A")
+r.table('users').filter(
+    lambda doc: doc['name'].match("^A")
 ).run(conn)
 ```
 
 __Example:__ Get all users whose name ends with "n".
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("n$")
+r.table('users').filter(
+    lambda doc: doc['name'].match("n$")
 ).run(conn)
 ```
 
 __Example:__ Get all users whose name has "li" in it
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("li")
+r.table('users').filter(
+    lambda doc: doc['name'].match("li")
 ).run(conn)
 ```
 
 __Example:__ Get all users whose name is "John" with a case-insensitive search.
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("(?i)^john$")
+r.table('users').filter(
+    lambda doc: doc['name'].match("(?i)^john$")
 ).run(conn)
 ```
 
 __Example:__ Get all users whose name is composed of only characters between "a" and "z".
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("(?i)^[a-z]+$")
+r.table('users').filter(
+    lambda doc: doc['name'].match("(?i)^[a-z]+$")
 ).run(conn)
 ```
 
 __Example:__ Get all users where the zipcode is a string of 5 digits.
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['zipcode'].match("\d{5}")
+r.table('users').filter(
+    lambda doc: doc['zipcode'].match("\d{5}")
 ).run(conn)
 ```
 

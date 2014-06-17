@@ -69,40 +69,46 @@ r.table("posts").get(1).replace({
 __Example:__ Remove the field `status` from all posts.
 
 ```py
-r.table("posts").replace(lambda post:
-    post.without("status")
+r.table("posts").replace(
+    lambda post: post.without("status")
 ).run(conn)
 ```
 
 __Example:__ Remove all the fields that are not `id`, `title` or `content`.
 
 ```py
-r.table("posts").replace(lambda post:
-    post.pluck("id", "title", "content")
+r.table("posts").replace(
+    lambda post: post.pluck("id", "title", "content")
 ).run(conn)
 ```
 
 __Example:__ Replace the document with the primary key `1` using soft durability.
 
 ```py
-r.table("posts").get(1).replace({
-    "id": 1,
-    "title": "Lorem ipsum",
-    "content": "Aleas jacta est",
-    "status": "draft"
-}, durability="soft").run(conn)
+r.table("posts").get(1).replace(
+    {
+        "id": 1,
+        "title": "Lorem ipsum",
+        "content": "Aleas jacta est",
+        "status": "draft"
+    },
+    durability="soft"
+).run(conn)
 ```
 
 __Example:__ Replace the document with the primary key `1` and return the values of the document before
 and after the replace operation.
 
 ```py
-r.table("posts").get(1).replace({
-    "id": 1,
-    "title": "Lorem ipsum",
-    "content": "Aleas jacta est",
-    "status": "published"
-}, return_vals=True).run(conn)
+r.table("posts").get(1).replace(
+    {
+        "id": 1,
+        "title": "Lorem ipsum",
+        "content": "Aleas jacta est",
+        "status": "published"
+    },
+    return_vals=True
+).run(conn)
 ```
 
 The result will have two fields `old_val` and `new_val`.

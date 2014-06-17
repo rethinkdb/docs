@@ -68,8 +68,8 @@ r.db("test").table_create("authors").run()
 
 The result should be:
 
-```json
-{ "created": 1 }
+```python
+{"created": 1}
 ```
 
 There are a couple of things you should note about this query:
@@ -87,23 +87,26 @@ Let's insert three new documents into the `authors` table:
 
 ```python
 r.table("authors").insert([
-    { "name": "William Adama", "tv_show": "Battlestar Galactica",
-      "posts": [
-        {"title": "Decommissioning speech", "content": "The Cylon War is long over..."},
-        {"title": "We are at war", "content": "Moments ago, this ship received..."},
-        {"title": "The new Earth", "content": "The discoveries of the past few days..."}
-      ]
+    {
+        "name": "William Adama", "tv_show": "Battlestar Galactica",
+        "posts": [
+            {"title": "Decommissioning speech", "content": "The Cylon War is long over..."},
+            {"title": "We are at war", "content": "Moments ago, this ship received..."},
+            {"title": "The new Earth", "content": "The discoveries of the past few days..."}
+        ]
     },
-    { "name": "Laura Roslin", "tv_show": "Battlestar Galactica",
-      "posts": [
-        {"title": "The oath of office", "content": "I, Laura Roslin, ..."},
-        {"title": "They look like us", "content": "The Cylons have the ability..."}
-      ]
+    {
+        "name": "Laura Roslin", "tv_show": "Battlestar Galactica",
+        "posts": [
+            {"title": "The oath of office", "content": "I, Laura Roslin, ..."},
+            {"title": "They look like us", "content": "The Cylons have the ability..."}
+        ]
     },
-    { "name": "Jean-Luc Picard", "tv_show": "Star Trek TNG",
-      "posts": [
-        {"title": "Civil rights", "content": "There are some words I've known since..."}
-      ]
+    {
+        "name": "Jean-Luc Picard", "tv_show": "Star Trek TNG",
+        "posts": [
+            {"title": "Civil rights", "content": "There are some words I've known since..."}
+        ]
     }
 ]).run()
 ```
@@ -158,7 +161,7 @@ the query `r.table('authors')`:
 ```python
 cursor = r.table("authors").run()
 for document in cursor:
-    print document
+    print(document)
 ```
 
 The query returns the three previously inserted documents, along with
@@ -179,7 +182,7 @@ chaining a `filter` command to the end of the query:
 ```python
 cursor = r.table("authors").filter(r.row["name"] == "William Adama").run()
 for document in cursor:
-    print document
+    print(document)
 ```
 
 This query returns a cursor with one document &mdash; the record for
@@ -198,7 +201,7 @@ two posts:
 ```python
 cursor = r.table("authors").filter(r.row["posts"].count() > 2).run()
 for document in cursor:
-    print document
+    print(document)
 ```
 
 In this case, we're using a predicate that returns `True` only if the
@@ -257,9 +260,11 @@ update a subset of documents by filtering the table first. Let's
 update William Adama's record to note that he has the rank of Admiral:
 
 ```python
-r.table("authors").
-    filter(r.row['name'] == "William Adama").
-    update({"rank": "Admiral"}).run()
+r.table("authors").filter(
+    r.row['name'] == "William Adama"
+).update(
+    {"rank": "Admiral"}
+).run()
 ```
 
 Since we only updated one document, we get back this object:
@@ -281,11 +286,14 @@ archaeologists unearthed a new speech by Jean-Luc Picard that we'd like
 to add to his posts:
 
 ```python
-r.table('authors').filter(r.row["name"] == "Jean-Luc Picard").
-    update({"posts": r.row["posts"].append({
+r.table('authors').filter(
+    r.row["name"] == "Jean-Luc Picard"
+).update({
+    "posts": r.row["posts"].append({
         "title": "Shakespeare",
-        "content": "What a piece of work is man..."})
-    }).run()
+        "content": "What a piece of work is man..."
+    })
+}).run()
 ```
 
 After processing this query, RethinkDB will add an additional post to
@@ -301,9 +309,9 @@ Suppose we'd like to trim down our database and delete every document
 with less than three posts (sorry Laura and Jean-Luc):
 
 ```python
-r.table("authors").
-    filter( r.row["posts"].count() < 3 ).
-    delete().run()
+r.table("authors").filter(
+    r.row["posts"].count() < 3
+).delete().run()
 ```
 
 Since we have two authors with less than two posts, the result
@@ -320,4 +328,4 @@ is:
 }
 ```
 
-{% include quickstart-footer.md %} 
+{% include quickstart-footer.md %}

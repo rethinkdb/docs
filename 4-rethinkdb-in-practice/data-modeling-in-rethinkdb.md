@@ -24,7 +24,7 @@ embedded arrays as follows. Consider this example document in the
 table `authors`:
 
 ```json
-{ 
+{
   "id": "7644aaf2-9928-4231-aa68-4e65e31bf219",
   "name": "William Adama", "tv_show": "Battlestar Galactica",
   "posts": [
@@ -86,7 +86,7 @@ data. A typical document in the `authors` table would look like this:
 A typical document in the `posts` table would look like this:
 
 ```json
-{ 
+{
   "id": "064058b6-cea9-4117-b92d-c911027a725a",
   "author_id": "7644aaf2-9928-4231-aa68-4e65e31bf219",
   "title": "Decommissioning speech",
@@ -100,14 +100,14 @@ as follows:
 
 ```python
 # If we have a secondary index on `author_id` in the table `posts`
-r.db("blog").table("posts").
-  get_all("7644aaf2-9928-4231-aa68-4e65e31bf219", index="author_id").
-  run()
+r.db("blog").table("posts").get_all(
+    "7644aaf2-9928-4231-aa68-4e65e31bf219", index="author_id"
+).run()
 
 # If we didn't build a secondary index on `author_id`
-r.db("blog").table("posts").
-  filter({"author_id": "7644aaf2-9928-4231-aa68-4e65e31bf219"}).
-  run()
+r.db("blog").table("posts").filter({
+    "author_id": "7644aaf2-9928-4231-aa68-4e65e31bf219"
+}).run()
 ```
 
 To get all posts for a given author, we can use the `eq_join` command,
@@ -139,7 +139,7 @@ __Advantages of using multiple tables:__
 __Disadvantages of using multiple tables:__
 
 - The queries linking the data between the authors and their posts
-  tend to more complicated.
+  tend to be more complicated.
 - With this approach you cannot atomically update both the author data
   and and the posts data.
 

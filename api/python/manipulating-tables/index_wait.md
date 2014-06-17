@@ -22,8 +22,8 @@ The result is an array where for each index, there will be an object like:
 
 ```py
 {
-    index: <index_name>,
-    ready: True
+    'index': <index_name>,
+    'ready': True
 }
 ```
 

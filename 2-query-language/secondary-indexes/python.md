@@ -53,8 +53,9 @@ r.table("users").between("Smith", "Wade", index="last_name").run(conn)
 r.table("users").order_by(index="last_name").run(conn)
 
 # For each blog post, return the post and its author using the last_name index
-r.table("posts").eq_join("author_last_name", r.table("users"), index="last_name") \
-    .zip().run(conn)
+r.table("posts").eq_join(
+    "author_last_name", r.table("users"), index="last_name"
+).zip().run(conn)
 ```
 
 {% infobox info %}
@@ -70,8 +71,9 @@ Use compound indexes to efficiently retrieve documents by multiple fields.
 
 ```py
 # Create a compound secondary index based on the first_name and last_name attributes
-r.table("users").index_create("full_name", [r.row["first_name"], r.row["last_name"]]) \
-    .run(conn)
+r.table("users").index_create(
+    "full_name", [r.row["first_name"], r.row["last_name"]]
+).run(conn)
 
 # Wait for the index to be ready to use
 r.table("users").index_wait("full_name").run(conn)
@@ -84,15 +86,17 @@ r.table("users").index_wait("full_name").run(conn)
 r.table("users").get_all(["John", "Smith"], index="full_name").run(conn)
 
 # Get all users whose full name is between "John Smith" and "Wade Welles"
-r.table("users").between(["John", "Smith"], ["Wade, Welles"], index="full_name") \
-    .run(conn)
+r.table("users").between(
+    ["John", "Smith"], ["Wade, Welles"], index="full_name"
+).run(conn)
 
 # Efficiently order users by first name and last name using an index
 r.table("users").order_by(index="full_name").run(conn)
 
 # For each blog post, return the post and its author using the full_name index
-r.table("posts").eq_join("author_full_name", r.table("users"), index="full_name") \
-    .run(conn)
+r.table("posts").eq_join(
+    "author_full_name", r.table("users"), index="full_name"
+).run(conn)
 ```
 
 ## Multi indexes ##
@@ -108,7 +112,7 @@ table `posts` would be something like:
 {
     "title": "...",
     "content": "...",
-    "tags": [ <tag1>, <tag2>, ... ]
+    "tags": [<tag1>, <tag2>, ...]
 }
 
 ```
@@ -138,8 +142,10 @@ function to `index_create`.
 
 ```py
 # A different way to do a compound index
-r.table("users").index_create("full_name2", lambda user:
-    r.add(user["last_name"], "_", user["first_name"])).run(conn)
+r.table("users").index_create(
+    "full_name2",
+    lambda user: r.add(user["last_name"], "_", user["first_name"])
+).run(conn)
 ```
 
 The function you give to `index_create` must be deterministic. In practice this means that
@@ -152,8 +158,9 @@ by passing the multi option as the last parameter to `indexCreate`.
 
 ```py
 # Create a multi index on a ReQL expression
-r.table("users").index_create("activities", r.row["hobbies"] + r.row["sports"]),
-    multi=True).run(conn)
+r.table("users").index_create(
+    "activities", r.row["hobbies"] + r.row["sports"], multi=True
+).run(conn)
 ```
 
 # Administrative operations #

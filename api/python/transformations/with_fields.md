@@ -32,13 +32,13 @@ r.table('marvel').with_fields('id', 'nemesis')
 __Example:__ Get a list of heroes and their nemeses, excluding any heroes whose nemesis isn't in an evil organization.
 
 ```py
-r.table('marvel').with_fields('id', {'nemesis' : {'evil_organization' : True}})
+r.table('marvel').with_fields('id', {'nemesis': {'evil_organization': True}})
 ```
 
 
 __Example:__ The nested syntax can quickly become overly verbose so there's a shorthand.
 
 ```py
-r.table('marvel').with_fields('id', {'nemesis' : 'evil_organization'})
+r.table('marvel').with_fields('id', {'nemesis': 'evil_organization'})
 ```
 

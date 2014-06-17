@@ -33,21 +33,36 @@ single-character strings.
 __Example:__ Split on whitespace.
 
 ```py
-> r.expr("foo  bar bax").split().run(conn)
+r.expr("foo  bar bax").split().run(conn)
+```
+
+Result:
+
+```py
 ["foo", "bar", "bax"]
 ```
 
 __Example:__ Split the entries in a CSV file.
 
 ```py
-> r.expr("12,37,,22,").split(",").run(conn)
+r.expr("12,37,,22,").split(",").run(conn)
+```
+
+Result:
+
+```py
 ["12", "37", "", "22", ""]
 ```
 
 __Example:__ Split a string into characters.
 
 ```py
-> r.expr("mlucy").split("").run(conn)
+r.expr("mlucy").split("").run(conn)
+```
+
+Result:
+
+```py
 ["m", "l", "u", "c", "y"]
 ```
 
@@ -55,13 +70,23 @@ __Example:__ Split the entries in a CSV file, but only at most 3
 times.
 
 ```py
-> r.expr("12,37,,22,").split(",", 3).run(conn)
+r.expr("12,37,,22,").split(",", 3).run(conn)
+```
+
+Result:
+
+```py
 ["12", "37", "", "22,"]
 ```
 
 __Example:__ Split on whitespace at most once (i.e. get the first word).
 
 ```py
-> r.expr("foo  bar bax").split(None, 1).run(conn)
+r.expr("foo  bar bax").split(None, 1).run(conn)
+```
+
+Result:
+
+```py
 ["foo", "bar bax"]
 ```

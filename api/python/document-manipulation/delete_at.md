@@ -28,24 +28,36 @@ By using a negative `index` you can delete from the end of the array. `-1` is th
 __Example:__ Delete the second element of an array.
 
 ```py
-> r.expr(['a','b','c','d','e','f']).delete_at(1).run(conn)
+r.expr(['a','b','c','d','e','f']).delete_at(1).run(conn)
+```
 
+Result:
+
+```py
 ['a', 'c', 'd', 'e', 'f']
 ```
 
 __Example:__ Delete the second and third elements of an array.
 
 ```py
-> r.expr(['a','b','c','d','e','f']).delete_at(1,3).run(conn)
+r.expr(['a', 'b', 'c', 'd', 'e', 'f']).delete_at(1, 3).run(conn)
+```
 
+Result:
+
+```py
 ['a', 'd', 'e', 'f']
 ```
 
 __Example:__ Delete the next-to-last element of an array.
 
 ```py
-> r.expr(['a','b','c','d','e','f']).delete_at(-2).run(conn)
+r.expr(['a', 'b', 'c', 'd', 'e', 'f']).delete_at(-2).run(conn)
+```
 
+Result:
+
+```py
 ['a', 'b', 'c', 'd', 'f']
 ```
 
@@ -69,6 +81,6 @@ The second comment can be deleted by using `update` and `delete_at` together.
 
 ```py
 r.table('posts').get('4cf47834-b6f9-438f-9dec-74087e84eb63').update(
-    lambda post: { 'comments': post['comments'].delete_at(1) }
+    lambda post: {'comments': post['comments'].delete_at(1)}
 ).run(conn)
 ```

@@ -44,10 +44,11 @@ If the connection cannot be established, a `RqlDriverError` exception will be th
 __Example:__ Opens a new connection to the database.
 
 ```py
-conn = r.connect(host = 'localhost',
-                 port = 28015,
-                 db = 'heroes',
-                 auth_key = 'hunter2')
+conn = r.connect(
+    host='localhost',
+    port=28015,
+    db='heroes',
+    auth_key='hunter2')
 ```
 
 [Read more about this command &rarr;](connect/)
@@ -145,7 +146,7 @@ row in the result.
 
 ```py
 for doc in r.table('marvel').run(conn):
-    print doc
+    print(doc)
 ```
 
 [Read more about this command &rarr;](run/)
@@ -364,7 +365,7 @@ r.table('marvel').index_list().run(conn)
 ## [index_status](index_status/) ##
 
 {% apibody %}
-table.index_status([, index...]) &rarr; array
+table.index_status([index...]) &rarr; array
 {% endapibody %}
 
 Get the status of the specified indexes on this table, or the status
@@ -385,7 +386,7 @@ r.table('test').index_status('timestamp').run(conn)
 ## [index_wait](index_wait/) ##
 
 {% apibody %}
-table.index_wait([, index...]) &rarr; array
+table.index_wait([index...]) &rarr; array
 {% endapibody %}
 
 Wait for the specified indexes on this table to be ready, or for all
@@ -611,7 +612,7 @@ r.table('posts').get('a9849eef-7176-4411-935b-79a6e3c56a74').run(conn)
 ## [get_all](get_all/)##
 
 {% apibody %}
-table.get_all(key1[, key2...], [, index='id']) &rarr; selection
+table.get_all(key1 [, key2...] [, index='id']) &rarr; selection...
 {% endapibody %}
 
 Get all documents where the given value matches the value of the requested index.
@@ -629,8 +630,8 @@ r.table('marvel').get_all('man_of_steel', index='code_name').run(conn)
 ## [between](between/) ##
 
 {% apibody %}
-table.between(lower_key, upper_key
-    [, index='id', left_bound='closed', right_bound='open'])
+table.between(lower_key, upper_key,
+              index='id', left_bound='closed', right_bound='open')
         &rarr; selection
 {% endapibody %}
 
@@ -700,8 +701,10 @@ is satisfied, each matched pair of rows of both sequences are combined into a re
 __Example:__ Construct a sequence of documents containing all cross-universe matchups where a marvel hero would lose.
 
 ```py
-r.table('marvel').inner_join(r.table('dc'), lambda marvelRow, dcRow:
-    marvelRow['strength'] < dcRow['strength']).run(conn)
+r.table('marvel').inner_join(
+    r.table('dc'),
+    lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']
+).run(conn)
 ```
 
 
@@ -720,8 +723,10 @@ where a marvel hero would lose, but keep marvel heroes who would never lose a ma
 the sequence.
 
 ```py
-r.table('marvel').outer_join(r.table('dc'),
-  lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']).run(conn)
+r.table('marvel').outer_join(
+    r.table('dc'),
+    lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']
+).run(conn)
 ```
 
 
@@ -776,8 +781,8 @@ Transform each element of the sequence by applying the given mapping function.
 __Example:__ Construct a sequence of hero power ratings.
 
 ```py
-r.table('marvel').map(lambda hero:
-    hero['combatPower'] + hero['compassionPower'] * 2
+r.table('marvel').map(
+    lambda hero: hero['combatPower'] + hero['compassionPower'] * 2
 ).run(conn)
 ```
 
@@ -837,7 +842,7 @@ memory, and is limited to 100,000 documents. Sorting with an index can
 be done on arbitrarily large tables, or after a `between` command
 using the same index.
 
-__Example:__ Order all the posts using the index `date`.   
+__Example:__ Order all the posts using the index `date`.
 
 ```py
 r.table('posts').order_by(index='date').run(conn)
@@ -896,9 +901,9 @@ r.table('marvel').order_by('belovedness').limit(10).run(conn)
 ## [slice](slice/) ##
 
 {% apibody %}
-selection.slice(start_index[, end_index, left_bound='closed', right_bound='open']) &rarr; selection
-stream.slice(start_index[, end_index, left_bound='closed', right_bound='open']) &rarr; stream
-array.slice(start_index[, end_index, left_bound='closed', right_bound='open']) &rarr; array
+selection.slice(start_index[, end_index], left_bound='closed', right_bound='open') &rarr; selection
+stream.slice(start_index[, end_index], left_bound='closed', right_bound='open') &rarr; stream
+array.slice(start_index[, end_index], left_bound='closed', right_bound='open') &rarr; array
 {% endapibody %}
 
 Return the elements of a sequence within the specified range.
@@ -1034,9 +1039,13 @@ __Example:__ What is the maximum number of points scored by each
 player, with the highest scorers first?
 
 ```py
-r.table('games')
-    .group('player').max('points')['points']
-    .ungroup().order_by(r.desc('reduction')).run(conn)
+r.table('games').group(
+    'player'
+).max(
+    'points'
+)['points'].ungroup().order_by(
+    r.desc('reduction')
+).run(conn)
 ```
 
 [Read more about this command &rarr;](ungroup/)
@@ -1055,10 +1064,10 @@ function.
 __Example:__ Return the number of documents in the table `posts.
 
 ```py
-r.table("posts").map(lambda doc:
-    1
-).reduce(lambda left, right:
-    left+right
+r.table("posts").map(
+    lambda doc: 1
+).reduce(
+    lambda left, right: left+right
 ).run(conn);
 ```
 
@@ -1436,7 +1445,7 @@ array.has_fields([selector1, selector2...]) &rarr; array
 object.has_fields([selector1, selector2...]) &rarr; boolean
 {% endapibody %}
 
-Test if an object has one or more fields. An object has a field if it has that key and the key has a non-null value. For instance, the object `{'a': 1,'b': 2,'c': null}` has the fields `a` and `b`.
+Test if an object has one or more fields. An object has a field if it has that key and the key has a non-None value. For instance, the object `{'a': 1,'b': 2,'c': None}` has the fields `a` and `b`.
 
 __Example:__ Return the players who have won games.
 
@@ -1538,8 +1547,13 @@ be strings.  `r.object(A, B, C, D)` is equivalent to
 __Example:__ Create a simple object.
 
 ```py
-> r.object('id', 5, 'data', ['foo', 'bar']).run(conn)
-{"data": ["foo", "bar"], "id": 5}
+r.object('id', 5, 'data', ['foo', 'bar']).run(conn)
+```
+
+Result:
+
+```py
+{'id': 5, 'data': ["foo", "bar"]}
 ```
 
 {% endapisection %}
@@ -1566,8 +1580,8 @@ If no match is found, returns `None`.
 __Example:__ Get all users whose name starts with "A".
 
 ```py
-r.table('users').filter(lambda doc:
-    doc['name'].match("^A")
+r.table('users').filter(
+    lambda doc: doc['name'].match("^A")
 ).run(conn)
 ```
 
@@ -1576,7 +1590,7 @@ r.table('users').filter(lambda doc:
 ## [split](split/) ##
 
 {% apibody %}
-string.split([separator, [max_splits]]) &rarr; array
+string.split([separator [, max_splits]]) &rarr; array
 {% endapibody %}
 
 Splits a string into substrings.  Splits on whitespace when called
@@ -1593,7 +1607,12 @@ single-character strings.
 __Example:__ Split on whitespace.
 
 ```py
-> r.expr("foo  bar bax").split().run(conn)
+r.expr("foo  bar bax").split().run(conn)
+```
+
+Result:
+
+```py
 ["foo", "bar", "bax"]
 ```
 
@@ -1610,7 +1629,12 @@ Upcases a string.
 __Example:__
 
 ```py
-> r.expr("Sentence about LaTeX.").upcase().run(conn)
+r.expr("Sentence about LaTeX.").upcase().run(conn)
+```
+
+Result:
+
+```py
 "SENTENCE ABOUT LATEX."
 ```
 
@@ -1625,7 +1649,12 @@ Downcases a string.
 __Example:__
 
 ```py
-> r.expr("Sentence about LaTeX.").downcase().run(conn)
+r.expr("Sentence about LaTeX.").downcase().run(conn)
+```
+
+Result:
+
+```py
 "sentence about latex."
 ```
 
@@ -2024,8 +2053,8 @@ Return the timezone of the time object.
 __Example:__ Return all the users in the "-07:00" timezone.
 
 ```py
-r.table("users").filter(lambda user:
-    user["subscriptionDate"].timezone() == "-07:00"
+r.table("users").filter(
+    lambda user: user["subscriptionDate"].timezone() == "-07:00"
 )
 ```
 
@@ -2033,9 +2062,8 @@ r.table("users").filter(lambda user:
 ## [during](during/) ##
 
 {% apibody %}
-time.during(start_time, end_time
-    [, left_bound="open/closed", right_bound="open/closed"])
-        &rarr; bool
+time.during(start_time, end_time, left_bound="closed", right_bound="open")
+    &rarr; bool
 {% endapibody %}
 
 Return if a time is between two other times (by default, inclusive for the start, exclusive for the end).
@@ -2063,8 +2091,8 @@ Return a new time object only based on the day, month and year (ie. the same day
 __Example:__ Retrieve all the users whose birthday is today
 
 ```py
-r.table("users").filter(lambda user:
-    user["birthdate"].date() == r.now().date()
+r.table("users").filter(
+    lambda user: user["birthdate"].date() == r.now().date()
 ).run(conn)
 ```
 
@@ -2098,8 +2126,8 @@ Return the year of a time object.
 __Example:__ Retrieve all the users born in 1986.
 
 ```py
-r.table("users").filter(lambda user:
-    user["birthdate"].year() == 1986
+r.table("users").filter(
+    lambda user: user["birthdate"].year() == 1986
 ).run(conn)
 ```
 
@@ -2186,8 +2214,8 @@ Return the hour in a time object as a number between 0 and 23.
 __Example:__ Return all the posts submitted after midnight and before 4am.
 
 ```py
-r.table("posts").filter(lambda post:
-    post["date"].hours() < 4
+r.table("posts").filter(
+    lambda post: post["date"].hours() < 4
 ).run(conn)
 ```
 
@@ -2203,8 +2231,8 @@ Return the minute in a time object as a number between 0 and 59.
 __Example:__ Return all the posts submitted during the first 10 minutes of every hour.
 
 ```py
-r.table("posts").filter(lambda post:
-    post["date"].minutes() < 10
+r.table("posts").filter(
+    lambda post: post["date"].minutes() < 10
 ).run(conn)
 ```
 
@@ -2221,8 +2249,8 @@ Return the seconds in a time object as a number between 0 and 59.999 (double pre
 __Example:__ Return the post submitted during the first 30 seconds of every minute.
 
 ```py
-r.table("posts").filter(lambda post:
-    post["date"].seconds() < 30
+r.table("posts").filter(
+    lambda post: post["date"].seconds() < 30
 ).run(conn)
 ```
 
@@ -2356,9 +2384,11 @@ __Example:__ Iron Man can't possibly have lost a battle:
 
 ```py
 r.table('marvel').get('IronMan').do(
-    lambda ironman: r.branch(ironman['victories'] < ironman['battles'],
-                             r.error('impossible code path'),
-                             ironman)
+    lambda ironman: r.branch(
+        ironman['victories'] < ironman['battles'],
+        r.error('impossible code path'),
+        ironman
+    )
 ).run(conn)
 ```
 
@@ -2382,8 +2412,8 @@ In the case where the author field is missing or `None`, we want to retrieve the
 
 
 ```py
-r.table("posts").map(lambda post:
-    {
+r.table("posts").map(
+    lambda post: {
         "title": post["title"],
         "author": post["author"].default("Anonymous")
     }
@@ -2403,7 +2433,7 @@ Construct a ReQL JSON object from a native object.
 __Example:__ Objects wrapped with `expr` can then be manipulated by ReQL API functions.
 
 ```py
-r.expr({'a':'b'}).merge({'b':[1,2,3]}).run(conn)
+r.expr({'a': 'b'}).merge({'b': [1, 2, 3]}).run(conn)
 ```
 
 ## [js](js/) ##
@@ -2503,4 +2533,3 @@ r.table('posts').insert(r.http('httpbin.org/get')).run(conn)
 
 
 {% endapisection %}
-

@@ -12,9 +12,9 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-selection.filter(predicate[, default=False]) &rarr; selection
-stream.filter(predicate[, default=False]) &rarr; stream
-array.filter(predicate[, default=False]) &rarr; array
+selection.filter(predicate, default=False) &rarr; selection
+stream.filter(predicate, default=False) &rarr; stream
+array.filter(predicate, default=False) &rarr; array
 {% endapibody %}
 
 # Description #
@@ -56,8 +56,8 @@ Read the documentation about [r.row](../row/) to know more about the differences
 between `r.row` and lambda functions in ReQL.
 
 ```py
-r.table('users').filter(lambda user:
-    user["age"] == 30
+r.table('users').filter(
+    lambda user: user["age"] == 30
 ).run(conn)
 ```
 

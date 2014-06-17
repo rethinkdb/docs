@@ -43,12 +43,16 @@ Suppose that the table `games` has the following data:
 We can use this query:
 
 ```py
-r.table('games')
-   .group('player').max('points')['points']
-   .ungroup().order_by(r.desc('reduction')).run(conn)
+r.table('games').group(
+    'player'
+).max(
+    'points'
+)['points'].ungroup().order_by(
+    r.desc('reduction')
+).run(conn)
 ```
 
-Result: 
+Result:
 
 ```py
 [
@@ -108,6 +112,6 @@ __Example:__ Types!
 ```py
 r.table('games').group('player').type_of().run(conn) # Returns "GROUPED_STREAM"
 r.table('games').group('player').ungroup().type_of().run(conn) # Returns "ARRAY"
-r.table('games').group('player').avg('points').run(conn) # Returns "GROUPED_DATA"
-r.table('games').group('player').avg('points').ungroup().run(conn) #Returns "ARRAY"
+r.table('games').group('player').avg('points').type_of().run(conn) # Returns "GROUPED_DATA"
+r.table('games').group('player').avg('points').ungroup().type_of().run(conn) #Returns "ARRAY"
 ```

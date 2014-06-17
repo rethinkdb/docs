@@ -26,6 +26,8 @@ is satisfied, each matched pair of rows of both sequences are combined into a re
 __Example:__ Construct a sequence of documents containing all cross-universe matchups where a marvel hero would lose.
 
 ```py
-r.table('marvel').inner_join(r.table('dc'), lambda marvelRow, dcRow:
-    marvelRow['strength'] < dcRow['strength']).run(conn)
+r.table('marvel').inner_join(
+    r.table('dc'),
+    lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']
+).run(conn)
 ```

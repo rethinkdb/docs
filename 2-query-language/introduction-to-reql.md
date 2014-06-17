@@ -216,17 +216,25 @@ and `for`). Instead, you have to use alternative ReQL commands:
 
 ```python
 # WRONG: Get all users older than 30 using the `if` statement
-r.table('users').filter(lambda user:
-    print "Testing"      # WRONG: this will only execute once on the client
-    if user['age'] > 30:
-        True,
-        False).run(conn)
+r.table('users').filter(
+    lambda user: (
+        print("Testing");  # WRONG: this will only execute once on the client
+        branch(
+            user['age'] > 30,
+            True,
+            False
+        )
+    )
+).run(conn)
 
 # RIGHT: Get all users older than 30 using the `r.branch` command
-r.table('users').filter(lambda user:
-    r.branch(user['age'] > 30,
-             True,
-             False)).run(conn)
+r.table('users').filter(
+    lambda user: r.branch(
+        user['age'] > 30,
+        True,
+        False
+    )
+).run(conn)
 ```
 
 {% infobox info %}
@@ -289,9 +297,9 @@ before. We can do it by combining two queries:
 
 ```python
 # Find all authors whose last names are also in the `users` table
-r.table('authors').filter(lambda author:
-    r.table('users').pluck('last_name').contains(author.pluck('last_name'))).
-    run(conn)
+r.table('authors').filter(
+    lambda author: r.table('users').pluck('last_name').contains(author.pluck('last_name'))
+).run(conn)
 ```
 
 Here, we use the `r.table('users').pluck('last_name')` query as the
@@ -321,8 +329,11 @@ salary and bonus don't exceed $90,000, and increase their salary by
 10%:
 
 ```python
-r.table('users').filter(lambda user: user['salary'] + user['bonus'] < 90000)
- .update(lambda user: {'salary': user['salary'] + user['salary'] * 0.1})
+r.table('users').filter(
+    lambda user: user['salary'] + user['bonus'] < 90000
+).update(
+    lambda user: {'salary': user['salary'] + user['salary'] * 0.1}
+).run(conn)
 ```
 
 ## Rich command-set ##
@@ -366,19 +377,24 @@ Just in case you needed another calculator, ReQL can do that too!
 (r.expr(2) > 3).run(conn)
 
 # Branches
-r.branch(r.expr(2) > 3,
-         1,  # if True, return 1
-         2   # otherwise, return 2
-  ).run(conn)
+r.branch(
+    r.expr(2) > 3,
+    1,  # if True, return 1
+    2   # otherwise, return 2
+).run(conn)
 
 # Compute the Fibonacci sequence
 r.table_create('fib').run(conn)
 r.table('fib').insert([{'id': 0, 'value': 0}, {'id': 1, 'value': 1}]).run(conn)
-r.expr([2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).for_each(lambda x:
-  r.table('fib').insert({'id': x,
-                         'value': (r.table('fib').order_by('id').nth(x - 1)['value'] +
-                                   r.table('fib').order_by('id').nth(x - 2)['value'])
-                        })).run(conn)
+r.expr([2, 3, 4, 5, 6, 7, 8, 9, 10, 11]).for_each(
+    lambda x: r.table('fib').insert({
+        'id': x,
+        'value': (
+            r.table('fib').order_by('id').nth(x - 1)['value'] +
+            r.table('fib').order_by('id').nth(x - 2)['value']
+        )
+    })
+).run(conn)
 r.table('fib').order_by('id')['value'].run(conn)
 ```
 

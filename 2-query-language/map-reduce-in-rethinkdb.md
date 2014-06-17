@@ -67,11 +67,13 @@ Let's first compute the number of posts per category by explicit calls
 to `group`, `map`, and `reduce`:
 
 ```python
-r.table('posts')                        \
-  .group(lambda post: post['category']) \
-  .map(lambda post: 1)                  \
-  .reduce(lambda a,b: a+b)              \
-  .run(conn)
+r.table('posts').group(
+    lambda post: post['category']
+).map(
+    lambda post: 1
+).reduce(
+    lambda a, b: a + b
+).run(conn)
 ```
 
 This works, but the query is unwieldy.  Fortunately, RethinkDB offers
@@ -80,11 +82,13 @@ you provide `group` with the name of a field rather than a function,
 it will group by that field:
 
 ```python
-r.table('posts')                        \
-  .group('category')                    \
-  .map(lambda post: 1)                  \
-  .reduce(lambda a,b: a+b)              \
-  .run(conn)
+r.table('posts').group(
+    'category'
+).map(
+    lambda post: 1
+).reduce(
+    lambda a, b: a + b
+).run(conn)
 ```
 
 Second, counting is so common that there is a specialized command
@@ -113,11 +117,13 @@ Here is an example of an __incorrect__ way to write the previous
 grouped map/reduce query:
 
 ```python
-r.table('posts')                        \
-  .group(lambda post: post['category']) \
-  .map(lambda post: 1)                  \
-  .reduce(lambda a,b: a+1)              \ # INCORRECT
-  .run(conn)
+r.table('posts').group(
+    lambda post: post['category']
+).map(
+    lambda post: 1
+).reduce(
+    lambda a, b: a + 1  # INCORRECT
+).run(conn)
 ```
 
 If we have four documents in a single category in a sharded table,
@@ -149,7 +155,7 @@ For example, to count the number of posts in a table you can run
 either of the following queries:
 
 ```python
-r.table('posts').map(lambda row: 1).reduce(lambda a,b: a+b).run(conn)
+r.table('posts').map(lambda row: 1).reduce(lambda a, b: a + b).run(conn)
 r.table('posts').count().run(conn)
 ```
 

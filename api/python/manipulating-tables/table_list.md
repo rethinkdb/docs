@@ -18,9 +18,8 @@ db.table_list() &rarr; array
 
 List all table names in a database. The result is a list of strings.
 
-__Example:__ List all tables of the 'test' database.
+__Example:__ List all tables of the `'test'` database.
 
 ```py
 r.db('test').table_list().run(conn)
-
 ```

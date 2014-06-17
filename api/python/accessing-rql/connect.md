@@ -39,9 +39,9 @@ conn = r.connect(db='marvel')
 __Example:__ Opens a new connection to the database.
 
 ```py
-conn = r.connect(host = 'localhost',
-                 port = 28015,
-                 db = 'heroes',
-                 auth_key = 'hunter2')
+conn = r.connect(
+    host='localhost',
+    port=28015,
+    db='heroes',
+    auth_key='hunter2')
 ```
-

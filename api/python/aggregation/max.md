@@ -46,8 +46,8 @@ r.table('users').max('points').run(conn)
 __Example:__ Which user has scored the most points, counting bonus points?
 
 ```py
-r.table('users').max(lambda user:
-    user['points'] + user['bonus_points']
+r.table('users').max(
+    lambda user: user['points'] + user['bonus_points']
 ).run(conn)
 ```
 

@@ -22,6 +22,11 @@ Upcases a string.
 __Example:__
 
 ```py
-> r.expr("Sentence about LaTeX.").upcase().run(conn)
+r.expr("Sentence about LaTeX.").upcase().run(conn)
+```
+
+Result:
+
+```py
 "SENTENCE ABOUT LATEX."
 ```

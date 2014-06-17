@@ -146,7 +146,7 @@ r.table("users").insert(
 __Example:__ Copy the documents from `posts` to `posts_backup`.
 
 ```py
-r.table("posts_backup").insert( r.table("posts") ).run(conn)
+r.table("posts_backup").insert(r.table("posts")).run(conn)
 ```
 
 

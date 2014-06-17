@@ -26,7 +26,7 @@ Return the elements of a sequence within the specified range.
 
 If `end_index` is past the end of the sequence, all elements from `start_index` to the end of the sequence will be returned. If `start_index` is past the end of the sequence or `end_index` is less than `start_index`, a zero-element sequence will be returned (although see below for negative `end_index` values). An error will be raised on a negative `start_index`.
 
-A negative `end_index` is allowed with arrays; in that case, the returned range counts backward from the array's end. That is, the range of `(2,-1)` returns the second element through the next-to-last element of the range. A negative `end_index` is not allowed with a stream. (An `end_index` of &minus;1 *is* allowed with a stream if `right_bound` is closed; this behaves as if no `end_index` was specified.)
+A negative `end_index` is allowed with arrays; in that case, the returned range counts backward from the array's end. That is, the range of `(2, -1)` returns the second element through the next-to-last element of the range. A negative `end_index` is not allowed with a stream. (An `end_index` of &minus;1 *is* allowed with a stream if `right_bound` is closed; this behaves as if no `end_index` was specified.)
 
 If you are only specifying the indexes and not the bounding options, you may use Python's slice operator as a shorthand: `[start_index:end_index]`.
 
@@ -48,7 +48,7 @@ r.table('players').filter({'class': 'amateur'})[10:20].run(conn)
 r.table('players').filter({'flag': 'red'}).order_by(index=r.desc('score')).slice(3).run(conn)
 ```
 
-**Example:** Return holders of tickets `X` through `Y`, assuming tickets are numbered sequentially. We want to include ticket `Y`.
+**Example:** Return holders of tickets `x` through `x`, assuming tickets are numbered sequentially. We want to include ticket `y`.
 
 ```py
 r.table('users').order_by(index='ticket').slice(x, y, right_bound='closed').run(conn)
@@ -57,11 +57,11 @@ r.table('users').order_by(index='ticket').slice(x, y, right_bound='closed').run(
 **Example:** Return the elements of an array from the second through two from the end (that is, not including the last two).
 
 ```py
-r.expr([0,1,2,3,4,5]).slice(2,-2).run(conn)
+r.expr([0, 1, 2, 3, 4, 5]).slice(2, -2).run(conn)
 ```
 
 Result:
 
 ```py
-[2,3]
+[2, 3]
 ```

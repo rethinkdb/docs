@@ -22,6 +22,11 @@ Downcases a string.
 __Example:__
 
 ```py
-> r.expr("Sentence about LaTeX.").downcase().run(conn)
+r.expr("Sentence about LaTeX.").downcase().run(conn)
+```
+
+Result:
+
+```py
 "sentence about latex."
 ```

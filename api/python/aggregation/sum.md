@@ -46,7 +46,7 @@ __Example:__ How many points have been scored across all games,
 counting bonus points?
 
 ```py
-r.table('games').sum(lambda game:
-    game['points'] + game['bonus_points']
+r.table('games').sum(
+    lambda game: game['points'] + game['bonus_points']
 ).run(conn)
 ```

@@ -26,8 +26,8 @@ where a marvel hero would lose, but keep marvel heroes who would never lose a ma
 the sequence.
 
 ```py
-r.table('marvel').outer_join(r.table('dc'),
-  lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']).run(conn)
+r.table('marvel').outer_join(
+    r.table('dc'),
+    lambda marvelRow, dcRow: marvelRow['strength'] < dcRow['strength']
+).run(conn)
 ```
-
-

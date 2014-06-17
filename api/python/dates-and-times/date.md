@@ -22,9 +22,7 @@ Return a new time object only based on the day, month and year (ie. the same day
 __Example:__ Retrieve all the users whose birthday is today
 
 ```py
-r.table("users").filter(lambda user:
-    user["birthdate"].date() == r.now().date()
+r.table("users").filter(
+    lambda user: user["birthdate"].date() == r.now().date()
 ).run(conn)
 ```
-
-
