@@ -52,3 +52,7 @@ Take a look at [the article](/docs/examples/node-todo-promises/) or the
 - A implementation using __generators__, with KoaJS, AngularJS and RethinkDB.  
 Take a look at [the article](/docs/examples/node-todo-koa/) or the
 [source code](https://github.com/rethinkdb/rethinkdb-example-nodejs/tree/master/todo-angular-koa)
+
+An example using changefeeds and illustrating Benford's law.
+- Take a look at [the article](/docs/examples/node-benford/) or the
+[source code](https://github.com/rethinkdb/rethinkdb-example-nodejs/tree/master/benford)
