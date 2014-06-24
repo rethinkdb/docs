@@ -31,6 +31,6 @@ __Example:__ Find a document and merge another document with it.
 
 ```py
 r.table('heroes').get(3).merge(
-    { 'powers': ['invisibility', 'speed'] }
+    {'powers': ['invisibility', 'speed']}
 ).run(conn)
 ```

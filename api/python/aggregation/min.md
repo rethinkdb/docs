@@ -46,8 +46,8 @@ r.table('users').min('points').run(conn)
 __Example:__ Which user has scored the fewest points, counting bonus points?
 
 ```py
-r.table('users').min(lambda user:
-    user['points'] + user['bonus_points']
+r.table('users').min(
+    lambda user: user['points'] + user['bonus_points']
 ).run(conn)
 ```
 

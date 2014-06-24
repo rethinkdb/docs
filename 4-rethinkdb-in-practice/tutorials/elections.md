@@ -21,7 +21,7 @@ We'll use this dataset to walk through RethinkDB's [JavaScript query language][j
 
 
 {% infobox info %}
-__If you want to do follow the tutorial with the node driver:__
+__If you want to follow the tutorial with the node driver:__
 
 - If you have not done it yet, you may want to read the [10 minute guide](/docs/guide/javascript/).
 {% endinfobox %}

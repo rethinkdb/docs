@@ -26,8 +26,8 @@ In the case where the author field is missing or `None`, we want to retrieve the
 `Anonymous`.
 
 ```py
-r.table("posts").map(lambda post:
-    {
+r.table("posts").map(
+    lambda post: {
         "title": post["title"],
         "author": post["author"].default("Anonymous")
     }
@@ -37,8 +37,8 @@ r.table("posts").map(lambda post:
 We can rewrite the previous query with `r.branch` too.
 
 ```py
-r.table("posts").map(lambda post:
-    r.branch(
+r.table("posts").map(
+    lambda post: r.branch(
         post.has_fields("author"),
         {
             "title": post["title"],
@@ -46,7 +46,7 @@ r.table("posts").map(lambda post:
         },
         {
             "title": post["title"],
-            "author": "Anonymous" 
+            "author": "Anonymous"
         }
     )
 ).run(conn)
@@ -58,8 +58,8 @@ we want to retrieve all our users who are not grown-ups or whose age is unknown
 (i.e the field `age` is missing or equals `None`). We can do it with this query:
 
 ```py
-r.table("users").filter(lambda user:
-    (user["age"] < 18).default(True)
+r.table("users").filter(
+    lambda user: (user["age"] < 18).default(True)
 ).run(conn)
 ```
 
@@ -67,16 +67,16 @@ One more way to write the previous query is to set the age to be `-1` when the
 field is missing.
 
 ```py
-r.table("users").filter(lambda user:
-    user["age"].default(-1) < 18
+r.table("users").filter(
+    lambda user: user["age"].default(-1) < 18
 ).run(conn)
 ```
 
 One last way to do the same query is to use `has_fields`.
 
 ```py
-r.table("users").filter(lambda user:
-    user.has_fields("age").not_() | (user["age"] < 18)
+r.table("users").filter(
+    lambda user: user.has_fields("age").not_() | (user["age"] < 18)
 ).run(conn)
 ```
 
@@ -86,8 +86,7 @@ written like this.
 
 ```py
 r.table("users").filter(
-    lambda user: (user["age"] < 18).default(True),
+    lambda user: user["age"] < 18,
     default=True
 ).run(conn)
 ```
-

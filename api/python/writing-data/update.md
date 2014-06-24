@@ -74,7 +74,7 @@ This query will throw an error if the field `views` doesn't exist.
 
 ```py
 r.table("posts").get(1).update({
-    "views": r.row["views"]+1
+    "views": r.row["views"] + 1
 }).run(conn)
 ```
 
@@ -83,7 +83,7 @@ If the field `views` does not exist, it will be set to `0`.
 
 ```py
 r.table("posts").update({
-    "views": (r.row["views"]+1).default(0)
+    "views": (r.row["views"] + 1).default(0)
 }).run(conn)
 ```
 
@@ -91,8 +91,8 @@ __Example:__ Perform a conditional update.
 If the post has more than 100 views, set the `type` of a post to `hot`, else set it to `normal`.
 
 ```py
-r.table("posts").get(1).update(lambda post:
-    r.branch(
+r.table("posts").get(1).update(
+    lambda post: r.branch(
         post["views"] > 100,
         {"type": "hot"},
         {"type": "normal"}
@@ -104,15 +104,18 @@ __Example:__ Update the field `num_comments` with the result of a sub-query. Bec
 this update is not atomic, you must pass the `non_atomic` flag.
 
 ```py
-r.table("posts").get(1).update({
-    "num_comments": r.table("comments").filter({"id_post": 1}).count()
-}, non_atomic=True ).run(conn)
+r.table("posts").get(1).update(
+    {
+        "num_comments": r.table("comments").filter({"id_post": 1}).count()
+    },
+    non_atomic=True
+).run(conn)
 ```
 
 If you forget to specify the `non_atomic` flag, you will get a `RqlRuntimeError`.
 
 ```
-RqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
+RqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag?
 ```
 
 __Example:__ Update the field `num_comments` with a random value between 0 and 100.  
@@ -120,24 +123,30 @@ This update cannot be proven deterministic because of `r.js` (and in fact is not
 must pass the `non_atomic` flag.
 
 ```py
-r.table("posts").get(1).update({
-    "num_comments": r.js("Math.floor(Math.random()*100)")
-}, non_atomic=True ).run(conn)
+r.table("posts").get(1).update(
+    {
+        "num_comments": r.js("Math.floor(Math.random()*100)")
+    },
+    non_atomic=True
+).run(conn)
 ```
 
 __Example:__ Update the status of the post with `id` of `1` using soft durability.
 
 ```py
-r.table("posts").get(1).update({status: "published"}, durability="soft").run(conn)
+r.table("posts").get(1).update({'status': "published"}, durability="soft").run(conn)
 ```
 
 __Example:__ Increment the field `views` and return the values of the document before
 and after the update operation.
 
 ```py
-r.table("posts").get(1).update({
-    "views": r.row["views"]+1
-}, return_vals=True).run(conn)
+r.table("posts").get(1).update(
+    {
+        "views": r.row["views"] + 1
+    },
+    return_vals=True
+).run(conn)
 ```
 
 The result will have two fields `old_val` and `new_val`.
@@ -166,4 +175,3 @@ The result will have two fields `old_val` and `new_val`.
     "unchanged": 0
 }
 ```
-

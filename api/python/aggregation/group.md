@@ -125,10 +125,9 @@ player for each game type?
 
 
 ```py
-r.table('games')
-    .group(lambda game:
-        game.pluck('player', 'type')
-    ).max('points')['points'].run(conn)
+r.table('games').group(
+    lambda game: game.pluck('player', 'type')
+).max('points')['points'].run(conn)
 ```
 
 Result:
@@ -189,9 +188,13 @@ __Example:__ What is the maximum number of points scored by each
 player, with the highest scorers first?
 
 ```py
-r.table('games')
-    .group('player').max('points')['points']
-    .ungroup().order_by(r.desc('reduction')).run(conn)
+r.table('games').group(
+    'player'
+).max(
+    'points'
+)['points'].ungroup().order_by(
+    r.desc('reduction')
+).run(conn)
 ```
 
 ```py
@@ -298,9 +301,9 @@ __Example:__ What is the maximum number of points scored by each
 player in free games?
 
 ```py
-r.table('games').filter(lambda game:
-        game['type'] = 'free'
-    ).group('player').max('points')['points'].run(conn)
+r.table('games').filter(
+    lambda game: game['type'] = 'free'
+).group('player').max('points')['points'].run(conn)
 ```
 
 ```py
@@ -313,10 +316,10 @@ r.table('games').filter(lambda game:
 __Example:__ What is each player's highest even and odd score?
 
 ```py
-r.table('games')
-    .group('name', lambda game:
-        game['points'] % 2
-    ).max('points')['points'].run(conn)
+r.table('games').group(
+    'name',
+    lambda game: game['points'] % 2
+).max('points')['points'].run(conn)
 ```
 
 ```py

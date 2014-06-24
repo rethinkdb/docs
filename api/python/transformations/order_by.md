@@ -28,7 +28,7 @@ memory, and is limited to 100,000 documents. Sorting with an index can
 be done on arbitrarily large tables, or after a `between` command
 using the same index.
 
-__Example:__ Order all the posts using the index `date`.   
+__Example:__ Order all the posts using the index `date`.
 
 ```py
 r.table('posts').order_by(index='date').run(conn)
@@ -78,8 +78,10 @@ r.table('posts').order_by(index='date_and_title').run(conn)
 The index must have been previously created with [index_create](/api/python/index_create/).
 
 ```py
-r.table('posts').index_create('date_and_title', lambda post:
-    [post["date"], post["title"]]).run(conn)
+r.table('posts').index_create(
+    'date_and_title',
+    lambda post: [post["date"], post["title"]]
+).run(conn)
 ```
 
 _Note_: You cannot specify multiple orders in a compound index. See [issue #2306](https://github.com/rethinkdb/rethinkdb/issues/2306)
@@ -88,7 +90,7 @@ to track progress.
 __Example:__ If you have a sequence with less than 100,000 documents, you can order it
 by multiple fields without an index.
 
-```js
+```py
 r.table('small_table').orderBy('date', r.desc('title'))
 ```
 
@@ -109,32 +111,35 @@ r.table('posts').order_by(index='votes').run(conn)
 The index must have been previously created with [index_create](/api/ruby/index_create/).
 
 ```py
-r.table('posts').index_create('votes', lambda post:
-    post["upvotes"]-post["downvotes"]
+r.table('posts').index_create(
+    'votes',
+    lambda post: post["upvotes"] - post["downvotes"]
 ).run(conn)
 ```
 
 __Example:__ If you have a sequence with less than 100,000 documents, you can order it with an arbitrary function directly.
 
 ```py
-r.table('small_table').order_by(lambda doc:
-    doc['upvotes']-doc['downvotes']
-);
+r.table('small_table').order_by(
+    lambda doc: doc['upvotes'] - doc['downvotes']
+).run(conn)
 ```
 
 You can also select a descending ordering:
 
 ```py
-r.table('small_table').order_by(r.desc(lambda doc:
-    doc['upvotes']-doc['downvotes']
-));
+r.table('small_table').order_by(r.desc(
+    lambda doc: doc['upvotes'] - doc['downvotes']
+)).run(conn)
 ```
 
 __Example:__ Ordering after a `between` command can be done as long as the same index is being used.
 
 ```py
-r.table("posts").between(r.time(2013, 1, 1, '+00:00'), r.time(2013, 1, 1, '+00:00'), index='date')
-    .order_by(index='date').run(conn);
+r.table("posts").between(
+    r.time(2013, 1, 1, '+00:00'), r.time(2013, 1, 1, '+00:00'),
+    index='date'
+).order_by(
+    index='date'
+).run(conn)
 ```
-
-

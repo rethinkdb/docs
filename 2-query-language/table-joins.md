@@ -124,8 +124,11 @@ r.table("companies").index_create("company").run()
 The query would look like this:
 
 ```python
-r.table("employees").eq_join("company_name",
-                             r.table("companies"), index="company").run()
+r.table("employees").eq_join(
+    "company_name",
+    r.table("companies"),
+    index="company"
+).run()
 ```
 
 {% infobox info %}
@@ -190,8 +193,11 @@ In a many to many relation, we can use multiple `eq_join` commands to join
 the data from all three tables:
 
 ```python
-r.table("authors_posts").eq_join("author_id", r.table("authors")).zip().
-  eq_join("post_id", r.table("posts")).zip().run()
+r.table("authors_posts").eq_join(
+    "author_id", r.table("authors")
+).zip().eq_join(
+    "post_id", r.table("posts")
+).zip().run()
 ```
 
 The result of this query is a stream of documents that includes every
@@ -266,10 +272,11 @@ the one of the company.  You can do it by removing the field
 `right.id`, then calling the `zip` command.
 
 ```py
-r.table("employees").eq_join("company_id", r.table("companies"))
-    .without({"right": {"id": True}}) # Remove the field right.id
-    .zip()
-    .run()
+r.table("employees").eq_join(
+    "company_id", r.table("companies")
+).without(
+    {"right": {"id": True}}  # Remove the field right.id
+).zip().run()
 ```
 
 
@@ -279,17 +286,15 @@ If you need to keep both fields, you can rename them with `map` and
 `without` before using the `zip` command.
 
 ```py
-r.table("employees").eq_join("company_id", r.table("companies"))
-    # Copy the field right.id into right.c_id
-    .map( r.row.merge({
-        "right": {
-            "c_id": r.row["right"]["id"]
-        }
-    }))
-    # Remove the field right.id
-    .without({"right": {"id": True}})
-    .zip()
-    .run()
+r.table("employees").eq_join(
+    "company_id", r.table("companies")
+).map(r.row.merge({
+    "right": {
+        "c_id": r.row["right"]["id"]  # Copy the field right.id into right.c_id
+    }
+})).without(
+    {"right": {"id": True}}  # Remove the field right.id
+).zip().run()
 ```
 
 ## Manually merge the left and right fields ##
@@ -299,11 +304,12 @@ You can manually merge the `left` and `right` fields without using the
 the name of his company. You can do:
 
 ```py
-r.table("employees").eq_join("company_id", r.table("companies"))
-    .map({
-        "name": r.row["left"]["name"],
-        "company": r.row["right"]["company"]
-    }).run()
+r.table("employees").eq_join(
+    "company_id", r.table("companies")
+).map({
+    "name": r.row["left"]["name"],
+    "company": r.row["right"]["company"]
+}).run()
 ```
 
 # Read more #

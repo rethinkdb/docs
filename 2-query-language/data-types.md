@@ -22,22 +22,22 @@ RethinkDB stores five basic kinds of values: *numbers, strings, times, boolean* 
 
 * **Objects** are JSON data objects, standard key-value pairs.
 
-	```
-	{ username: 'bob', posts: 23, favorites: {color: 'blue', food: 'tacos'},
-	friends: ['agatha', 'jason'] }
-	```
-	
-	Any valid JSON object is a valid RethinkDB object, so values can be any of the basic values, arrays, or other objects. Documents in a RethinkDB database are objects. Like JSON, key names must be strings, not integers.
+    ```
+    { username: 'bob', posts: 23, favorites: {color: 'blue', food: 'tacos'},
+    friends: ['agatha', 'jason'] }
+    ```
+
+    Any valid JSON object is a valid RethinkDB object, so values can be any of the basic values, arrays, or other objects. Documents in a RethinkDB database are objects. Like JSON, key names must be strings, not integers.
 
 * **Arrays** are lists of zero or more elements.
 
-	```
-	[1, 2, 3]
-	[]
-	[{user: 'Bob', posts: 23}, {user: 'Jason', posts: 10}]
-	```
+    ```
+    [1, 2, 3]
+    []
+    [{user: 'Bob', posts: 23}, {user: 'Jason', posts: 10}]
+    ```
 
-	Again, anything valid in a JSON array is valid in RethinkDB: the elements may be any of the basic values, objects, or other arrays. Arrays in RethinkDB are loaded fully into memory before they're returned to the user, so they're inefficient at large sizes. RethinkDB supports arrays of up to 100,000 elements. (This may be a configurable option in a future release; see [Github Issue #2318](https://github.com/rethinkdb/rethinkdb/issues/2318) for details.)
+    Again, anything valid in a JSON array is valid in RethinkDB: the elements may be any of the basic values, objects, or other arrays. Arrays in RethinkDB are loaded fully into memory before they're returned to the user, so they're inefficient at large sizes. RethinkDB supports arrays of up to 100,000 elements. (This may be a configurable option in a future release; see [Github Issue #2318](https://github.com/rethinkdb/rethinkdb/issues/2318) for details.)
 
 # Composite Data Types #
 
@@ -59,14 +59,14 @@ Returns `"SELECTION<OBJECT>"`.
 
 # Working with Streams #
 
-Streams use "lazy loading," a concept you may have run across in other database interfaces. Instead of returning an entire result set from a query, streams return an [iterator](http://en.wikipedia.org/wiki/Iterator) referred to as a "cursor," a pointer into the data set. 
+Streams use "lazy loading," a concept you may have run across in other database interfaces. Instead of returning an entire result set from a query, streams return an [iterator](http://en.wikipedia.org/wiki/Iterator) referred to as a "cursor," a pointer into the data set.
 
 Different languages support iterators in different ways, but the fundamental concept is always the same: the result set is traversed in a loop that returns one result set at a time. In Python, you might loop through a stream this way:
 
 ```py
 players = r.table('players').run(conn)
 for player in players:
-	print player
+    print(player)
 ```
 
 In Ruby, you would use a block:
@@ -74,7 +74,7 @@ In Ruby, you would use a block:
 ```rb
 players = r.table('players').run(conn)
 players.each do |player|
-	puts player
+    puts player
 end
 ```
 
@@ -82,10 +82,10 @@ Javascript has no native iterator, but ReQL implements an [each](/api/javascript
 
 ```js
 r.table('players').run(conn, function(err, cursor) {
-	cursor.each(function(err, player) {
-		if (err) throw err;
-		console.log(player);
-	});
+    cursor.each(function(err, player) {
+        if (err) throw err;
+        console.log(player);
+    });
 });
 ```
 

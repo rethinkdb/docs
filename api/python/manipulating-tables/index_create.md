@@ -31,7 +31,7 @@ __Example:__ You can also create a secondary index based on an arbitrary functio
 ```py
 r.table('dc').index_create('power_rating',
     lambda hero: hero['combat_power'] + (2 * hero['compassion_power'])
-    ).run(conn)
+).run(conn)
 ```
 
 
@@ -39,9 +39,10 @@ __Example:__ A compound index can be created by returning an array of values to 
 the secondary index key.
 
 ```py
-r.table('dc').index_create('parental_planets',
+r.table('dc').index_create(
+    'parental_planets',
     lambda hero: [hero['mothers_home_planet'], hero['fathers_home_planet']]
-    ).run(conn)
+).run(conn)
 ```
 
 
@@ -58,7 +59,9 @@ __Example:__ The above can be combined to create a multi index on a function tha
 returns an array of values.
 
 ```py
-r.table('dc').index_create('parental_planets',
+r.table('dc').index_create(
+    'parental_planets',
     lambda hero: [hero['mothers_home_planet'], hero['fathers_home_planet']],
-    multi=True).run(conn)
+    multi=True
+).run(conn)
 ```

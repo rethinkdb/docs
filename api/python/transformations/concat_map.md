@@ -27,7 +27,7 @@ r.expr([1, 2, 3]).map(lambda x: [x, x.mul(2)]).run(conn)
 
 Result:
 
-```js
+```py
 [[1, 2], [2, 4], [3, 6]]
 ```
 
@@ -39,7 +39,7 @@ r.expr([1, 2, 3]).concat_map(lambda x: [x, x.mul(2)]).run(conn)
 
 Result:
 
-```js
+```py
 [1, 2, 2, 4, 3, 6]
 ```
 
@@ -58,7 +58,7 @@ r.table('posts').concat_map(
     lambda post: r.table('comments').get_all(
         post['id'], index='post_id'
     ).map(
-        lambda comment: { 'left': post, 'right': comment}
+        lambda comment: {'left': post, 'right': comment}
     )
 ).run(conn)
 ```

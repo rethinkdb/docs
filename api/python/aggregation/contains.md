@@ -34,8 +34,7 @@ r.table('marvel').get('ironman')['opponents'].contains('superman').run(conn)
 __Example:__ Has Iron Man ever defeated Superman in battle?
 
 ```py
-r.table('marvel').get('ironman')['battles'].contains(lambda battle:
-    (battle['winner'] == 'ironman') & (battle['loser'] == 'superman')
+r.table('marvel').get('ironman')['battles'].contains(
+    lambda battle: (battle['winner'] == 'ironman') & (battle['loser'] == 'superman')
 ).run(conn)
 ```
-

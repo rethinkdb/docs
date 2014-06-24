@@ -47,6 +47,5 @@ __Example:__ Arrays can be concatenated too.
 __Example:__ Create a date one year from now.
 
 ```py
-r.now() + 365*24*60*60
+r.now() + 365 * 24 * 60 * 60
 ```
-

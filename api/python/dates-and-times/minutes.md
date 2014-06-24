@@ -21,7 +21,7 @@ Return the minute in a time object as a number between 0 and 59.
 __Example:__ Return all the posts submitted during the first 10 minutes of every hour.
 
 ```py
-r.table("posts").filter(lambda post:
-    post["date"].minutes() < 10
+r.table("posts").filter(
+    lambda post: post["date"].minutes() < 10
 ).run(conn)
 ```

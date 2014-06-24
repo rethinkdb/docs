@@ -41,7 +41,7 @@ row in the result.
 
 ```py
 for doc in r.table('marvel').run(conn):
-    print doc
+    print(doc)
 ```
 
 __Example:__ If you are OK with potentially out of date data from all
@@ -70,7 +70,7 @@ written to disk (overriding the table's default settings), you can set
 
 ```py
 r.table('marvel')
-    .insert({ 'superhero': 'Iron Man', 'superpower': 'Arc Reactor' })
+    .insert({'superhero': 'Iron Man', 'superpower': 'Arc Reactor'})
     .run(conn, noreply=True, durability='soft')
 ```
 
@@ -84,4 +84,3 @@ object.
 ```py
 r.now().run(conn, time_format="raw")
 ```
-

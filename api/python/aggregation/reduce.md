@@ -31,7 +31,7 @@ The reduction function can be called on:
 
 The reduction function can be called on the results of two previous reductions because the
 `reduce` command is distributed and parallelized across shards and CPU cores. A common
-mistaken when using the `reduce` command is to suppose that the reduction is executed
+mistake when using the `reduce` command is to suppose that the reduction is executed
 from left to right. Read the [map-reduce in RethinkDB](/docs/map-reduce/) article to
 see an example.
 
@@ -42,9 +42,11 @@ If the sequence has only one element, the first element will be returned.
 __Example:__ Return the number of documents in the table `posts`.
 
 ```py
-r.table("posts").map(lambda doc: 1)
-    .reduce(lambda left, right: left+right)
-    .default(0).run(conn)
+r.table("posts").map(
+    lambda doc: 1
+).reduce(
+    lambda left, right: left + right
+).default(0).run(conn)
 ```
 
 
@@ -56,10 +58,10 @@ comments.
 Return the number of comments for all posts.
 
 ```py
-r.table("posts").map(lambda doc:
-    doc["comments"].count()
-).reduce(lambda left, right:
-    left+right
+r.table("posts").map(
+    lambda doc: doc["comments"].count()
+).reduce(
+    lambda left, right: left + right
 ).default(0).run(conn)
 ```
 
@@ -69,10 +71,10 @@ comments.
 Return the maximum number comments per post.
 
 ```py
-r.table("posts").map(lambda doc:
-    doc["comments"].count()
-).reduce(lambda left, right:
-    r.branch(
+r.table("posts").map(
+    lambda doc: doc["comments"].count()
+).reduce(
+    lambda left, right: r.branch(
         left > right,
         left,
         right

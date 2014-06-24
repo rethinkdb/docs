@@ -116,8 +116,8 @@ predicate and pass it to `filter`:
 
 ```python
 r.table("posts").filter(
-        (r.row["author"] == "Michel") & (r.row["category"] == "Geek")
-    ).run()
+    (r.row["author"] == "Michel") & (r.row["category"] == "Geek")
+).run()
 ```
 
 __Note__: RethinkDB overloads `&` because Ruby doesn't allow
@@ -128,8 +128,10 @@ You can also use the `r.all` command, if you prefer not using
 overloaded `&`:
 
 ```python
-r.table("posts").filter(r.all(r.row["author"] == "Michel",
-                             r.row["category"] == "Geek")).run()
+r.table("posts").filter(r.all(
+    r.row["author"] == "Michel",
+    r.row["category"] == "Geek"
+)).run()
 ```
 
 Similarly, you can use the overloaded `|` operator or the equivalent
@@ -242,49 +244,51 @@ Suppose you want to retrieve all the posts whose date field is
 between January 1st, 2012 (included) and January 1st, 2013 (excluded), you could do:
 
 ```py
-r.table("posts").filter( lambda post:
-    post.during(r.time(2012, 1, 1, 'Z'), r.time(2013, 1, 1, 'Z'))
+r.table("posts").filter(
+    lambda post: post.during(r.time(2012, 1, 1, 'Z'), r.time(2013, 1, 1, 'Z'))
 ).run(conn)
 ```
 
 You can also manually compare dates:
 
 ```py
-r.table("posts").filter( lambda post:
-    (post["date"] >= r.time(2012, 1, 1, 'Z')) &
-    (post["date"] < r.time(2013, 1, 1, 'Z'))
+r.table("posts").filter(
+    lambda post: (
+        (post["date"] >= r.time(2012, 1, 1, 'Z')) &
+        (post["date"] < r.time(2013, 1, 1, 'Z'))
+    )
 ).run(conn)
 ```
 
 ## Filering with Regex ##
 
-If you want to retrieve all users whose last name starts with "Ma", 
+If you want to retrieve all users whose last name starts with "Ma",
 you can use `r.match` this way:
 
 ```py
 # Will return Martin, Martinez, Marshall etc.
-r.table("users").filter( lambda user:
-    user["lastName"].match("^Ma")
+r.table("users").filter(
+    lambda user: user["lastName"].match("^Ma")
 ).run(conn)
 ```
 
-If you want to retrieve all users whose last name ends with an "s", 
+If you want to retrieve all users whose last name ends with an "s",
 you can use `r.match` this way:
 
 ```py
 # Will return Williams, Jones, Davis etc.
-r.table("users").filter( lambda user:
-    user["lastName"].match("s$")
+r.table("users").filter(
+    lambda user: user["lastName"].match("s$")
 ).run(conn)
 ```
 
-If you want to retrieve all users whose last name contains "ll", 
+If you want to retrieve all users whose last name contains "ll",
 you can use `r.match` this way:
 
 ```py
 # Will return Williams, Miller, Allen etc.
-r.table("users").filter( lambda user:
-    user["lastName"].match("ll")
+r.table("users").filter(
+    lambda user: user["lastName"].match("ll")
 ).run(conn)
 ```
 
@@ -294,8 +298,8 @@ Retrieve all users whose name is "William" (case insensitive).
 
 ```py
 # Will return william, William, WILLIAM, wiLLiam etc.
-r.table("users").filter( lambda user:
-    user["lastName"].match("(?i)^william$")
+r.table("users").filter(
+    lambda user: user["lastName"].match("(?i)^william$")
 ).run(conn)
 ```
 
@@ -312,7 +316,7 @@ instance, if you would like to add the field `author` with the value
 "Michel" for all of the documents in the table `posts`, you would use:
 
 ```python
-r.table("posts").update({ "author": "Michel" }).run()
+r.table("posts").update({"author": "Michel"}).run()
 ```
 
 ## Removing a field from a document ##
@@ -336,11 +340,14 @@ field `countable` is set to true, and get back the old and new results
 in a single query. We can perform this operation as follows:
 
 ```python
-r.table("pages").update(lambda page:
-    r.branch(page["countable"] == True,          // if the page is countable
-             { "views": page["views"] + 1 },     // increment the view count
-             {}                                  // else do nothing
-    )), {"return_vals": True}).run()
+r.table("pages").update(
+    lambda page: r.branch(
+        page["countable"] == True,       # if the page is countable
+        { "views": page["views"] + 1 },  # increment the view count
+        {}                               # else do nothing
+    ),
+    {"return_vals": True}
+).run()
 ```
 
 {% endfaqsection %}
@@ -353,9 +360,9 @@ You can limit the number of documents returned by your queries with
 the `limit` command. Let's retrieve just the first 10 blog posts:
 
 ```python
-r.table("posts").order_by("date").
-  limit(10).
-  run()
+r.table("posts").order_by(
+    "date"
+).limit(10).run()
 ```
 
 ## Implementing pagination ##
@@ -364,9 +371,9 @@ To paginate results, you can use a combination of the `skip` and
 `limit` commands. Let's retrieve posts 11-20 from our database:
 
 ```python
-r.table("posts").order_by("date").
-  skip(10).
-  limit(10).run()
+r.table("posts").order_by(
+    "date"
+).skip(10).limit(10).run()
 ```
 
 {% endfaqsection %}
@@ -397,10 +404,11 @@ the comments for the relevant post retrieved from the `comments`
 table. We could do this using a subquery:
 
 ```python
-r.table("posts").merge(lambda post:
-    {
-        "comments": r.table("comments").filter(lambda comment:
-            comment["id_post"] == post["id"]).coerce_to("ARRAY")
+r.table("posts").merge(
+    lambda post: {
+        "comments": r.table("comments").filter(
+            lambda comment: comment["id_post"] == post["id"]
+        ).coerce_to("ARRAY")
     }
 ).run()
 ```
@@ -460,13 +468,15 @@ In this case, you can do a pivot operation with the `group` and
 
 
 ```py
-r.db('test').table('marks')                                      \
- .group('name')                                                  \
- .map(lambda row: [[row['course'], row['mark']]])                \
- .ungroup()                                                      \
- .map(lambda res: r.expr({'name': res['group']})                 \
-                   .merge(res['reduction'].coerce_to('OBJECT'))) \
- .run(conn)
+r.db('test').table('marks').group('name').map(
+    lambda row: [[row['course'], row['mark']]]
+).ungroup().map(
+    lambda res: r.expr(
+        {'name': res['group']}
+    ).merge(
+        res['reduction'].coerce_to('OBJECT')
+    )
+).run(conn)
 ```
 
 _Note:_ A nicer syntax will eventually be added. See the
@@ -480,9 +490,9 @@ Doing an unpivot operation to "cancel" a pivot one can be done with the `concat_
 `map` and `coerce_to` commands:
 
 ```py
-r.table("pivoted_marks").concat_map(lambda doc:
-    doc.without("name").coerce_to("array").map(lambda values:
-        {
+r.table("pivoted_marks").concat_map(
+    lambda doc: doc.without("name").coerce_to("array").map(
+        lambda values: {
             "name": doc["name"],
             "course": values[0],
             "mark": values[1]
@@ -506,8 +516,7 @@ r.table("users").map(
     # Add the field id_user that is equal to the id one
     r.row.merge({
         "id_user": r.row["id"]
-    })
-    .without("id") # Remove the field id
+    }).without("id") # Remove the field id
 )
 ```
 
@@ -571,4 +580,3 @@ r.table('users').map(
 ```
 
 {% endfaqsection %}
-

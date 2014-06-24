@@ -31,10 +31,14 @@ r.table('players').get('86be93eb-a112-48f5-a829-15b2cb49de1d').do(
 __Example:__ Return the name of the best scoring player in a two-player golf match.
 
 ```py
-r.do(r.table('players').get(id1), r.table('players').get(id2),
-    (lambda player1, player2:
-        r.branch(player1['gross_score'].lt(player2['gross_score']),
-        player1, player2))
+r.do(
+    r.table('players').get(id1),
+    r.table('players').get(id2),
+    lambda player1, player2: r.branch(
+        player1['gross_score'].lt(player2['gross_score']),
+        player1,
+        player2
+    )
 ).run(conn)
 
 ```

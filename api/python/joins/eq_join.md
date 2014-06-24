@@ -27,12 +27,12 @@ The players table contains these documents:
 
 ```py
 [
-    { 'id': 1, 'player': 'George', 'gameId': 1 },
-    { 'id': 2, 'player': 'Agatha', 'gameId': 3 },
-    { 'id': 3, 'player': 'Fred', 'gameId': 2 },
-    { 'id': 4, 'player': 'Marie', 'gameId': 2 },
-    { 'id': 5, 'player': 'Earnest', 'gameId': 1 },
-    { 'id': 6, 'player': 'Beth', 'gameId': 3 }
+    {'id': 1, 'player': 'George', 'gameId': 1},
+    {'id': 2, 'player': 'Agatha', 'gameId': 3},
+    {'id': 3, 'player': 'Fred', 'gameId': 2},
+    {'id': 4, 'player': 'Marie', 'gameId': 2},
+    {'id': 5, 'player': 'Earnest', 'gameId': 1},
+    {'id': 6, 'player': 'Beth', 'gameId': 3}
 ]
 ```
 
@@ -40,9 +40,9 @@ The games table contains these documents:
 
 ```py
 [
-    { 'id': 1, 'field': 'Little Delving' },
-    { 'id': 2, 'field': 'Rushock Bog' },
-    { 'id': 3, 'field': 'Bucklebury' }
+    {'id': 1, 'field': 'Little Delving'},
+    {'id': 2, 'field': 'Rushock Bog'},
+    {'id': 3, 'field': 'Bucklebury'}
 ]
 ```
 
@@ -57,12 +57,12 @@ This will return a result set such as the following:
 ```py
 [
     {
-        "left" : { "gameId" : 3, "id" : 2, "player" : "Agatha" },
-        "right" : { "id" : 3, "field" : "Bucklebury" }
+        "left": {"gameId": 3, "id": 2, "player": "Agatha"},
+        "right": {"id": 3, "field": "Bucklebury"}
     },
     {
-        "left" : { "gameId" : 2, "id" : 3, "player" : "Fred" },
-        "right" : { "id" : 2, "field" : "Rushock Bog" }
+        "left": {"gameId": 2, "id": 3, "player": "Fred"},
+        "right": {"id": 2, "field": "Rushock Bog"}
     },
     ...
 ]
@@ -71,15 +71,23 @@ This will return a result set such as the following:
 What you likely want is the result of using `zip` with that. For clarity, we'll use `without` to drop the `id` field from the games table (it conflicts with the `id` field for the players and it's redundant anyway), and we'll order it by the games.
 
 ```py
-r.table('players').eq_join('game_id', r.table('games')).without({'right': "id"}).zip().order_by('game_id').run(conn)
+r.table('players').eq_join(
+    'game_id', r.table('games')
+).without({
+    'right': "id"
+}).zip().order_by('game_id').run(conn)
+```
 
+Result:
+
+```py
 [
-    { "field": "Little Delving", "gameId": 1, "id": 5, "player": "Earnest" },
-    { "field": "Little Delving", "gameId": 1, "id": 1, "player": "George" },
-    { "field": "Rushock Bog", "gameId": 2, "id": 3, "player": "Fred" },
-    { "field": "Rushock Bog", "gameId": 2, "id": 4, "player": "Marie" },
-    { "field": "Bucklebury", "gameId": 3, "id": 6, "player": "Beth" },
-    { "field": "Bucklebury", "gameId": 3, "id": 2, "player": "Agatha" }
+    {"field": "Little Delving", "gameId": 1, "id": 5, "player": "Earnest"},
+    {"field": "Little Delving", "gameId": 1, "id": 1, "player": "George"},
+    {"field": "Rushock Bog", "gameId": 2, "id": 3, "player": "Fred"},
+    {"field": "Rushock Bog", "gameId": 2, "id": 4, "player": "Marie"},
+    {"field": "Bucklebury", "gameId": 3, "id": 6, "player": "Beth"},
+    {"field": "Bucklebury", "gameId": 3, "id": 2, "player": "Agatha"}
 ]
 ```
 
@@ -88,25 +96,38 @@ For more information, see [Table joins in Rethink_dB](/docs/table-joins/).
 **Example:** Use a secondary index on the right table rather than the primary key. If players have a secondary index on their cities, we can get a list of arenas with players in the same area.
 
 ```py
-r.table('arenas').eq_join('city_id', r.table('arenas'), index='city_id').run(conn)
+r.table('arenas').eq_join(
+    'city_id',
+    r.table('arenas'),
+    index='city_id'
+).run(conn)
 ```
 
 **Example:** Use a nested key as the join field. Suppose the documents in the players table were structured like this:
 
 ```py
-{ 'id': 1, 'player': 'George', 'game': {'id': 1} },
-{ 'id': 2, 'player': 'Agatha', 'game': {'id': 3} },
+{'id': 1, 'player': 'George', 'game': {'id': 1}},
+{'id': 2, 'player': 'Agatha', 'game': {'id': 3}},
 ...
 ```
 
 Simply specify the field using the `row` command instead of a string.
 
 ```py
-r.table('players').eq_join(r.row['game']['id'], r.table('games')).without({'right': 'id'}).zip().run(conn)
+r.table('players').eq_join(
+    r.row['game']['id'],
+    r.table('games')
+).without({
+    'right': 'id'
+}).zip().run(conn)
+```
 
+Result:
+
+```py
 [
-    { "field": "Little Delving", "game": { "id": 1 }, "id": 5, "player": "Earnest" },
-    { "field": "Little Delving", "game": { "id": 1 }, "id": 1, "player": "George" },
+    {"field": "Little Delving", "game": {"id": 1}, "id": 5, "player": "Earnest"},
+    {"field": "Little Delving", "game": {"id": 1}, "id": 1, "player": "George"},
     ...
 ]
 ```
@@ -117,15 +138,18 @@ r.table('players').eq_join(r.row['game']['id'], r.table('games')).without({'righ
 r.table('players3').eq_join(
     lambda player: player['favorites'].nth(0),
     r.table('games')
-).without([{'left': ['favorites', 'game_id', 'id']}, {'right': 'id'}]).zip()
+).without([
+    {'left': ['favorites', 'game_id', 'id']},
+    {'right': 'id'}
+]).zip().run(conn)
 ```
 
 Result:
 
 ```py
 [
-	{ "field": "Rushock Bog", "name": "Fred" },
-	{ "field": "Little Delving", "name": "George" },
-	...
+  	{"field": "Rushock Bog", "name": "Fred"},
+	  {"field": "Little Delving", "name": "George"},
+  	...
 ]
 ```

@@ -19,10 +19,10 @@ __Example:__ Iron Man can't possibly have lost a battle:
 
 ```py
 r.table('marvel').get('IronMan').do(
-    lambda ironman: r.branch(ironman['victories'] < ironman['battles'],
-                             r.error('impossible code path'),
-                             ironman)
+    lambda ironman: r.branch(
+        ironman['victories'] < ironman['battles'],
+        r.error('impossible code path'),
+        ironman
+    )
 ).run(conn)
 ```
-
-

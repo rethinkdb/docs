@@ -19,13 +19,13 @@ RethinkDB Python library][python_install].
 
 Let's now confirm the setup is correct and we can connect to the RethinkDB
 instance. We will assume that RethinkDB is running on the same machine and on
-the default port (you can change the parameters passed to `connect`): 
+the default port (you can change the parameters passed to `connect`):
 
 ```python
 >>> import rethinkdb as r
->>> # connect and make the connection available to subsequent commands 
+>>> # connect and make the connection available to subsequent commands
 >>> r.connect('localhost', 28015).repl()
->>> print r.db_list().run()
+>>> print(r.db_list().run())
 
 [u'test']
 ```
@@ -33,7 +33,7 @@ the default port (you can change the parameters passed to `connect`):
 The result lists the default database available in RethinkDB.
 
 {% infobox %}
-__Tips__: The `r.connect(...).repl()` function is useful when using 
+__Tips__: The `r.connect(...).repl()` function is useful when using
 the RethinkDB Python driver from interactive shells making available
 the connection for all subsequent `run` calls.
 {% endinfobox %}
@@ -56,11 +56,12 @@ database so you can quickly experiment with it:
 For your application you'll probably want to use a new database and define new tables:
 
 ```python
-// creating a new database
+>>> # creating a new database
 >>> r.db_create('python_tutorial').run()
-
-// creating a new table
+{u'created': 1}
+>>> # creating a new table
 >>> r.db('python_tutorial').table_create('heroes').run()
+{u'created': 1}
 ```
 
 You can see the new database and table through the browser-based administrative
@@ -83,11 +84,11 @@ RethinkDB stores data in JSON, so passing `dict`s from Python requires no additi
 
 ```python
 >>> heroes.insert({
-    "hero": "Wolverine", 
-    "name": "James 'Logan' Howlett", 
-    "magazine_titles": ["Amazing Spider-Man vs. Wolverine", "Avengers", "X-MEN Unlimited", "Magneto War", "Prime"],
-    "appearances_count": 98
-}).run()
+...    "hero": "Wolverine",
+...    "name": "James 'Logan' Howlett",
+...    "magazine_titles": ["Amazing Spider-Man vs. Wolverine", "Avengers", "X-MEN Unlimited", "Magneto War", "Prime"],
+...    "appearances_count": 98
+...}).run()
 
 {u'errors': 0,
  u'generated_keys': [u'c6677d9f-1740-4499-bf17-92f10cab30cf'],
@@ -105,30 +106,30 @@ You can also insert multiple documents at a time by passing `insert` an array of
 
 ```python
 >>> heroes.insert([
-    {
-        "hero": "Magneto", 
-        "name": "Max Eisenhardt", 
-        "aka": ["Magnus", "Erik Lehnsherr", "Lehnsherr"],  
-        "magazine_titles": ["Alpha Flight", "Avengers", "Avengers West Coast"],
-        "appearances_count": 42
-    },
-    {   
-        "hero": "Professor Xavier", 
-        "name": "Charles Francis Xavier", 
-        "magazine_titles": ["Alpha Flight", "Avengers", "Bishop", "Defenders"],
-        "appearances_count": 72
-    },
-    {
-        "hero": "Storm", 
-        "name": "Ororo Monroe", 
-        "magazine_titles": ["Amazing Spider-Man vs. Wolverine", "Excalibur", "Fantastic Four", "Iron Fist"],
-        "appearances_count": 72
-    }
-
-]).run()
+... {
+...     "hero": "Magneto",
+...     "name": "Max Eisenhardt",
+...     "aka": ["Magnus", "Erik Lehnsherr", "Lehnsherr"],  
+...     "magazine_titles": ["Alpha Flight", "Avengers", "Avengers West Coast"],
+...     "appearances_count": 42
+... },
+... {
+...     "hero": "Professor Xavier",
+...     "name": "Charles Francis Xavier",
+...     "magazine_titles": ["Alpha Flight", "Avengers", "Bishop", "Defenders"],
+...     "appearances_count": 72
+... },
+... {
+...     "hero": "Storm",
+...     "name": "Ororo Monroe",
+...     "magazine_titles": ["Amazing Spider-Man vs. Wolverine", "Excalibur", "Fantastic Four", "Iron Fist"],
+...     "appearances_count": 72
+... }
+...
+... ]).run()
 
 {u'errors': 0,
- u'generated_keys': [u'd7d5e949-3f71-4e21-b5b7-42b6e7048ea3', 
+ u'generated_keys': [u'd7d5e949-3f71-4e21-b5b7-42b6e7048ea3',
                      u'747c057e-8810-4479-a6b2-3c28d8057b48',
                      u'372fa6fe-17ec-494b-a926-0d99ba8ced43'],
  u'inserted': 3}
@@ -183,21 +184,22 @@ magazines they've appeared in:
 ```python
 >>> heroes.order_by(r.desc('appearances_count')).pluck('hero', 'appearances_count').run()
 
-<rethinkdb.net.Cursor object at 0x15dc450>
+[{u'appearances_count': 98, u'hero': u'Wolverine'}, {u'appearances_count': 72, u'hero': u'Professor Xavier'}, {u'appearances_count': 72, u'hero': u'Storm'}, {u'appearances_count': 42, u'hero': u'Magneto'}]
 ```
 
 {% infobox %}
-__Tips__: Ordering result ascending or descending can be done using `asc` and
-`desc` respectively. 
+__Tips__: Ordering result ascending or descending can be done using `r.asc` and
+`r.desc` respectively.
 The server-side operation <code>pluck</code> allows fetching only the specified
 attributes of the result documents.
 {% endinfobox %}
 
-As you see only 1 of the characters has appeared in more than 90 magazines. 
+As you see only 1 of the characters has appeared in more than 90 magazines.
 This is something we could also verify with the query:
 
 ```python
 >>> heroes.filter(r.row['appearances_count'] >= 90).pluck('hero', 'name', 'appearances_count').run()
+<rethinkdb.net.Cursor object at 0x10be6a2d0>
 ```
 
 For the last query example let's retrieve the characters that appeared in a
@@ -206,8 +208,8 @@ document:
 
 ```python
 >>> heroes.filter(
-        r.row['magazine_titles'].filter(lambda mag: mag == 'Amazing Spider-Man vs. Wolverine').count() > 0
-    ).pluck('hero').run()
+...     r.row['magazine_titles'].contains('Amazing Spider-Man vs. Wolverine')
+... ).pluck('hero').run()
 ```
 
 ## Updating multiple documents ##
@@ -216,10 +218,10 @@ We'll finish this tutorial by appending a new magazine to each of the
 characters and also updating their number of appearances:
 
 ```python
-heroes.update({
-    'appearances_count': r.row['appearances_count'] + 1,
-    'magazine_titles': r.row['magazine_titles'].append('The Fantastic RethinkDB')
-}).run()
+>>> heroes.update({
+...     'appearances_count': r.row['appearances_count'] + 1,
+...     'magazine_titles': r.row['magazine_titles'].append('The Fantastic RethinkDB')
+... }).run()
 
 {u'errors': 0, u'skipped': 0, u'updated': 4}
 ```

@@ -33,8 +33,8 @@ r.table('marvel').get('IronMan').merge(
 __Example:__ Merge can be used recursively to modify object within objects.
 
 ```py
-r.expr({'weapons' : {'spectacular graviton beam' : {'dmg' : 10, 'cooldown' : 20}}}).merge(
-    {'weapons' : {'spectacular graviton beam' : {'dmg' : 10}}}
+r.expr({'weapons': {'spectacular graviton beam': {'dmg': 10, 'cooldown': 20}}}).merge(
+    {'weapons': {'spectacular graviton beam': {'dmg': 10}}}
 ).run(conn)
 ```
 
@@ -55,4 +55,3 @@ r.expr({'weapons' : {'spectacular graviton beam' : {'dmg' : 10, 'cooldown' : 20}
     {'weapons' : {'spectacular graviton beam' : r.literal()}}
 ).run(conn)
 ```
-
