@@ -9,6 +9,8 @@ permalink: docs/data-modeling/
 There are two ways to model relationships between documents in
 RethinkDB:
 
+<img src="/assets/images/docs/api_illustrations/data-modeling.png" class="api_command_illustration" />
+
 - By using __embedded arrays__.
 - By linking documents stored in __multiple tables__ (similarly to
   traditional relational database systems).
