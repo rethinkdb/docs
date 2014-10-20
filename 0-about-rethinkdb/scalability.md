@@ -1,11 +1,11 @@
 ---
 layout: documentation
-title: "Stability report"
-short_title: Stability report
+title: "Scalability report"
+short_title: Scalability report
 active: docs
-docs_active: stability
-permalink: stability/
-alias: docs/stability/
+docs_active: scalability
+permalink: scalability/
+alias: docs/scalability/
 ---
 
 RethinkDB has been publicly available for a little over a year and is still a young product under heavy development. There are hundreds of successful deployments, and we constantly get stability reports from users in production and development environments.
