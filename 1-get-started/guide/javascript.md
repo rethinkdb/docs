@@ -13,6 +13,7 @@ language : JavaScript
 
 * Make sure you've <a href="/install">installed RethinkDB</a> &mdash; it should only take a minute!
 * Make also sure you've <a href="/docs/install-drivers/javascript/">installed the JavaScript driver</a>.
+* Start one <a href="/docs/start-a-cluster/">or more</a> RethinkDB instances.  (Start the first with `rethinkdb` in your favorite shell).
 * Read the <a href="/docs/quickstart/">thirty-second quickstart</a>.
 {% endinfobox %}
 
