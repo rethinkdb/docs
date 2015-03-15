@@ -125,6 +125,9 @@ Shoot us an email at <a href="mailto:info@rethinkdb.com">info@rethinkdb.com</a>.
 - [rethinkdb-cli](https://github.com/byterussian/rethinkdb-cli)  
   CLI to run ReQL queries in Ruby.
 
+- [phpReAdmin](https://github.com/billbarsch/phpReAdmin) by [@billbarsch](https://github.com/billbarsch)
+  PHP tool to create/rename/update/delete RethinkDb databases/tables/docs and run ReQL queries in PHP.
+
 ## Logging tools
 - [fluent-plugin-rethinkdb](https://github.com/kureikain/fluent-plugin-rethink)  
   [FluentD](https://github.com/fluent/fluentd) output plugins to ship logs to RethinkDB.
