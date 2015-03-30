@@ -25,7 +25,7 @@ In addition, RethinkDB's cursors and feeds implement an [EventEmitter interface]
 
 # Ruby and EventMachine
 
-The RethinkDB Ruby driver adds a new ReQL command, `em_run`, designed to work with EventMachine. In addition, it provides a superclass, `RethinkDB::Handler`, with event-specific methods (e.g., `on_open`, `on_close`) that may be overridden by a class your application defines and passes to `em_run`.
+The RethinkDB Ruby driver adds a new ReQL command, [em_run](/api/ruby/em_run), designed to work with [EventMachine](http://rubyeventmachine.com). In addition, it provides a superclass, `RethinkDB::Handler`, with event-specific methods (e.g., `on_open`, `on_close`) that may be overridden by a class your application defines and passes to `em_run`.
 
 ## Simple usage
 
