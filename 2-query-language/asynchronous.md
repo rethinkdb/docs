@@ -48,6 +48,33 @@ EventMachine.run {
 }
 ```
 
+## Handling errors
+
+In the form above&mdash;with a block that accepts a single argument&mdash;RethinkDB's EventMachine adapter will throw errors back up to your application for you to handle in the same fashion as you would using RethinkDB without EventMachine. If the table `test` did not exist in the database above, you would receive the standard `RqlRunTimeError`:
+
+```
+RethinkDB::RqlRunTimeError: Table `test.test` does not exist.
+Backtrace:
+r.table('test')
+^^^^^^^^^^^^^^^
+```
+
+You can also choose to receive errors in the block by accepting two arguments. 
+
+```rb
+EventMachine.run {
+  r.table('test').order_by(:index => 'id').em_run(conn) { |err, row|
+  if err
+    p [:err, err.to_s]
+  else
+    p [:row, row]
+  end
+  }
+}
+```
+
+In this form, the block will receive `nil` as the first argument if there is no error. In the case of an error, the second argument will be `nil`.
+
 ## Using RethinkDB::Handler
 
 To gain more precise control, write a class that inherits from `RethinkDB::Handler` and override the event handling methods, then pass an instance of that class to `em_run`.
