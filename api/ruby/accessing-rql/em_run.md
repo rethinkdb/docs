@@ -20,7 +20,7 @@ query.em_run(conn, block) &rarr; object
 
 Run a query asynchronously on a connection using [EventMachine](http://rubyeventmachine.com). If the query returns a sequence (including a stream), the block will be called once with each element of the sequence. Otherwise, the block will be called just once with the returned value.
 
-__Example: return a list of users in an EventMachine loop.__
+__Example:__ return a list of users in an EventMachine loop.
 
 ```rb
 EventMachine.run {
@@ -31,7 +31,7 @@ EventMachine.run {
 }
 ```
 
-__Example: return a list of users in an EventMachine loop, handling errors.__
+__Example:__ return a list of users in an EventMachine loop, handling errors.
 
 ```rb
 EventMachine.run {
@@ -49,7 +49,7 @@ EventMachine.run {
 
 Instead of passing a block to `em_run`, you may also pass a subclass of `RethinkDB::Handler` that overwrites the event handling methods.
 
-__Example: return a list of users and pass it to a handler.__
+__Example:__ return a list of users and pass it to a handler.
 
 ```rb
 class UserHandler < RethinkDB::Handler

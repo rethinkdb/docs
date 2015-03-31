@@ -144,7 +144,7 @@ query.em_run(conn, block) &rarr; object
 
 Run a query asynchronously on a connection using [EventMachine](http://rubyeventmachine.com). If the query returns a sequence (including a stream), the block will be called once with each element of the sequence. Otherwise, the block will be called just once with the returned value.
 
-__Example: return a list of users in an EventMachine loop.__
+__Example:__ return a list of users in an EventMachine loop.
 
 ```rb
 EventMachine.run {
