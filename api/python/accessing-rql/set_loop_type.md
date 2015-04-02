@@ -18,7 +18,7 @@ r.set_loop_type(string)
 
 # Description #
 
-Set an asynchronous event loop model. Currently, the only event loop model RethinkDB supports is `"tornado"`, for use with the [Tornado web framework](http://www.tornadoweb.org). After setting the event loop to `"tornado"` then the [connect](/api/python/connect) command will return Tornado `Future` objects.
+Set an asynchronous event loop model. Currently, the only event loop model RethinkDB supports is `"tornado"`, for use with the [Tornado web framework](http://www.tornadoweb.org). After setting the event loop to `"tornado"`, the [connect](/api/python/connect) and [run](/api/python/run) commands will return Tornado `Future` objects.
 
 __Example:__ Read a table's data using Tornado.
 
