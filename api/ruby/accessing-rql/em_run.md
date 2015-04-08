@@ -20,6 +20,8 @@ query.em_run(conn, block) &rarr; object
 
 Run a query asynchronously on a connection using [EventMachine](http://rubyeventmachine.com). If the query returns a sequence (including a stream), the block will be called once with each element of the sequence. Otherwise, the block will be called just once with the returned value.
 
+The `em_run` command returns a `QueryHandle` instance. While the `QueryHandle` will be closed at the end of the block's execution, you can explicitly close it with the `close` method.
+
 __Example:__ return a list of users in an EventMachine loop.
 
 ```rb
@@ -42,6 +44,22 @@ EventMachine.run {
     else:
       # do something with returned row data
       p [:userdata, row]
+    end
+  }
+}
+```
+
+__Example:__ Explicitly close a QueryHandle.
+
+```rb
+EventMachine.run {
+  printed = 0
+  handle = r.table('test').order_by(:index => 'id').em_run(conn) { |row|
+    printed += 1
+    if printed > 3
+      handle.close
+    else
+      p row
     end
   }
 }

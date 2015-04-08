@@ -48,6 +48,25 @@ EventMachine.run {
 }
 ```
 
+## Explicitly closing a query
+
+The `em_run` command returns a `QueryHandle` instance. While the `QueryHandle` will be closed at the end of the block's execution, you can explicitly close it with the `close` method.
+
+
+```rb
+EventMachine.run {
+  printed = 0
+  handle = r.table('test').order_by(:index => 'id').em_run(conn) { |row|
+    printed += 1
+    if printed > 3
+      handle.close
+    else
+      p row
+    end
+  }
+}
+```
+
 ## Handling errors
 
 In the form above&mdash;with a block that accepts a single argument&mdash;RethinkDB's EventMachine adapter will throw errors back up to your application for you to handle in the same fashion as you would using RethinkDB without EventMachine. If the table `test` did not exist in the database above, you would receive the standard `RqlRunTimeError`:
@@ -118,6 +137,202 @@ EventMachine.run {
 [:val, {"id"=>2}]
 [:val, {"id"=>3}]
 :closed
+```
+
+## Distinguishing between data types
+
+In addition to the simple `on_val` method, you can provide methods that specifically apply to arrays, streams and atoms (single value data types).
+
+```rb
+class Printer < RethinkDB::Handler
+
+  def on_open
+    p :open
+  end
+  
+  def on_close
+    p :closed
+  end
+  
+  def on_error(err)
+    p [:err, err.to_s]
+  end
+  
+  # Handle arrays
+  def on_array(array)
+    p [:array, array]
+  end
+  
+  # Handle atoms
+  def on_atom(atom)
+    p [:atom, atom]
+  end
+  
+  # Handle individual values received from streams
+  def on_stream_val(val)
+    p [:stream_val, val]
+  end
+  
+  def on_val(val)
+    p [:val, val]
+  end
+
+end
+
+EventMachine.run {
+  r.table('test').order_by(:index => 'id').em_run(conn, Printer)
+  # print an array
+  r.expr([1, 2, 3]).em_run(conn, Printer)
+  # print a single row
+  r.table('test').get(1).em_run(conn, Printer)
+}
+
+# sample output
+:open
+[:stream_val, {"id"=>0}]
+[:stream_val, {"id"=>1}]
+[:stream_val, {"id"=>2}]
+:closed
+:open
+[:array, [1, 2, 3]]
+:closed
+:open
+[:atom, {"id"=>0}]
+:closed
+```
+
+If you don't define `on_array`, then arrays will be handled, in descending order of preference, by `on_atom`, `on_stream_val` and `on_val`. The order in which callbacks are called in the `EventMachine.run` block is not guaranteed; in the sample output above, `[:array, [1, 2, 3]]` might have printed first.
+
+## Changefeeds
+
+A changefeed is handled like any other stream; when you pass a block to `em_run`, the block is called with each document received on the feed. If you pass a `Handler` that defines `on_stream_val` (or `on_val`), those methods will be called with each document.
+
+In addition, there are changefeed-specific methods that may be defined.
+
+* `on_initial_val`: if the changefeed returns initial values (such as `.get.changes` or `.order_by.limit.changes`), those initial values will be passed to this method.
+* `on_change`: changes will be passed to this method.
+* `on_change_error`: if the feed includes a document specifying errors that do not cause the feed to abort (for instance, a notification the server discarded some changes), those errors will be passed to this method.
+* `on_state`: a feed may include documents specifying the state of the stream; those documents will be passed to this function if defined.
+
+```rb
+class FeedPrinter < RethinkDB::Handler
+
+  def on_open
+    p :open
+  end
+  
+  def on_close
+    p :closed
+  end
+  
+  def on_error(err)
+    p [:err, err.to_s]
+  end
+  
+  def on_initial_val(val)
+    p [:initial, val]
+  end
+  
+  def on_state(state)
+    p [:state, state]
+  end
+  
+  def on_change(old, new)
+    p [:change, old, new]
+  end  
+
+end
+
+# Subscribe to changes on the documents with the two lowest ids
+EventMachine.run {
+  r.table('test').order_by(:index => 'id').limit(2).changes
+    .em_run(conn, FeedPrinter)
+}
+
+# Sample output
+:open
+[:state, "initializing"]
+[:initial_val, {"id"=>1}]
+[:initial_val, {"id"=>0}]
+[:state, "ready"]
+
+# Execute: r.table('test').insert({id: 0.5}).run(conn)
+[:change, {"id"=>1}, {"id"=>0.5}]
+
+# Execute: r.table_drop('test').run(conn)
+[:err, "Changefeed aborted (table unavailable).\nBacktrace..."]
+:closed
+```
+
+## Using one Handler with multiple queries
+
+You can register multiple queries with the same `Handler` instance. If you define `Handler` methods with an additional argument (two arguments instead of one, or one argument instead of zero), that argument will receive the appropriate `QueryHandle` instance.
+
+```rb
+class MultiQueryPrinter < RethinkDB::Handler
+  
+  def on_open(qh)
+    p [:open, names[qh]]
+  end
+  
+  def on_close(qh)
+    p [:close, names[qh]]
+    EventMachine.stop if @closed == 2
+  end
+  
+  def on_val(val, qh)
+    p [:val, val, names[qh]]
+  end
+  
+end
+
+EventMachine.run {
+  printer = Printer.new
+  h1 = r.expr(1).em_run(conn, printer)
+  h2 = r.expr(2).em_run(conn, printer)
+  names = { h1 => "h1", h2 => "h2" }
+}
+
+# Sample output
+[:open, "h1"]
+[:val, 1, "h1"]
+[:close, "h1"]
+[:open, "h2"]
+[:val, 2, "h2"]
+[:close, "h2"]
+```
+
+## Stopping a Handler
+
+If you call the `stop` method on a `Handler`, it will stop processing changes and open streams using that handler will be closed. This will not close queries registered to the handler through `em_run`, however; those must be closed with the `QueryHandle.close` method.
+
+__Example: Printing the first five changes to a table__
+
+```rb
+class FeedPrinter < RethinkDB::Handler
+  
+  def initialize(max)
+    @counter = max
+    stop if @counter <= 0
+  end
+  
+  def on_open
+    # Once the changefeed is open, insert 10 rows
+    r.table('test').insert([{}] * 10).run(conn, noreply: true)
+  end
+  
+  def on_val(val)
+    # Every time we print a change, decrement @counter and stop if we hit 0
+    p val
+    @counter -= 1
+    stop if @counter <= 0
+  end
+  
+end
+
+EventMachine.run {
+  r.table('test').changes.em_run(conn, Printer.new(5))
+}
 ```
 
 # Python and Tornado
