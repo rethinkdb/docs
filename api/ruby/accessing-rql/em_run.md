@@ -84,14 +84,52 @@ class UserHandler < RethinkDB::Handler
     p [:err, err.to_s]
   end
   
-  def on_val(val)
-    p [:val, val]
+  # Receive each individual user document
+  def on_atom(val)
+    p [:user, val]
   end
 
 end
 
 EventMachine.run {
   r.table('users').order_by(:index => 'username').em_run(conn, UserHandler)
+}
+```
+
+__Example:__ Monitor a changefeed of the top 10 most active users.
+
+```rb
+class UserHandler < RethinkDB::Handler
+
+  def on_open
+    p :open
+  end
+  
+  def on_close
+    p :closed
+  end
+  
+  def on_error(err)
+    p [:err, err.to_s]
+  end
+  
+  def on_initial_val(val)
+    p [:initial, val]
+  end
+  
+  def on_state(state)
+    p [:state, state]
+  end
+  
+  def on_change(old, new)
+    p [:change, old, new]
+  end  
+
+end
+
+EventMachine.run {
+  r.table('users').order_by(:index => r.desc('posts')).limit(10).changes
+    .em_run(conn, UserHandler)
 }
 ```
 

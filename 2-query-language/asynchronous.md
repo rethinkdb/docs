@@ -141,7 +141,7 @@ EventMachine.run {
 
 ## Distinguishing between data types
 
-In addition to the simple `on_val` method, you can provide methods that specifically apply to arrays, streams and atoms (single value data types).
+In addition to the simple `on_val` method, you can provide methods that specifically apply to arrays, streams and atoms (sequence elements).
 
 ```rb
 class Printer < RethinkDB::Handler
@@ -201,7 +201,9 @@ EventMachine.run {
 :closed
 ```
 
-If you don't define `on_array`, then arrays will be handled, in descending order of preference, by `on_atom`, `on_stream_val` and `on_val`. The order in which callbacks are called in the `EventMachine.run` block is not guaranteed; in the sample output above, `[:array, [1, 2, 3]]` might have printed first.
+If you don't define `on_array`, then arrays will be handled, in descending order of preference, by `on_atom`, `on_stream_val` and `on_val`. Note that `on_array` will receive the whole array, as shown in the sample output; `on_atom`, `on_stream_val` and `on_val` will receive a sequence's individual elements.
+
+The order in which callbacks are called in the `EventMachine.run` block is not guaranteed; in the sample output above, `[:array, [1, 2, 3]]` might have printed first.
 
 ## Changefeeds
 
