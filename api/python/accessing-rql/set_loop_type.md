@@ -29,10 +29,28 @@ conn = r.connect(host='localhost', port=28015)
 @gen.coroutine
 def use_cursor(conn):
     # Print every row in the table.
-    for future in (yield r.table('test').order_by(index='id').run(conn)):
-        item = yield future
+    cursor = yield r.table('test').order_by(index="id").run(yield conn)
+    while (yield cursor.fetch_next()):
+        item = yield cursor.next()
         print(item)
 ```
+
+
+```rb
+EventMachine.run {
+  printed = 0
+  handle = r.table('test').order_by(:index => 'id').em_run(conn) { |row|
+    printed += 1
+    if printed > 3
+      handle.close
+    else
+      p row
+    end
+  }
+}
+```
+
+
 
 For a longer discussion with Tornado examples, see the documentation article on [Asynchronous connections][ac].
 

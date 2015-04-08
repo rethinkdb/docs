@@ -31,7 +31,7 @@ The RethinkDB Ruby driver adds a new ReQL command, [em_run](/api/ruby/em_run), d
 
 The easiest way to use RethinkDB with EventMachine is simply by passing a block to `em_run`. If RethinkDB returns a sequence (including a stream), the block will be called once with each element of the sequence. Otherwise, the block will be called just once with the returned value.
 
-__Example: Iterate over a stream__
+__Example:__ Iterate over a stream
 
 ```rb
 require 'eventmachine'
@@ -98,7 +98,7 @@ In this form, the block will receive `nil` as the first argument if there is no 
 
 To gain more precise control, write a class that inherits from `RethinkDB::Handler` and override the event handling methods, then pass an instance of that class to `em_run`.
 
-__Example: Iterate over a stream using a handler__
+__Example:__ Iterate over a stream using a handler
 
 ```rb
 require 'eventmachine'
@@ -131,7 +131,7 @@ EventMachine.run {
   r.table('test').order_by(:index => 'id').em_run(conn, Printer)
 }
 
-# sample output
+# Sample output
 :open
 [:val, {"id"=>1}]
 [:val, {"id"=>2}]
@@ -187,7 +187,7 @@ EventMachine.run {
   r.table('test').get(1).em_run(conn, Printer)
 }
 
-# sample output
+# Sample output
 :open
 [:stream_val, {"id"=>0}]
 [:stream_val, {"id"=>1}]
@@ -306,7 +306,7 @@ EventMachine.run {
 
 If you call the `stop` method on a `Handler`, it will stop processing changes and open streams using that handler will be closed. This will not close queries registered to the handler through `em_run`, however; those must be closed with the `QueryHandle.close` method.
 
-__Example: Printing the first five changes to a table__
+__Example:__ Printing the first five changes to a table
 
 ```rb
 class FeedPrinter < RethinkDB::Handler
@@ -355,7 +355,7 @@ connection = r.connect(host='localhost', port=28015)
 
 After this, `r.connect` will return a Tornado `Future`, as will `r.run`.
 
-__Example: Simple use__
+__Example:__ Simple use
 
 ```python
 @gen.coroutine
@@ -370,16 +370,17 @@ def single_row(connection):
 {u'id': 0}
 ```
 
-__Example: Using a cursor__
+__Example:__ Using a cursor
 
 ```python
 @gen.coroutine
 def use_cursor(connection):
     # Insert some data.
-    yield r.table('test').insert([{"id": 0}, {"id": 1}, {"id": 2}]).run(connection)
+    yield r.table('test').insert([{"id": 0}, {"id": 1}, {"id": 2}]).run(yield connection)
     # Print every row in the table.
-    for future in (yield r.table('test').order_by(index='id').run(connection)):
-        item = yield future
+    cursor = yield r.table('test').order_by(index="id").run(yield connection)
+    while (yield cursor.fetch_next()):
+        item = yield cursor.next()
         print(item)
 
 # Output
@@ -388,13 +389,15 @@ def use_cursor(connection):
 {u'id': 2}
 ```
 
+Note that looping over a cursor must be done with `while` and `fetch_next`, rather than using a `for x in cursor` loop.
+
 ## Error handling
 
 If an error occurs during an asynchronous operation, the `yield` statement will throw an exception as normal. This may happen immediately (for example, you might reference a table that doesn't exist), but your application might receive large amounts of data before the error (for example, your network might be disrupted after the connection is established).
 
 One error in particular is notable. If you have a coroutine set to consume a changefeed indefinitely, and the connection closes, the coroutine will experience a `RqlRuntimeError`.
 
-__Example: Re-thrown errors__
+__Example:__ Re-thrown errors
 
 ```python
 @gen.coroutine
@@ -408,7 +411,7 @@ r.table('non_existent')
 ^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
-__Example: Catching errors in the coroutine__
+__Example:__ Catching errors in the coroutine
 
 ```python
 @gen.coroutine
@@ -418,6 +421,7 @@ def catch_bad_table(connection):
     except r.RqlRuntimeError:
         print("Saw error")
 
+# Output
 Saw error
 ```
 
@@ -522,9 +526,9 @@ The asynchronous database API allows you to handle multiple changefeeds simultan
 ```python
 @gen.coroutine
 def print_cfeed_data(connection, table):
-    feed = yield r.table(table).changes().run(connection)
-    for cursor in feed:
-        item = yield cursor
+    feed = yield r.table(table).changes().run(yield connection)
+    while (yield feed.fetch_next()):
+        item = yield field.next()
         print(item)
 ```
 
@@ -546,7 +550,7 @@ class ChangefeedNoticer(object):
         self._cancel_future = Future()
     @gen.coroutine
     def print_cfeed_data(self, table):
-        feed = yield r.table(table).changes().run(self._connection)
+        feed = yield r.table(table).changes().run(yield self._connection)
         self._feeds_ready[table].set_result(True)
         for cursor in feed:
             chain_future(self._cancel_future, cursor)
