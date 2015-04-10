@@ -20,7 +20,7 @@ query.em_run(conn, block) &rarr; object
 
 Run a query asynchronously on a connection using [EventMachine](http://rubyeventmachine.com). If the query returns a sequence (including a stream), the block will be called once with each element of the sequence. Otherwise, the block will be called just once with the returned value.
 
-The `em_run` command returns a `QueryHandle` instance. While the `QueryHandle` will be closed at the end of the block's execution, you can explicitly close it with the `close` method.
+The `em_run` command returns a `QueryHandle` instance. The `QueryHandle` will be closed when all results have been received, or when EventMachine stops running. You can explicitly close it with the `close` method.
 
 __Example:__ return a list of users in an EventMachine loop.
 
@@ -65,9 +65,9 @@ EventMachine.run {
 }
 ```
 
-Instead of passing a block to `em_run`, you may also pass a subclass of `RethinkDB::Handler` that overwrites the event handling methods.
+Instead of passing a block to `em_run`, you may also pass a subclass of `RethinkDB::Handler` that overwrites event handling methods.
 
-__Example:__ return a list of users and pass it to a handler.
+__Example:__ Use a handler with `em_run`.
 
 ```rb
 class UserHandler < RethinkDB::Handler
@@ -85,14 +85,23 @@ class UserHandler < RethinkDB::Handler
   end
   
   # Receive each individual user document
-  def on_atom(val)
+  def on_val(val)
     p [:user, val]
+  end
+
+  # Receive a list of posts
+  def on_atom(val)
+    p [:posts, val]
   end
 
 end
 
 EventMachine.run {
+  # return a list of users, handled by on_val
   r.table('users').order_by(:index => 'username').em_run(conn, UserHandler)
+
+  # return a list of posts as an array, handled by on_atom
+  r.table('users').get(1)['posts'].em_run(conn, UserHandler)
 }
 ```
 

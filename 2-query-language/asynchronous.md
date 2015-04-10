@@ -50,8 +50,7 @@ EventMachine.run {
 
 ## Explicitly closing a query
 
-The `em_run` command returns a `QueryHandle` instance. While the `QueryHandle` will be closed at the end of the block's execution, you can explicitly close it with the `close` method.
-
+The `em_run` command returns a `QueryHandle` instance. The `QueryHandle` will be closed when all results have been received, or when EventMachine stops running. You can explicitly close it with the `close` method.
 
 ```rb
 EventMachine.run {
@@ -141,7 +140,7 @@ EventMachine.run {
 
 ## Distinguishing between data types
 
-In addition to the simple `on_val` method, you can provide methods that specifically apply to arrays, streams and atoms (sequence elements).
+In addition to the simple `on_val` method, you can provide methods that specifically apply to arrays, streams and atoms.
 
 ```rb
 class Printer < RethinkDB::Handler
@@ -201,7 +200,13 @@ EventMachine.run {
 :closed
 ```
 
-If you don't define `on_array`, then arrays will be handled, in descending order of preference, by `on_atom`, `on_stream_val` and `on_val`. Note that `on_array` will receive the whole array, as shown in the sample output; `on_atom`, `on_stream_val` and `on_val` will receive a sequence's individual elements.
+The various `on_*` methods provide fallbacks for one another:
+
+* an array will be handled by `on_array` if defined; otherwise it will be handled by `on_atom`. If neither of those are defined, the *individual elements* of the array will be handled by `on_stream_val` or, if that is not defined, `on_val`.
+* a stream will be handled by `on_stream_val` if defined; otherwise it will be handled by `on_val`.
+* data that is *not* a stream will be handled by `on_atom` if defined; otherwise it will be handled by `on_val`.
+
+Thus, `on_val` acts a "catch-all" for any data that is not handled by a more specific method.
 
 The order in which callbacks are called in the `EventMachine.run` block is not guaranteed; in the sample output above, `[:array, [1, 2, 3]]` might have printed first.
 
@@ -306,7 +311,7 @@ EventMachine.run {
 
 ## Stopping a Handler
 
-If you call the `stop` method on a `Handler`, it will stop processing changes and open streams using that handler will be closed. This will not close queries registered to the handler through `em_run`, however; those must be closed with the `QueryHandle.close` method.
+If you call the `stop` method on a `Handler`, it will stop processing changes and open streams using that handler will be closed. Queries registered to use that handler instance will stop.
 
 __Example:__ Printing the first five changes to a table
 
