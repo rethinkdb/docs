@@ -14,7 +14,7 @@ This document describes how to start RethinkDB from the command line in several 
 
 {% toctag %}
 
-<img src="/assets/images/docs/api_illustrations/cluster.png" class="api_command_illustration" />
+<img src="/assets/images/docs/api_illustrations/start-server.png" class="api_command_illustration" />
 
 # Starting the server
 
