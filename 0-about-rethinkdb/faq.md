@@ -7,6 +7,9 @@ permalink: faq/
 alias: docs/faq/
 js: faq_index
 ---
+
+<img src="/assets/images/docs/api_illustrations/faq.png" class="api_command_illustration" />
+
 {% infobox %}
 **RethinkDB in under two minutes:** see the [highlights video][hv].
 
@@ -14,6 +17,8 @@ js: faq_index
 {% endinfobox %}
 
 ## What is RethinkDB? ##
+
+
 
 RethinkDB is the first open-source, scalable JSON database built from
 the ground up for the realtime web. It inverts the traditional
