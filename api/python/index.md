@@ -471,7 +471,7 @@ r.table('test').index_wait('timestamp').run(conn)
 ## [changes](changes/) ##
 
 {% apibody %}
-table.changes(squash=True, include_states=False) &rarr; stream
+stream.changes(squash=True, include_states=False) &rarr; stream
 singleSelection.changes(squash=True, include_states=False) &rarr; stream
 {% endapibody %}
 
@@ -1230,8 +1230,7 @@ r.expr([3, 5, 7]).max().run(conn)
 
 {% apibody %}
 sequence.distinct() &rarr; array
-table.distinct() &rarr; stream
-table.distinct(index=<indexname>) &rarr; stream
+table.distinct([index=<indexname>]) &rarr; stream
 {% endapibody %}
 
 Remove duplicate elements from the sequence.
@@ -1249,7 +1248,7 @@ r.table('marvel').concat_map(
 ## [contains](contains/) ##
 
 {% apibody %}
-sequence.contains(value1[, value2...]) &rarr; bool
+sequence.contains(value|predicate[, value|predicate, ...]) &rarr; bool
 {% endapibody %}
 
 Returns whether or not a sequence contains all the specified values, or if functions are
@@ -1336,19 +1335,20 @@ r.table('marvel').get('IronMan').without('personalVictoriesList').run(conn)
 ## [merge](merge/) ##
 
 {% apibody %}
-singleSelection.merge(object) &rarr; object
-object.merge(object) &rarr; object
-sequence.merge(object) &rarr; stream
-array.merge(object) &rarr; array
+singleSelection.merge(object|function[, object|function, ...]) &rarr; object
+object.merge(object|function[, object|function, ...]) &rarr; object
+sequence.merge(object|function[, object|function, ...]) &rarr; stream
+array.merge(object|function[, object|function, ...]) &rarr; array
 {% endapibody %}
 
-Merge two objects together to construct a new object with properties from both. Gives preference to attributes from other when there is a conflict.
+Merge two or more objects together to construct a new object with properties from all. When there is a conflict between field names, preference is given to fields in the rightmost object in the argument list.
 
-__Example:__ Equip IronMan for battle.
+__Example:__ Equip Thor for battle.
 
 ```py
-r.table('marvel').get('IronMan').merge(
-    r.table('loadouts').get('alienInvasionKit')
+r.table('marvel').get('thor').merge(
+    r.table('equipment').get('hammer'),
+    r.table('equipment').get('pimento_sandwich')
 ).run(conn)
 ```
 
@@ -2746,8 +2746,6 @@ geometry.to_geojson() &rarr; object
 {% endapibody %}
 
 Convert a ReQL geometry object to a [GeoJSON][] object.
-
-[GeoJSON]: http://geojson.org
 
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 

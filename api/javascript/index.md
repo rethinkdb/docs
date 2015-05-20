@@ -148,6 +148,25 @@ wait until the server has processed them.
 conn.noreplyWait(function(err) { ... })
 ```
 
+## [EventEmitter (connection)](event_emitter/) ##
+
+{% apibody %}
+connection.addListener(event, listener)
+connection.on(event, listener)
+connection.once(event, listener)
+connection.removeListener(event, listener)
+connection.removeAllListeners([event])
+connection.setMaxListeners(n)
+connection.listeners(event)
+connection.emit(event, [arg1], [arg2], [...])
+{% endapibody %}
+
+Connections implement the same interface as Node's [EventEmitter][ee]. This allows you to listen for changes in connection state.
+
+[ee]: http://nodejs.org/api/events.html#events_class_events_eventemitter
+
+[Read more about this command &rarr;](event_emitter/)
+
 {% endapisection %}
 
 {% apisection Cursors %}
@@ -237,7 +256,7 @@ cursor.close()
 ```
 
 
-## [EventEmitter](event_emitter-cursor/) ##
+## [EventEmitter (cursor)](event_emitter-cursor/) ##
 
 {% apibody %}
 cursor.addListener(event, listener)
@@ -250,7 +269,7 @@ cursor.listeners(event)
 cursor.emit(event, [arg1], [arg2], [...])
 {% endapibody %}
 
-Cursors and feeds implement the same interface as Node's [EventEmitter](http://nodejs.org/api/events.html#events_class_events_eventemitter).
+Cursors and feeds implement the same interface as Node's [EventEmitter][ee].
 
 [Read more about this command &rarr;](event_emitter-cursor/)
 
@@ -467,7 +486,7 @@ r.table('test').indexWait('timestamp').run(conn, callback)
 ## [changes](changes/) ##
 
 {% apibody %}
-table.changes({squash: true, includeStates: false}) &rarr; stream
+stream.changes({squash: true, includeStates: false}) &rarr; stream
 singleSelection.changes({squash: true, includeStates: false}) &rarr; stream
 {% endapibody %}
 
@@ -1227,8 +1246,7 @@ r.expr([3, 5, 7]).max().run(conn, callback);
 
 {% apibody %}
 sequence.distinct() &rarr; array
-table.distinct() &rarr; stream
-table.distinct({index: <indexname>}) &rarr; stream
+table.distinct([{index: <indexname>}]) &rarr; stream
 {% endapibody %}
 
 Remove duplicate elements from the sequence.
@@ -1247,7 +1265,7 @@ r.table('marvel').concatMap(function(hero) {
 ## [contains](contains/) ##
 
 {% apibody %}
-sequence.contains(value1[, value2...]) &rarr; bool
+sequence.contains(value|predicate[, value|predicate, ...]) &rarr; bool
 {% endapibody %}
 
 Returns whether or not a sequence contains all the specified values, or if functions are
@@ -1331,19 +1349,20 @@ r.table('marvel').get('IronMan').without('personalVictoriesList').run(conn, call
 ## [merge](merge/) ##
 
 {% apibody %}
-singleSelection.merge(object) &rarr; object
-object.merge(object) &rarr; object
-sequence.merge(object) &rarr; stream
-array.merge(object) &rarr; array
+singleSelection.merge(object|function[, object|function, ...]) &rarr; object
+object.merge(object|function[, object|function, ...]) &rarr; object
+sequence.merge(object|function[, object|function, ...]) &rarr; stream
+array.merge(object|function[, object|function, ...]) &rarr; array
 {% endapibody %}
 
-Merge two objects together to construct a new object with properties from both. Gives preference to attributes from other when there is a conflict.
+Merge two or more objects together to construct a new object with properties from all. When there is a conflict between field names, preference is given to fields in the rightmost object in the argument list.
 
-__Example:__ Equip IronMan for battle.
+__Example:__ Equip Thor for battle.
 
 ```js
-r.table('marvel').get('IronMan').merge(
-    r.table('loadouts').get('alienInvasionKit')
+r.table('marvel').get('thor').merge(
+    r.table('equipment').get('hammer'),
+    r.table('equipment').get('pimento_sandwich')
 ).run(conn, callback)
 ```
 
@@ -2735,8 +2754,6 @@ geometry.toGeojson() &rarr; object
 {% endapibody %}
 
 Convert a ReQL geometry object to a [GeoJSON][] object.
-
-[GeoJSON]: http://geojson.org
 
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 

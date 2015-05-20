@@ -464,7 +464,7 @@ r.table('test').index_wait('timestamp').run(conn)
 ## [changes](changes/) ##
 
 {% apibody %}
-table.changes({:squash => true, :include_states => false}) &rarr; stream
+stream.changes({:squash => true, :include_states => false}) &rarr; stream
 singleSelection.changes({:squash => true, :include_states => false}) &rarr; stream
 {% endapibody %}
 
@@ -1221,8 +1221,7 @@ r([3, 5, 7]).max().run(conn)
 
 {% apibody %}
 sequence.distinct() &rarr; array
-table.distinct() &rarr; stream
-table.distinct(:index => <indexname>) &rarr; stream
+table.distinct([:index => <indexname>]) &rarr; stream
 {% endapibody %}
 
 Remove duplicate elements from the sequence.
@@ -1236,7 +1235,7 @@ r.table('marvel').concat_map{|hero| hero[:villain_list]}.distinct.run(conn)
 ## [contains](contains/) ##
 
 {% apibody %}
-sequence.contains(value1[, value2...]) &rarr; bool
+sequence.contains(value|predicate[, value|predicate, ...]) &rarr; bool
 {% endapibody %}
 
 Returns whether or not a sequence contains all the specified values, or if functions are
@@ -1307,19 +1306,21 @@ r.table('marvel').get('IronMan').without('personalVictoriesList').run(conn)
 ## [merge](merge/) ##
 
 {% apibody %}
-singleSelection.merge(object) &rarr; object
-object.merge(object) &rarr; object
-sequence.merge(object) &rarr; stream
-array.merge(object) &rarr; array
+singleSelection.merge(object|function[, object|function, ...]) &rarr; object
+object.merge(object|function[, object|function, ...]) &rarr; object
+sequence.merge(object|function[, object|function, ...]) &rarr; stream
+array.merge(object|function[, object|function, ...]) &rarr; array
 {% endapibody %}
 
-Merge two objects together to construct a new object with properties from both. Gives preference to attributes from other when there is a conflict.
+Merge two or more objects together to construct a new object with properties from all. When there is a conflict between field names, preference is given to fields in the rightmost object in the argument list.
 
-__Example:__ Equip IronMan for battle.
+__Example:__ Equip Thor for battle.
 
 ```rb
-r.table('marvel').get('IronMan').merge(
-    r.table('loadouts').get('alienInvasionKit')).run(conn)
+r.table('marvel').get('thor').merge(
+    r.table('equipment').get('hammer'),
+    r.table('equipment').get('pimento_sandwich')
+).run(conn)
 ```
 
 [Read more about this command &rarr;](merge/)
@@ -2559,19 +2560,18 @@ __Example:__ Send an array to the server.
 r.json("[1,2,3]").run(conn)
 ```
 
-## [to_json_string, to_json](to_json_string/) ##
+## [to_json_string](to_json_string/) ##
 
 {% apibody %}
 value.to_json_string() &rarr; string
-value.to_json() &rarr; string
 {% endapibody %}
 
-Convert a ReQL value or object to a JSON string. You may use either `to_json_string` or `to_json`.
+Convert a ReQL value or object to a JSON string.
 
 __Example:__ Get a ReQL document as a JSON string.
 
 ```rb
-> r.table('hero').get(1).to_json()
+> r.table('hero').get(1).to_json_string()
 
 '{"id": 1, "name": "Batman", "city": "Gotham", "powers": ["martial arts", "cinematic entrances"]}'
 ```
@@ -2714,8 +2714,6 @@ geometry.to_geojson() &rarr; object
 {% endapibody %}
 
 Convert a ReQL geometry object to a [GeoJSON][] object.
-
-[GeoJSON]: http://geojson.org
 
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 
