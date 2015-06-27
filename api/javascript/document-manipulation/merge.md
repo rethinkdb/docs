@@ -83,4 +83,40 @@ __Example:__ Literal can be used to remove keys from an object as well.
 r.expr({weapons : {spectacular_graviton_beam : {dmg : 10, cooldown : 20}}}).merge(
     {weapons : {spectacular_graviton_beam : r.literal()}}).run(conn, callback)
 ```
+__Example:__ Can be used to merge attribute from a parent node.
 
+```js
+r.expr([{
+    id: 1,
+    title: "Lorem ipsum",
+  content: [{a:"Dolor sit amet"},{a:"Dolt"}]
+},
+{
+    id: 2,
+    title: "em ipsum",
+  content: [{a:"Dor sit amet"},{a:"Dolte"}]
+}]).concatMap(function (ty){
+  return ty('content').map(function(a){return a.merge({title:ty('title')});});
+}).coerceTo('array')
+```
+The result :
+```js
+[
+{
+"a":  "Dolor sit amet" ,
+"title":  "Lorem ipsum"
+} ,
+{
+"a":  "Dolt" ,
+"title":  "Lorem ipsum"
+} ,
+{
+"a":  "Dor sit amet" ,
+"title":  "em ipsum"
+} ,
+{
+"a":  "Dolte" ,
+"title":  "em ipsum"
+}
+]
+```
