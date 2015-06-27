@@ -58,6 +58,11 @@ We can join the two tables as follows:
 ```python
 r.table("employees").eq_join("company_id", r.table("companies")).run()
 ```
+For javascript
+
+```js
+r.table("employees").eqJoin("company_id", r.table("companies"))
+```
 
 This query joins the `company_id` of the employee table with the
 primary key of the company table. It returns a sequence of documents
@@ -91,6 +96,12 @@ two fields into a single document. For example, the following query:
 ```python
 r.table("employees").eq_join("company_id", r.table("companies")).zip().run()
 ```
+For javascript
+
+```python
+r.table("employees").eqJoin("company_id", r.table("companies")).zip()
+```
+
 
 Returns the following result:
 
