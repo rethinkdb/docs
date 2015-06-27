@@ -95,6 +95,12 @@ r.table('posts').group(lambda post: post['category']).map(
     lambda post: 1).reduce(lambda a, b: a + b).run(conn)
 ```
 
+The same in javascript
+
+```js
+r.table('posts').group('category').map( function (t){return 1;}).reduce(function (a,b){return a.add(b);})
+```
+
 And, of course, we can use `count` to shorten that. We can actually shorten it even more: ReQL will let you provide `group` with the name of the field rather than a lambda function. So the simplified function is:
 
 ```py
