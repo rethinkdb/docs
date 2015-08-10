@@ -819,7 +819,7 @@ These commands are used to transform data in a sequence.
 
 {% apibody %}
 sequence1.map([sequence2, ...], mapping_function) &rarr; stream
-array1.map([sequence2, ...], mapping_function) &rarr; array
+array1.map([array2, ...], mapping_function) &rarr; array
 r.map(sequence1[, sequence2, ...], mapping_function) &rarr; stream
 r.map(array1[, array2, ...], mapping_function) &rarr; array
 {% endapibody %}
@@ -1015,7 +1015,7 @@ stream.union(sequence[, sequence, ...]) &rarr; stream
 array.union(sequence[, sequence, ...]) &rarr; array
 {% endapibody %}
 
-Concatenate two or more sequences.
+Merge two or more sequences. (Note that ordering is not guaranteed by `union`.)
 
 __Example:__ Construct a stream of all heroes.
 
@@ -1433,7 +1433,7 @@ __Example:__ Check which pieces of equipment Iron Man has, excluding a fixed lis
 r.table('marvel').get('IronMan')[:equipment].set_difference(['newBoots', 'arc_reactor']).run(conn)
 ```
 
-## [\[\]](bracket/) ##
+## [\[\] (bracket)](bracket/) ##
 
 {% apibody %}
 sequence[attr] &rarr; sequence
@@ -1694,13 +1694,13 @@ __Example:__
 ## [+](add/) ##
 
 {% apibody %}
-number + number &rarr; number
-string + string &rarr; string
-array + array &rarr; array
-time + number &rarr; time
+value + value[ + value ...] &rarr; value
+time + number[ + number ...] &rarr; time
+value.add(value[, value ...]) &rarr; value
+time.add(number[, number, ...]) &rarr; time
 {% endapibody %}
 
-Sum two numbers, concatenate two strings, or concatenate 2 arrays.
+Sum two or more numbers, or concatenate two or more strings or arrays.
 
 __Example:__ It's as easy as 2 + 2 = 4.
 
@@ -2676,9 +2676,9 @@ r.table('geo').insert({
     )
 }).run(conn)
 
-r.table('geo').get(201).update({
-    :rectangle => r.row('rectangle').fill()
-}).run(conn)
+r.table('geo').get(201).update(:non_atomic => true){ |doc|
+    { :rectangle => doc['rectangle'].fill() }
+}.run(conn)
 ```
 
 [Read more about this command &rarr;](fill/)
@@ -2720,7 +2720,7 @@ Convert a ReQL geometry object to a [GeoJSON][] object.
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 
 ```rb
-> r.table(geo).get('sfo')['location'].to_geojson.run(conn)
+> r.table('geo').get('sfo')['location'].to_geojson.run(conn)
 
 {
     :type => 'Point',
