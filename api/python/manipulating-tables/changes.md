@@ -127,5 +127,5 @@ r.table('games').get(1).changes(include_states=True).run(conn)
 __Example:__ Return all the changes to the top 10 games. This assumes the presence of a `score` secondary index on the `games` table.
 
 ```py
-r.table('games').order_by(index=r.desc('score')).limit(10).run(conn)
+r.table('games').order_by(index=r.desc('score')).limit(10).changes().run(conn)
 ```
