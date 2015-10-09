@@ -675,9 +675,8 @@ r.table('marvel').get_all('man_of_steel', :index => 'code_name').run(conn)
 ## [between](between/) ##
 
 {% apibody %}
-table.between(lower_key, upper_key
-    [, :index => 'id', :left_bound => 'closed', :right_bound => 'open'])
-        &rarr; selection
+table.between(lower_key, upper_key[, options]) &rarr; table_slice
+table_slice.between(lower_key, upper_key[, options]) &rarr; table_slice
 {% endapibody %}
 
 Get all documents between two keys. Accepts three optional arguments: `index`,
@@ -872,7 +871,7 @@ r.table('marvel').concat_map {|hero|
 ## [order_by](order_by/) ##
 
 {% apibody %}
-table.order_by([key | function], :index => index_name) &rarr; selection<stream>
+table.order_by([key | function], :index => index_name) &rarr; table_slice
 selection.order_by(key | function[, ...]) &rarr; selection<array>
 sequence.order_by(key | function[, ...]) &rarr; array
 {% endapibody %}
@@ -2514,20 +2513,15 @@ r.table('marvel').get('IronMan').do { |ironman|
 ## [default](default/) ##
 
 {% apibody %}
-value.default(default_value) &rarr; any
-sequence.default(default_value) &rarr; any
+value.default(default_value | function) &rarr; any
+sequence.default(default_value | function) &rarr; any
 {% endapibody %}
 
-Handle non-existence errors. Tries to evaluate and return its first argument. If an
-error related to the absence of a value is thrown in the process, or if its first
-argument returns `nil`, returns its second argument. (Alternatively, the second argument
-may be a function which will be called with either the text of the non-existence error
-or `nil`.)
+Provide a default value in case of non-existence errors. The `default` command evaluates its first argument (the value it's chained to). If that argument returns `nil` or a non-existence error is thrown in evaluation, then `default` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
 
-__Example:__ Suppose we want to retrieve the titles and authors of the table `posts`.
+__Example:__ Retrieve the titles and authors of the table `posts`.
 In the case where the author field is missing or `nil`, we want to retrieve the string
 `Anonymous`.
-
 
 ```rb
 r.table("posts").map{ |post|

@@ -114,8 +114,8 @@ r.table('heroes').run(conn) # refers to r.db('marvel').table('heroes')
 ## [run](run/) ##
 
 {% apibody %}
-query.run(conn, use_outdated=False, time_format='native', profile=False, durability="hard") &rarr; cursor
-query.run(conn, use_outdated=False, time_format='native', profile=False, durability="hard") &rarr; object
+query.run(conn[, options]) &rarr; cursor
+query.run(conn[, options]) &rarr; object
 {% endapibody %}
 
 Run a query on a connection, returning either a single JSON result or
@@ -153,7 +153,10 @@ conn.noreply_wait()
 r.set_loop_type(string)
 {% endapibody %}
 
-Set an asynchronous event loop model. Currently, the only event loop model RethinkDB supports is `"tornado"`, for use with the [Tornado web framework](http://www.tornadoweb.org). After setting the event loop to `"tornado"` then the [connect](/api/python/connect) command will return Tornado `Future` objects.
+Set an asynchronous event loop model. There are two supported models:
+
+* `"tornado"`: use the [Tornado web framework](http://www.tornadoweb.org/). Under this model, the [connect](/api/python/connect) and [run](/api/python/run) commands will return Tornado `Future` objects.
+* `"twisted"`: use the [Twisted networking engine](http://twistedmatrix.com/). Under this model, the [connect](/api/python/connect) and [run](/api/python/run) commands will return Twisted `Deferred` objects.
 
 __Example:__ Read a table's data using Tornado.
 
@@ -683,9 +686,8 @@ r.table('marvel').get_all('man_of_steel', index='code_name').run(conn)
 ## [between](between/) ##
 
 {% apibody %}
-table.between(lower_key, upper_key
-    [, index='id', left_bound='closed', right_bound='open'])
-        &rarr; selection
+table.between(lower_key, upper_key[, options]) &rarr; table_slice
+table_slice.between(lower_key, upper_key[, options]) &rarr; table_slice
 {% endapibody %}
 
 Get all documents between two keys. Accepts three optional arguments: `index`,
@@ -875,7 +877,7 @@ r.table('marvel').concat_map(lambda hero: hero['defeatedMonsters']).run(conn)
 ## [order_by](order_by/) ##
 
 {% apibody %}
-table.order_by([key | function], index=index_name) &rarr; selection<stream>
+table.order_by([key | function], index=index_name) &rarr; table_slice
 selection.order_by(key | function[, ...]) &rarr; selection<array>
 sequence.order_by(key | function[, ...]) &rarr; array
 {% endapibody %}
@@ -2549,18 +2551,13 @@ r.table('marvel').get('IronMan').do(
 ## [default](default/) ##
 
 {% apibody %}
-value.default(default_value) &rarr; any
-sequence.default(default_value) &rarr; any
+value.default(default_value | function) &rarr; any
+sequence.default(default_value | function) &rarr; any
 {% endapibody %}
 
-Handle non-existence errors. Tries to evaluate and return its first argument. If an
-error related to the absence of a value is thrown in the process, or if its first
-argument returns `None`, returns its second argument. (Alternatively, the second argument
-may be a function which will be called with either the text of the non-existence error
-or `None`.)
+Provide a default value in case of non-existence errors. The `default` command evaluates its first argument (the value it's chained to). If that argument returns `None` or a non-existence error is thrown in evaluation, then `default` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
 
-
-__Example:__ Suppose we want to retrieve the titles and authors of the table `posts`.
+__Example:__ Retrieve the titles and authors of the table `posts`.
 In the case where the author field is missing or `None`, we want to retrieve the string
 `Anonymous`.
 

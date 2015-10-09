@@ -730,9 +730,8 @@ r.table('marvel').getAll('man_of_steel', {index:'code_name'}).run(conn, callback
 ## [between](between/) ##
 
 {% apibody %}
-table.between(lowerKey, upperKey
-    [, {index:'id', left_bound:'closed', right_bound:'open'}])
-        &rarr; selection
+table.between(lowerKey, upperKey[, options]) &rarr; table_slice
+table_slice.between(lowerKey, upperKey[, options]) &rarr; table_slice
 {% endapibody %}
 
 Get all documents between two keys. Accepts three optional arguments: `index`,
@@ -925,7 +924,7 @@ r.table('marvel').concatMap(function(hero) {
 ## [orderBy](order_by/) ##
 
 {% apibody %}
-table.orderBy([key | function...], {index: index_name}) &rarr; selection<stream>
+table.orderBy([key | function...], {index: index_name}) &rarr; table_slice
 selection.orderBy(key | function[, ...]) &rarr; selection<array>
 sequence.orderBy(key | function[, ...]) &rarr; array
 {% endapibody %}
@@ -2572,29 +2571,23 @@ r.table('marvel').get('IronMan').do(function(ironman) {
 ## [default](default/) ##
 
 {% apibody %}
-value.default(default_value) &rarr; any
-sequence.default(default_value) &rarr; any
+value.default(default_value | function) &rarr; any
+sequence.default(default_value | function) &rarr; any
 {% endapibody %}
 
-Handle non-existence errors. Tries to evaluate and return its first argument. If an
-error related to the absence of a value is thrown in the process, or if its first
-argument returns `null`, returns its second argument. (Alternatively, the second argument
-may be a function which will be called with either the text of the non-existence error
-or `null`.)
+Provide a default value in case of non-existence errors. The `default` command evaluates its first argument (the value it's chained to). If that argument returns `null` or a non-existence error is thrown in evaluation, then `default` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
 
-
-__Example:__ Suppose we want to retrieve the titles and authors of the table `posts`.
+__Example:__ Retrieve the titles and authors of the table `posts`.
 In the case where the author field is missing or `null`, we want to retrieve the string
 `Anonymous`.
 
-
 ```js
-r.table("posts").map( function(post) {
+r.table("posts").map(function (post) {
     return {
         title: post("title"),
         author: post("author").default("Anonymous")
     }
-}).run(conn, callback)
+}).run(conn, callback);
 ```
 
 [Read more about this command &rarr;](default/)
