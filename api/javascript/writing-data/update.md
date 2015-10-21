@@ -20,11 +20,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+table.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
-selection.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+selection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
-singleSelection.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+singleSelection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
 {% endapibody %}
 
@@ -71,7 +71,7 @@ r.table("posts").filter({author: "William"}).update({status: "published"}).run(c
 ```
 
 
-__Example:__ Increment the field `view` with `id` of `1`.
+__Example:__ Increment the field `view` of the post with `id` of `1`.
 This query will throw an error if the field `views` doesn't exist.
 
 ```js
@@ -84,7 +84,7 @@ __Example:__ Increment the field `view` of the post with `id` of `1`.
 If the field `views` does not exist, it will be set to `0`.
 
 ```js
-r.table("posts").update({
+r.table("posts").get(1).update({
     views: r.row("views").add(1).default(0)
 }).run(conn, callback)
 ```
@@ -112,10 +112,10 @@ r.table("posts").get(1).update({
 }).run(conn, callback)
 ```
 
-If you forget to specify the `nonAtomic` flag, you will get a `RqlRuntimeError`:
+If you forget to specify the `nonAtomic` flag, you will get a `ReqlRuntimeError`:
 
 ```
-RqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
+ReqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
 ```
 
 __Example:__ Update the field `numComments` with a random value between 0 and 100. This update cannot be proven deterministic because of `r.js` (and in fact is not), so you must pass the `nonAtomic` flag.
@@ -148,7 +148,7 @@ The result will now include a `changes` field:
 
 ```js
 {
-    deleted: 1,
+    deleted: 0,
     errors: 0,
     inserted: 0,
     changes: [
@@ -169,7 +169,7 @@ The result will now include a `changes` field:
             }
         }
     ],
-    replaced: 0,
+    replaced: 1,
     skipped: 0,
     unchanged: 0
 }

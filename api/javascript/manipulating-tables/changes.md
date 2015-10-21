@@ -15,8 +15,8 @@ io:
 # Command syntax #
 
 {% apibody %}
-stream.changes({squash: true, includeStates: false}) &rarr; stream
-singleSelection.changes({squash: true, includeStates: false}) &rarr; stream
+stream.changes({squash: false, includeStates: false}) &rarr; stream
+singleSelection.changes({squash: false, includeStates: false}) &rarr; stream
 {% endapibody %}
 
 # Description #
@@ -25,8 +25,8 @@ Return a changefeed, an infinite stream of objects representing changes to a que
 
 The `squash` optional argument controls how `changes` batches change notifications:
 
-* `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server. This is the default.
-* `false`: All changes will be sent to the client verbatim.
+* `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server.
+* `false`: All changes will be sent to the client verbatim. This is the default.
 * `n`: A numeric value (floating point). Similar to `true`, but the server will wait `n` seconds to respond in order to squash as many changes together as possible, reducing network traffic.
 
 If the `includeStates` optional argument is `true`, the changefeed stream will include special status documents consisting of the field `state` and a string indicating a change in the feed's state. These documents can occur at any point in the feed between the notification documents described below. There are currently two states:
@@ -61,8 +61,6 @@ The server will buffer up to 100,000 elements. If the buffer limit is hit, early
 
 Commands that operate on streams (such as [filter](/api/javascript/filter/) or [map](/api/javascript/map/)) can usually be chained after `changes`.  However, since the stream produced by `changes` has no ending, commands that need to consume the entire stream before returning (such as [reduce](/api/javascript/reduce/) or [count](/api/javascript/count/)) cannot.
 
-It's a good idea to open changefeeds on their own connection. If you don't, other queries run on the same connection will experience unpredictable latency spikes while the connection blocks on more changes.
-
 __Example:__ Subscribe to the changes on a table.
 
 Start monitoring the changefeed in one client:
@@ -91,7 +89,7 @@ client would receive and print the following objects:
 {old_val: {id: 1, player1: 'Bob', player2: 'Alice'}, new_val: null}
 
 > r.tableDrop('games').run(conn, callback);
-RqlRuntimeError: Changefeed aborted (table unavailable)
+ReqlRuntimeError: Changefeed aborted (table unavailable)
 ```
 
 __Example:__ Return all the changes that increase a player's score.

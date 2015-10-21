@@ -13,11 +13,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.update(object | expr[, :durability => "hard", :return_changes => false, :non_atomic => false])
+table.update(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
     &rarr; object
-selection.update(object | expr[, :durability => "hard", :return_changes => false, :non_atomic => false])
+selection.update(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
     &rarr; object
-singleSelection.update(object | expr[, :durability => "hard", :return_changes => false, :non_atomic => false])
+singleSelection.update(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
     &rarr; object
 {% endapibody %}
 
@@ -64,7 +64,7 @@ __Example:__ Update the status of all the posts written by William.
 r.table("posts").filter({:author => "William"}).update({:status => "published"}).run(conn)
 ```
 
-__Example:__ Increment the field `view` with `id` of `1`.
+__Example:__ Increment the field `view` of the post with `id` of `1`.
 This query will throw an error if the field `views` doesn't exist.
 
 ```rb
@@ -77,7 +77,7 @@ __Example:__ Increment the field `view` of the post with `id` of `1`.
 If the field `views` does not exist, it will be set to `0`.
 
 ```rb
-r.table("posts").update{ |post|
+r.table("posts").get(1).update{ |post|
     {:views => (post["views"]+1).default(0)}
 }.run(conn)
 ```
@@ -103,10 +103,10 @@ r.table("posts").get(1).update({
 }, :non_atomic => true).run(conn)
 ```
 
-If you forget to specify the `non_atomic` flag, you will get a `RqlRuntimeError`:
+If you forget to specify the `non_atomic` flag, you will get a `ReqlRuntimeError`:
 
 ```
-RqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
+ReqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
 ```
 
 __Example:__ Update the field `num_comments` with a random value between 0 and 100. This update cannot be proven deterministic because of `r.js` (and in fact is not), so you must pass the `non_atomic` flag.
@@ -135,7 +135,7 @@ The result will now include a `changes` field:
 
 ```rb
 {
-    :deleted => 1,
+    :deleted => 0,
     :errors => 0,
     :inserted => 0,
     :changes => [
@@ -156,7 +156,7 @@ The result will now include a `changes` field:
             }
         }
     ],
-    :replaced => 0,
+    :replaced => 1,
     :skipped => 0,
     :unchanged => 0
 }

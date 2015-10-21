@@ -24,7 +24,10 @@ a cursor, depending on the query.
 
 The options can be:
 
-- `use_outdated`: whether or not outdated reads are OK (default: `false`).
+- `read_mode`: One of three possible values affecting the consistency guarantee for the query (default: `'single'`).
+    - `'single'` (the default) returns values that are in memory (but not necessarily written to disk) on the primary replica.
+    - `'majority'` will only return values that are safely committed on disk on a majority of replicas. This requires sending a message to every replica on each read, so it is the slowest but most consistent.
+    - `'outdated'` will return values that are in memory on an arbitrarily-selected replica. This is the fastest but least consistent.
 - `time_format`: what format to return times in (default: `'native'`).
   Set this to `'raw'` if you want times returned as JSON objects for exporting.
 - `profile`: whether or not to return a profile of the query's
@@ -40,7 +43,7 @@ been committed to disk.
 - `binary_format`: what format to return binary data in (default: `'native'`). Set this to `'raw'` if you want the raw pseudotype.
 - `min_batch_rows`: minimum number of rows to wait for before batching a result set (default: 8). This is an integer.
 - `max_batch_rows`: maximum number of rows to wait for before batching a result set (default: unlimited). This is an integer.
-- `max_batch_bytes`: maximum number of bytes to wait for before batching a result set (default: 1024). This is an integer.
+- `max_batch_bytes`: maximum number of bytes to wait for before batching a result set (default: 1MB). This is an integer.
 - `max_batch_seconds`: maximum number of seconds to wait before batching a result set (default: 0.5). This is a float (not an integer) and may be specified to the microsecond.
 - `first_batch_scaledown_factor`: factor to scale the other parameters down by on the first batch (default: 4). For example, with this set to 8 and `max_batch_rows` set to 80, on the first batch `max_batch_rows` will be adjusted to 10 (80 / 8). This allows the first batch to return faster.
 
@@ -59,7 +62,7 @@ for individual tables will supercede this global setting for all
 tables in the query.
 
 ```rb
-r.table('marvel').run(conn, :use_outdated => true)
+r.table('marvel').run(conn, :read_mode => 'outdated')
 ```
 
 

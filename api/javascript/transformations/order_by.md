@@ -7,6 +7,8 @@ alias:
     - api/javascript/desc/
 command: orderBy
 io:
+    -   - table
+        - table_slice
     -   - sequence
         - stream
     -   - array
@@ -20,9 +22,9 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.orderBy([key1...], {index: index_name}) &rarr; selection<stream>
-selection.orderBy(key1, [key2...]) &rarr; selection<array>
-sequence.orderBy(key1, [key2...]) &rarr; array
+table.orderBy([key | function...], {index: index_name}) &rarr; table_slice
+selection.orderBy(key | function[, ...]) &rarr; selection<array>
+sequence.orderBy(key | function[, ...]) &rarr; array
 {% endapibody %}
 
 # Description #
@@ -36,7 +38,7 @@ __Note:__ RethinkDB uses byte-wise ordering for `orderBy` and does not support U
 Sorting without an index requires the server to hold the sequence in
 memory, and is limited to 100,000 documents (or the setting of the `arrayLimit` option for [run](/api/javascript/run)). Sorting with an index can
 be done on arbitrarily large tables, or after a [between](/api/javascript/between/) command
-using the same index.
+using the same index. This applies to both secondary indexes and the primary key (e.g., `{index: 'id'}`).
 
 __Example:__ Order all the posts using the index `date`.   
 

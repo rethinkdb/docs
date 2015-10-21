@@ -16,8 +16,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.max(field_or_function) &rarr; element
-sequence.max({:index => 'index'}) &rarr; element
+sequence.max(field | function) &rarr; element
+sequence.max({:index => <indexname>}) &rarr; element
 {% endapibody %}
 
 # Description #
@@ -42,6 +42,7 @@ __Example:__ Return the user who has scored the most points.
 
 ```rb
 r.table('users').max('points').run(conn)
+```
 
 __Example:__ The same as above, but using a secondary index on the `points` field.
 

@@ -31,23 +31,15 @@ r.connect(host="localhost", port=28015, db="test", auth_key="", timeout=20) &rar
 r.connect(host) &rarr; connection
 {% endapibody %}
 
-Create a new connection to the database server. The keyword arguments are:
+Create a new connection to the database server.
 
-- `host`: host of the RethinkDB instance. The default value is `localhost`.
-- `port`: the driver port, by default `28015`.
-- `db`: the database used if not explicitly specified in a query, by default `test`.
-- `auth_key`: the authentication key, by default the empty string.
-- `timeout`: timeout period in seconds for the connection to be opened (default `20`).
-
-If the connection cannot be established, a `RqlDriverError` exception will be thrown.
-
-__Example:__ Opens a new connection to the database.
+__Example:__ Open a new connection to the database.
 
 ```py
-conn = r.connect(host = 'localhost',
-                 port = 28015,
-                 db = 'heroes',
-                 auth_key = 'hunter2')
+conn = r.connect(host='localhost',
+                 port=28015,
+                 db='heroes',
+                 auth_key='hunter2')
 ```
 
 [Read more about this command &rarr;](connect/)
@@ -122,8 +114,8 @@ r.table('heroes').run(conn) # refers to r.db('marvel').table('heroes')
 ## [run](run/) ##
 
 {% apibody %}
-query.run(conn, use_outdated=False, time_format='native', profile=False, durability="hard") &rarr; cursor
-query.run(conn, use_outdated=False, time_format='native', profile=False, durability="hard") &rarr; object
+query.run(conn[, options]) &rarr; cursor
+query.run(conn[, options]) &rarr; object
 {% endapibody %}
 
 Run a query on a connection, returning either a single JSON result or
@@ -161,7 +153,10 @@ conn.noreply_wait()
 r.set_loop_type(string)
 {% endapibody %}
 
-Set an asynchronous event loop model. Currently, the only event loop model RethinkDB supports is `"tornado"`, for use with the [Tornado web framework](http://www.tornadoweb.org). After setting the event loop to `"tornado"` then the [connect](/api/python/connect) command will return Tornado `Future` objects.
+Set an asynchronous event loop model. There are two supported models:
+
+* `"tornado"`: use the [Tornado web framework](http://www.tornadoweb.org/). Under this model, the [connect](/api/python/connect) and [run](/api/python/run) commands will return Tornado `Future` objects.
+* `"twisted"`: use the [Twisted networking engine](http://twistedmatrix.com/). Under this model, the [connect](/api/python/connect) and [run](/api/python/run) commands will return Twisted `Deferred` objects.
 
 __Example:__ Read a table's data using Tornado.
 
@@ -269,7 +264,7 @@ Create a database. A RethinkDB database is a collection of tables, similar to
 relational databases.
 
 If successful, the operation returns an object: `{"created": 1}`. If a database with the
-same name already exists the operation throws `RqlRuntimeError`.
+same name already exists the operation throws `ReqlRuntimeError`.
 
 Note: that you can only use alphanumeric characters and underscores for the database name.
 
@@ -289,7 +284,7 @@ r.db_drop(db_name) &rarr; object
 Drop a database. The database, all its tables, and corresponding data will be deleted.
 
 If successful, the operation returns the object `{"dropped": 1}`. If the specified database
-doesn't exist a `RqlRuntimeError` is thrown.
+doesn't exist a `ReqlRuntimeError` is thrown.
 
 __Example:__ Drop a database named 'superheroes'.
 
@@ -322,6 +317,7 @@ r.db_list().run(conn)
 
 {% apibody %}
 db.table_create(table_name[, options]) &rarr; object
+r.table_create(table_name[, options]) &rarr; object
 {% endapibody %}
 
 Create a table. A RethinkDB table is a collection of JSON documents.
@@ -329,7 +325,7 @@ Create a table. A RethinkDB table is a collection of JSON documents.
 __Example:__ Create a table named 'dc_universe' with the default settings.
 
 ```py
-r.db('test').table_create('dc_universe').run(conn)
+r.db('heroes').table_create('dc_universe').run(conn)
 ```
 
 [Read more about this command &rarr;](table_create/)
@@ -471,8 +467,8 @@ r.table('test').index_wait('timestamp').run(conn)
 ## [changes](changes/) ##
 
 {% apibody %}
-stream.changes(squash=True, include_states=False) &rarr; stream
-singleSelection.changes(squash=True, include_states=False) &rarr; stream
+stream.changes(squash=False, include_states=False) &rarr; stream
+singleSelection.changes(squash=False, include_states=False) &rarr; stream
 {% endapibody %}
 
 Return a changefeed, an infinite stream of objects representing changes to a query. A changefeed may return changes to a table or an individual document (a "point" changefeed), and document transformation commands such as `filter` or `map` may be used before the `changes` command to affect the output.
@@ -543,13 +539,13 @@ r.table("posts").get(1).update({"status": "published"}).run(conn)
 ## [replace](replace/) ##
 
 {% apibody %}
-table.replace(object | expr
+table.replace(object | function
     [, durability="hard", return_changes=False, non_atomic=False])
         &rarr; object
-selection.replace(object | expr
+selection.replace(object | function
     [, durability="hard", return_changes=False, non_atomic=False])
         &rarr; object
-singleSelection.replace(object | expr
+singleSelection.replace(object | function
     [, durability="hard", return_changes=False, non_atomic=False])
         &rarr; object
 {% endapibody %}
@@ -627,17 +623,18 @@ r.db(db_name) &rarr; db
 
 Reference a database.
 
-__Example:__ Before we can query a table we have to select the correct database.
+__Example:__ Explicitly specify a database for a query.
 
 ```py
 r.db('heroes').table('marvel').run(conn)
 ```
 
+[Read more about this command &rarr;](db/)
 
 ## [table](table/) ##
 
 {% apibody %}
-db.table(name[, use_outdated=False]) &rarr; table
+db.table(name[, read_mode='single', identifier_format='name']) &rarr; table
 {% endapibody %}
 
 Select all documents in a table. This command can be chained with other commands to do
@@ -689,9 +686,8 @@ r.table('marvel').get_all('man_of_steel', index='code_name').run(conn)
 ## [between](between/) ##
 
 {% apibody %}
-table.between(lower_key, upper_key
-    [, index='id', left_bound='closed', right_bound='open'])
-        &rarr; selection
+table.between(lower_key, upper_key[, options]) &rarr; table_slice
+table_slice.between(lower_key, upper_key[, options]) &rarr; table_slice
 {% endapibody %}
 
 Get all documents between two keys. Accepts three optional arguments: `index`,
@@ -712,9 +708,9 @@ r.table('marvel').between(10, 20).run(conn)
 ## [filter](filter/) ##
 
 {% apibody %}
-selection.filter(predicate, default=False) &rarr; selection
-stream.filter(predicate, default=False) &rarr; stream
-array.filter(predicate, default=False) &rarr; array
+selection.filter(predicate_function, default=False) &rarr; selection
+stream.filter(predicate_function, default=False) &rarr; stream
+array.filter(predicate_function, default=False) &rarr; array
 {% endapibody %}
 
 Get all the documents for which the given predicate is true.
@@ -727,7 +723,7 @@ if a non-existence errors is thrown (when you try to access a field that does no
 in a document), RethinkDB will just ignore the document.
 The `default` value can be changed by passing the named argument `default`.
 Setting this optional argument to `r.error()` will cause any non-existence errors to
-return a `RqlRuntimeError`.
+return a `ReqlRuntimeError`.
 
 
 __Example:__ Get all the users that are 30 years old.
@@ -748,8 +744,8 @@ These commands allow the combination of multiple sequences into a single sequenc
 ## [inner_join](inner_join/) ##
 
 {% apibody %}
-sequence.inner_join(other_sequence, predicate) &rarr; stream
-array.inner_join(other_sequence, predicate) &rarr; array
+sequence.inner_join(other_sequence, predicate_function) &rarr; stream
+array.inner_join(other_sequence, predicate_function) &rarr; array
 {% endapibody %}
 
 Returns an inner join of two sequences.
@@ -767,8 +763,8 @@ r.table('marvel').inner_join(r.table('dc'),
 ## [outer_join](outer_join/) ##
 
 {% apibody %}
-sequence.outer_join(other_sequence, predicate) &rarr; stream
-array.outer_join(other_sequence, predicate) &rarr; array
+sequence.outer_join(other_sequence, predicate_function) &rarr; stream
+array.outer_join(other_sequence, predicate_function) &rarr; array
 {% endapibody %}
 
 Returns a left outer join of two sequences.
@@ -786,9 +782,10 @@ r.table('marvel').outer_join(r.table('dc'),
 
 {% apibody %}
 sequence.eq_join(left_field, right_table[, index='id']) &rarr; sequence
+sequence.eq_join(predicate_function, right_table[, index='id']) &rarr; sequence
 {% endapibody %}
 
-Join tables using a field on the left-hand sequence matching primary keys or secondary indexes on the right-hand table. `eq_join` is more efficient than other ReQL join types, and operates much faster. Documents in the result set consist of pairs of left-hand and right-hand documents, matched when the field on the left-hand side exists and is non-null and an entry with that field's value exists in the specified index on the right-hand side.
+Join tables using a field or function on the left-hand sequence matching primary keys or secondary indexes on the right-hand table. `eq_join` is more efficient than other ReQL join types, and operates much faster. Documents in the result set consist of pairs of left-hand and right-hand documents, matched when the field on the left-hand side exists and is non-null and an entry with that field's value exists in the specified index on the right-hand side.
 
 **Example:** Match players with the games they've played against one another.
 
@@ -824,10 +821,10 @@ These commands are used to transform data in a sequence.
 ## [map](map/) ##
 
 {% apibody %}
-sequence1.map([sequence2, ...], mapping_function) &rarr; stream
-array1.map([sequence2, ...], mapping_function) &rarr; array
-r.map(sequence1[, sequence2, ...], mapping_function) &rarr; stream
-r.map(array1[, array2, ...], mapping_function) &rarr; array
+sequence1.map([sequence2, ...], function) &rarr; stream
+array1.map([array2, ...], function) &rarr; array
+r.map(sequence1[, sequence2, ...], function) &rarr; stream
+r.map(array1[, array2, ...], function) &rarr; array
 {% endapibody %}
 
 Transform each element of one or more sequences by applying a mapping function to them. If `map` is run with two or more sequences, it will iterate for as many items as there are in the shortest sequence.
@@ -863,8 +860,8 @@ r.table('users').with_fields('id', 'user', 'posts').run(conn)
 ## [concat_map](concat_map/) ##
 
 {% apibody %}
-stream.concat_map(mapping_function) &rarr; stream
-array.concat_map(mapping_function) &rarr; array
+stream.concat_map(function) &rarr; stream
+array.concat_map(function) &rarr; array
 {% endapibody %}
 
 Concatenate one or more elements into a single sequence using a mapping function.
@@ -880,9 +877,9 @@ r.table('marvel').concat_map(lambda hero: hero['defeatedMonsters']).run(conn)
 ## [order_by](order_by/) ##
 
 {% apibody %}
-table.order_by([key1...], index=index_name) -> selection<stream>
-selection.order_by(key1, [key2...]) -> selection<array>
-sequence.order_by(key1, [key2...]) -> array
+table.order_by([key | function], index=index_name) &rarr; table_slice
+selection.order_by(key | function[, ...]) &rarr; selection<array>
+sequence.order_by(key | function[, ...]) &rarr; array
 {% endapibody %}
 
 Sort the sequence by document values of the given key(s). To specify
@@ -985,7 +982,7 @@ r.expr([1,2,3]).nth(1).run(conn)
 ## [offsets_of](offsets_of/) ##
 
 {% apibody %}
-sequence.offsets_of(datum | predicate) &rarr; array
+sequence.offsets_of(datum | predicate_function) &rarr; array
 {% endapibody %}
 
 Get the indexes of an element in a sequence. If the argument is a predicate, get the indexes of all elements matching it.
@@ -1020,7 +1017,7 @@ stream.union(sequence[, sequence, ...]) &rarr; stream
 array.union(sequence[, sequence, ...]) &rarr; array
 {% endapibody %}
 
-Concatenate two or more sequences.
+Merge two or more sequences. (Note that ordering is not guaranteed by `union`.)
 
 __Example:__ Construct a stream of all heroes.
 
@@ -1056,7 +1053,7 @@ These commands are used to compute smaller values from large sequences.
 ## [group](group/) ##
 
 {% apibody %}
-sequence.group(field_or_function..., [index='index_name', multi=False]) &rarr; grouped_stream
+sequence.group(field | function..., [index=<indexname>, multi=False]) &rarr; grouped_stream
 {% endapibody %}
 
 Takes a stream and partitions it into multiple groups based on the
@@ -1104,7 +1101,7 @@ r.table('games')
 ## [reduce](reduce/) ##
 
 {% apibody %}
-sequence.reduce(reduction_function) &rarr; value
+sequence.reduce(function) &rarr; value
 {% endapibody %}
 
 Produce a single value from a sequence through repeated application of a reduction
@@ -1126,7 +1123,8 @@ r.table("posts").map(lambda doc:
 ## [count](count/) ##
 
 {% apibody %}
-sequence.count([filter]) &rarr; number
+sequence.count([value | predicate_function]) &rarr; number
+binary.count() &rarr; number
 {% endapibody %}
 
 Count the number of elements in the sequence. With a single argument, count the number
@@ -1145,7 +1143,7 @@ __Example:__ Just how many super heroes are there?
 ## [sum](sum/) ##
 
 {% apibody %}
-sequence.sum([field_or_function]) &rarr; number
+sequence.sum([field | function]) &rarr; number
 {% endapibody %}
 
 Sums all the elements of a sequence.  If called with a field name,
@@ -1168,7 +1166,7 @@ r.expr([3, 5, 7]).sum().run(conn)
 ## [avg](avg/) ##
 
 {% apibody %}
-sequence.avg([field_or_function]) &rarr; number
+sequence.avg([field | function]) &rarr; number
 {% endapibody %}
 
 Averages all the elements of a sequence.  If called with a field name,
@@ -1192,8 +1190,8 @@ r.expr([3, 5, 7]).avg().run(conn)
 ## [min](min/) ##
 
 {% apibody %}
-sequence.min(field_or_function) &rarr; element
-sequence.min(index='index') &rarr; element
+sequence.min(field | function) &rarr; element
+sequence.min(index=<indexname>) &rarr; element
 {% endapibody %}
 
 Finds the minimum element of a sequence.
@@ -1210,8 +1208,8 @@ r.expr([3, 5, 7]).min().run(conn)
 ## [max](max/) ##
 
 {% apibody %}
-sequence.max(field_or_function) &rarr; element
-sequence.max(index='index') &rarr; element
+sequence.max(field | function) &rarr; element
+sequence.max(index=<indexname>) &rarr; element
 {% endapibody %}
 
 Finds the maximum element of a sequence.
@@ -1248,7 +1246,7 @@ r.table('marvel').concat_map(
 ## [contains](contains/) ##
 
 {% apibody %}
-sequence.contains(value|predicate[, value|predicate, ...]) &rarr; bool
+sequence.contains([value | predicate_function, ...]) &rarr; bool
 {% endapibody %}
 
 Returns whether or not a sequence contains all the specified values, or if functions are
@@ -1335,10 +1333,10 @@ r.table('marvel').get('IronMan').without('personalVictoriesList').run(conn)
 ## [merge](merge/) ##
 
 {% apibody %}
-singleSelection.merge(object|function[, object|function, ...]) &rarr; object
-object.merge(object|function[, object|function, ...]) &rarr; object
-sequence.merge(object|function[, object|function, ...]) &rarr; stream
-array.merge(object|function[, object|function, ...]) &rarr; array
+singleSelection.merge([object | function, object | function, ...]) &rarr; object
+object.merge([object | function, object | function, ...]) &rarr; object
+sequence.merge([object | function, object | function, ...]) &rarr; stream
+array.merge([object | function, object | function, ...]) &rarr; array
 {% endapibody %}
 
 Merge two or more objects together to construct a new object with properties from all. When there is a conflict between field names, preference is given to fields in the rightmost object in the argument list.
@@ -1460,7 +1458,7 @@ __Example:__ Check which pieces of equipment Iron Man has, excluding a fixed lis
 r.table('marvel').get('IronMan')['equipment'].set_difference(['newBoots', 'arc_reactor']).run(conn)
 ```
 
-## [\[\]](bracket/) ##
+## [\[\] (bracket)](bracket/) ##
 
 {% apibody %}
 sequence[attr] &rarr; sequence
@@ -1719,13 +1717,13 @@ __Example:__
 ## [+](add/) ##
 
 {% apibody %}
-number + number &rarr; number
-string + string &rarr; string
-array + array &rarr; array
+value + value &rarr; value
 time + number &rarr; time
+value.add(value[, value, ...]) &rarr; value
+time.add(number[, number, ...]) &rarr; time
 {% endapibody %}
 
-Sum two numbers, concatenate two strings, or concatenate 2 arrays.
+Sum two or more numbers, or concatenate two or more strings or arrays.
 
 __Example:__ It's as easy as 2 + 2 = 4.
 
@@ -1740,8 +1738,11 @@ __Example:__ It's as easy as 2 + 2 = 4.
 
 {% apibody %}
 number - number &rarr; number
-time - time &rarr; number
 time - number &rarr; time
+time - time &rarr; number
+number.sub(number[, number, ...]) &rarr; number
+time.sub(number[, number, ...]) &rarr; time
+time.sub(time) &rarr; number
 {% endapibody %}
 
 Subtract two numbers.
@@ -1760,6 +1761,8 @@ __Example:__ It's as easy as 2 - 2 = 0.
 {% apibody %}
 number * number &rarr; number
 array * number &rarr; array
+number.mul(number[, number, ...]) &rarr; number
+array.mul(number[, number, ...]) &rarr; array
 {% endapibody %}
 
 Multiply two numbers, or make a periodic array.
@@ -1776,6 +1779,7 @@ __Example:__ It's as easy as 2 * 2 = 4.
 
 {% apibody %}
 number / number &rarr; number
+number.div(number[, number ...]) &rarr; number
 {% endapibody %}
 
 Divide two numbers.
@@ -1806,8 +1810,8 @@ __Example:__ It's as easy as 2 % 2 = 0.
 
 {% apibody %}
 bool & bool &rarr; bool
-r.and_(bool, bool) &rarr; bool
-bool.and_(bool) &rarr; bool
+bool.and_(bool[, bool, ...]) &rarr; bool
+r.and_(bool, bool[, bool, ...]) &rarr; bool
 {% endapibody %}
 
 Compute the logical "and" of two or more values.
@@ -1827,8 +1831,8 @@ False
 
 {% apibody %}
 bool | bool &rarr; bool
-bool.or_(bool) &rarr; bool
-r.or_(bool, bool) &rarr; bool
+bool.or_(bool[, bool, ...]) &rarr; bool
+r.or_(bool, bool[, bool, ...]) &rarr; bool
 {% endapibody %}
 
 Compute the logical "or" of two or more values.
@@ -1847,101 +1851,105 @@ True
 ## [==, eq](eq/) ##
 
 {% apibody %}
+value.eq(value[, value, ...]) &rarr; bool
 value == value &rarr; bool
-value.eq(value) &rarr; bool
 {% endapibody %}
 
-Test if two values are equal.
+Test if two or more values are equal.
 
-__Example:__ Does 2 equal 2?
+__Example:__ See if a user's `role` field is set to `administrator`. 
 
 ```py
-(r.expr(2) == 2).run(conn)
-r.expr(2).eq(2).run(conn)
+r.table('users').get(1)['role'].eq('administrator').run(conn)
+# alternative syntax
+(r.table('users').get(1)['role'] == 'administrator').run(conn)
 ```
 
 
 ## [!=, ne](ne/) ##
 
 {% apibody %}
+value.ne(value[, value, ...]) &rarr; bool
 value != value &rarr; bool
-value.ne(value) &rarr; bool
 {% endapibody %}
 
-Test if two values are not equal.
+Test if two or more values are not equal.
 
-__Example:__ Does 2 not equal 2?
+__Example:__ See if a user's `role` field is not set to `administrator`. 
 
 ```py
-(r.expr(2) != 2).run(conn)
-r.expr(2).ne(2).run(conn)
+r.table('users').get(1)['role'].ne('administrator').run(conn)
+# alternative syntax
+(r.table('users').get(1)['role'] != 'administrator').run(conn)
 ```
-
 
 ## [>, gt](gt/) ##
 
 {% apibody %}
+value.gt(value[, value, ...]) &rarr; bool
 value > value &rarr; bool
-value.gt(value) &rarr; bool
 {% endapibody %}
 
-Test if the first value is greater than other.
+Compare values, testing if the left-hand value is greater than the right-hand.
 
-__Example:__ Is 2 greater than 2?
+__Example:__ Test if a player has scored more than 10 points.
 
 ```py
-(r.expr(2) > 2).run(conn)
-r.expr(2).gt(2).run(conn)
+r.table('players').get(1)['score'].gt(10).run(conn)
+# alternative syntax
+(r.table('players').get(1)['score'] > 10).run(conn)
 ```
 
 ## [>=, ge](ge/) ##
 
 {% apibody %}
+value.ge(value[, value, ...]) &rarr; bool
 value >= value &rarr; bool
-value.ge(value) &rarr; bool
 {% endapibody %}
 
-Test if the first value is greater than or equal to other.
+Compare values, testing if the left-hand value is greater or equal to than the right-hand.
 
-__Example:__ Is 2 greater than or equal to 2?
+__Example:__ Test if a player has scored 10 points or more.
 
 ```py
-(r.expr(2) >= 2).run(conn)
-r.expr(2).ge(2).run(conn)
+r.table('players').get(1)['score'].ge(10).run(conn)
+# alternative syntax
+(r.table('players').get(1)['score'] >= 10).run(conn)
 ```
 
 ## [<, lt](lt/) ##
 
 {% apibody %}
+value.lt(value[, value, ...]) &rarr; bool
 value < value &rarr; bool
-value.lt(value) &rarr; bool
 {% endapibody %}
 
-Test if the first value is less than other.
+Compare values, testing if the left-hand value is less than the right-hand.
 
-__Example:__ Is 2 less than 2?
+__Example:__ Test if a player has scored less than 10 points.
 
 ```py
-(r.expr(2) < 2).run(conn)
-r.expr(2).lt(2).run(conn)
+r.table('players').get(1)['score'].lt(10).run(conn)
+# alternative syntax
+(r.table('players').get(1)['score'] < 10).run(conn)
 ```
 
 ## [<=, le](le/) ##
 
 {% apibody %}
+value.le(value[, value, ...]) &rarr; bool
 value <= value &rarr; bool
-value.le(value) &rarr; bool
 {% endapibody %}
 
-Test if the first value is less than or equal to other.
+Compare values, testing if the left-hand value is less than or equal to the right-hand.
 
-__Example:__ Is 2 less than or equal to 2?
+__Example:__ Test if a player has scored 10 points or less.
 
 ```py
-(r.expr(2) <= 2).run(conn)
-r.expr(2).le(2).run(conn)
+r.table('players').get(1)['score'].le(10).run(conn)
+# alternative syntax
+(r.table('players').get(1)['score'] <= 10).run(conn)
 ```
-
 
 ## [~, not_](not/) ##
 
@@ -1984,6 +1992,57 @@ r.random().run(conn)
 ```
 
 [Read more about this command &rarr;](random/)
+
+## [round](round/) ##
+
+{% apibody %}
+r.round(number) &rarr; number
+number.round() &rarr; number
+{% endapibody %}
+
+Rounds the given value to the nearest whole integer.
+
+__Example:__ Round 12.345 to the nearest integer.
+
+```py
+> r.round(12.345).run(conn)
+
+12.0
+```
+
+## [ceil](ceil/) ##
+
+{% apibody %}
+r.ceil(number) &rarr; number
+number.ceil() &rarr; number
+{% endapibody %}
+
+Rounds the given value up, returning the smallest integer value greater than or equal to the given value (the value's ceiling).
+
+__Example:__ Return the ceiling of 12.345.
+
+```py
+> r.ceil(12.345).run(conn)
+
+13.0
+```
+
+## [floor](floor/) ##
+
+{% apibody %}
+r.floor(number) &rarr; number
+number.floor() &rarr; number
+{% endapibody %}
+
+Rounds the given value down, returning the largest integer value less than or equal to the given value (the value's floor).
+
+__Example:__ Return the floor of 12.345.
+
+```py
+> r.floor(12.345).run(conn)
+
+12.0
+```
 
 {% endapisection %}
 
@@ -2039,7 +2098,7 @@ r.table("user").get("John").update({"birthdate": r.time(1986, 11, 3, 'Z')}).run(
 ## [epoch_time](epoch_time/) ##
 
 {% apibody %}
-r.epoch_time(epoch_time) &rarr; time
+r.epoch_time(number) &rarr; time
 {% endapibody %}
 
 Create a time object based on seconds since epoch. The first argument is a double and
@@ -2055,11 +2114,12 @@ r.table("user").get("John").update({"birthdate": r.epoch_time(531360000)}).run(c
 ## [iso8601](iso8601/) ##
 
 {% apibody %}
-r.iso8601(iso8601Date[, default_timezone='']) &rarr; time
+r.iso8601(string[, default_timezone='']) &rarr; time
 {% endapibody %}
 
-Create a time object based on an ISO 8601 date-time string (e.g. '2013-01-01T01:01:01+00:00'). We support all valid ISO 8601 formats except for week dates. If you pass an ISO 8601 date-time without a time zone, you must specify the time zone with the `default_timezone` argument. Read more about the ISO 8601 format at [Wikipedia](http://en.wikipedia.org/wiki/ISO_8601).
+Create a time object based on an ISO 8601 date-time string (e.g. '2013-01-01T01:01:01+00:00'). RethinkDB supports all valid ISO 8601 formats except for week dates. Read more about the ISO 8601 format at [Wikipedia](http://en.wikipedia.org/wiki/ISO_8601).
 
+If you pass an ISO 8601 string without a time zone, you must specify the time zone with the `default_timezone` argument.
 
 __Example:__ Update the time of John's birth.
 
@@ -2131,7 +2191,7 @@ time.date() &rarr; time
 
 Return a new time object only based on the day, month and year (ie. the same day at 00:00).
 
-__Example:__ Retrieve all the users whose birthday is today
+__Example:__ Retrieve all the users whose birthday is today.
 
 ```py
 r.table("users").filter(lambda user:
@@ -2419,7 +2479,7 @@ r.table('marvel').map(
 ## [for_each](for_each/) ##
 
 {% apibody %}
-sequence.for_each(write_query) &rarr; object
+sequence.for_each(write_function) &rarr; object
 {% endapibody %}
 
 Loop over a sequence, evaluating the given write query for each element.
@@ -2470,18 +2530,13 @@ r.table('marvel').get('IronMan').do(
 ## [default](default/) ##
 
 {% apibody %}
-value.default(default_value) &rarr; any
-sequence.default(default_value) &rarr; any
+value.default(default_value | function) &rarr; any
+sequence.default(default_value | function) &rarr; any
 {% endapibody %}
 
-Handle non-existence errors. Tries to evaluate and return its first argument. If an
-error related to the absence of a value is thrown in the process, or if its first
-argument returns `None`, returns its second argument. (Alternatively, the second argument
-may be a function which will be called with either the text of the non-existence error
-or `None`.)
+Provide a default value in case of non-existence errors. The `default` command evaluates its first argument (the value it's chained to). If that argument returns `None` or a non-existence error is thrown in evaluation, then `default` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
 
-
-__Example:__ Suppose we want to retrieve the titles and authors of the table `posts`.
+__Example:__ Retrieve the titles and authors of the table `posts`.
 In the case where the author field is missing or `None`, we want to retrieve the string
 `Anonymous`.
 
@@ -2567,6 +2622,7 @@ r.expr("foo").type_of().run(conn)
 
 {% apibody %}
 any.info() &rarr; object
+r.info(any) &rarr; object
 {% endapibody %}
 
 Get information about a ReQL value.
@@ -2637,7 +2693,7 @@ __Example:__ Generate a UUID.
 ```py
 > r.uuid().run(conn)
 
-27961a0e-f4e8-4eb3-bf95-c5203e1d87b9
+"27961a0e-f4e8-4eb3-bf95-c5203e1d87b9"
 ```
 
 {% endapisection %}
@@ -2669,6 +2725,7 @@ r.table('geo').insert({
 
 {% apibody %}
 geometry.distance(geometry[, geo_system='WGS84', unit='m']) &rarr; number
+r.distance(geometry, geometry[, geo_system='WGS84', unit='m']) &rarr; number
 {% endapibody %}
 
 Compute the distance between a point and another geometry object. At least one of the geometry objects specified must be a point.
@@ -2707,8 +2764,8 @@ r.table('geo').insert({
 }).run(conn)
 
 r.table('geo').get(201).update({
-    'rectangle': r.row('rectangle').fill()
-}).run(conn)
+    'rectangle': r.row['rectangle'].fill()
+}, non_atomic=True).run(conn)
 ```
 
 [Read more about this command &rarr;](fill/)
@@ -2750,7 +2807,7 @@ Convert a ReQL geometry object to a [GeoJSON][] object.
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 
 ```py
-> r.table(geo).get('sfo')['location'].to_geojson.run(conn)
+> r.table('geo').get('sfo')['location'].to_geojson.run(conn)
 
 {
     'type': 'Point',
@@ -2821,6 +2878,8 @@ True
 {% apibody %}
 sequence.intersects(geometry) &rarr; sequence
 geometry.intersects(geometry) &rarr; bool
+r.intersects(sequence, geometry) &rarr; sequence
+r.intersects(geometry, geometry) &rarr; bool
 {% endapibody %}
 
 Tests whether two geometry objects intersect with one another. When applied to a sequence of geometry objects, `intersects` acts as a [filter](/api/python/filter), returning a sequence of objects from the sequence that intersect with the argument.
@@ -2884,8 +2943,8 @@ r.table('geo').insert({
 ## [polygon](polygon/) ##
 
 {% apibody %}
-r.polygon([lon1, lat1], [lon2, lat2], ...) &rarr; polygon
-r.polygon(point1, point2, ...) &rarr; polygon
+r.polygon([lon1, lat1], [lon2, lat2], [lon3, lat3], ...) &rarr; polygon
+r.polygon(point1, point2, point3, ...) &rarr; polygon
 {% endapibody %}
 
 Construct a geometry object of type Polygon. The Polygon can be specified in one of two ways:
