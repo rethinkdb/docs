@@ -1785,7 +1785,9 @@ bool.and(bool[, bool, ...]) &rarr; bool
 r.and(bool, bool[, bool, ...]) &rarr; bool
 {% endapibody %}
 
-Compute the logical "and" of two or more values.
+Compute the logical "and" of one or more values.
+Returns True for empty arguments.
+
 __Example:__ Return whether both `a` and `b` evaluate to true.
 
 ```rb
@@ -1805,7 +1807,8 @@ bool.or(bool[, bool, ...]) &rarr; bool
 r.or(bool, bool[, bool, ...]) &rarr; bool
 {% endapibody %}
 
-Compute the logical "or" of two or more values.
+Compute the logical "or" of one or more values.
+Returns False for empty arguments.
 
 __Example:__ Return whether either `a` or `b` evaluate to true.
 
