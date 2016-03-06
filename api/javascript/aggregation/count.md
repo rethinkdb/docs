@@ -59,3 +59,9 @@ r.table('users').count(function(user) {
     return user('age').gt(18)
 }).run(conn, callback)
 ```
+
+__Example:__ Count the number of old users by age and sort.
+
+```js
+r.table('users').group('age').count().ungroup().orderBy(r.desc('reduction')).run(conn, callback)
+```
