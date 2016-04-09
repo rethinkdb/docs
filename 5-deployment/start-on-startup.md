@@ -73,7 +73,7 @@ Create the file `/usr/lib/tmpfiles.d/rethinkdb.conf` with the content:
 d /run/rethinkdb 0755 rethinkdb rethinkdb -
 ```
 
-And create the service file, `/usr/lib/systemd/system/rethinkdb@.service`:
+And create the service file, `/usr/lib/systemd/system/rethinkdb@<name_of_instance>.service`:
 
 ```
 [Unit]
@@ -117,8 +117,8 @@ directory=/path/to/your/rethinkdb/directory
 Then, enable the service:
 
 ```bash
-sudo systemctl enable rethinkdb@<name_instance>
-sudo systemctl start rethinkdb@<name_instance>
+sudo systemctl enable rethinkdb@<name_of_instance>
+sudo systemctl start rethinkdb@<name_of_instance>
 ```
 
 __You've now got a working server!__
