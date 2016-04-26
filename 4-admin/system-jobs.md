@@ -87,3 +87,23 @@ info: {
     "progress": <number>
 }
 ```
+## limitations of inturrupting Queries ##
+
+Even though table has primary key it runs slow. User can't kill this query and locks up the whole DB and other queries executed so slowly. 
+This is the limitation of how queries get terminated.Queries only get terminated when they generate the next (batch of) results.
+Also ReQL doesn't use indexes automatically. 
+In case of a point lookup on the primary index use the get command
+
+```
+info: {
+    r.db("local").table("domains").get("odesk.com")
+}
+```
+Let's say user does
+
+```
+info: {
+    r.db("local").table("domains").filter({domain: "odesk.com"}).limit(1)
+}
+```
+Though table has primary key on domain field it runs insanely slow.
