@@ -28,7 +28,7 @@ Match a string against a regular expression. If there is a match, returns an obj
 If no match is found, returns `null`.
 
 <!-- break -->
-https://github.com/google/re2/wiki/Syntax
+
 Accepts RE2 syntax
 ([https://github.com/google/re2/wiki/Syntax](https://code.google.com/p/re2/wiki/Syntax)).
 You can enable case-insensitive matching by prefixing the regular expression with
