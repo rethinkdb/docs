@@ -52,4 +52,10 @@ r.do(
 ).run(conn, callback)
 ```
 
+__Example:__ If you pass the same key to `getAll` multiple times, the same document will be returned multiple times in a single call to `getAll`.
+
+```js
+r.table('dc').getAll('a', 'b', 'a').run(conn, callback)
+```
+
 Secondary indexes can be used in extremely powerful ways with `getAll` and other commands; read the full article on [secondary indexes](/docs/secondary-indexes) for examples using boolean operations, `contains` and more.
