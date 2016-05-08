@@ -39,14 +39,6 @@ r.expr([1, 2]).union([3, 4], [5, 6], [7, 8, 9]).run(conn, callback);
 [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-__Example:__ Combine four arrays into one.
-
-```js
-r.expr([1, 2]).union([3, 4], [5, 6], [7, 8, 9]).run(conn, callback)
-// Result passed to callback
-[1, 2, 3, 4, 5, 6, 7, 8, 9]
-```
-
 __Example:__ Create a [changefeed][cf] from the first example.
 
 ```js
