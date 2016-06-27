@@ -49,11 +49,14 @@ To specify a server name and another cluster to join:
 
     rethinkdb.exe -n jarvis -j cluster.example.com
 
+To install RethinkDB as a Windows service, read [Start RethinkDB at system startup][st].
+
+[st]: /docs/start-on-startup/#startup-as-a-windows-service
+
 # Compile from source #
 
-The Windows port of RethinkDB has not been merged into the main source branch yet, and the build process is still subject to change. For information on how to build the current release, you'll need to check out the [`atnnn/windows3`][aw] branch and follow the instructions in [`WINDOWS.md`][readme].
+To build RethinkDB under Windows, you'll need to download and extract the archive at <https://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz>. Requirements and build directions are in the [`WINDOWS.md`][readme] file.
 
-[aw]: https://github.com/rethinkdb/rethinkdb/tree/atnnn/windows3
 [readme]: https://github.com/rethinkdb/rethinkdb/blob/atnnn/windows3/WINDOWS.md
 
 {% include docs/install-next-step.md %}

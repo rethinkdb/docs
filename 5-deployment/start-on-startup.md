@@ -14,7 +14,7 @@ This document explains how to set up RethinkDB to run as a system service on sup
 
 In general, you'll have to follow these steps:
 
-* Install RethinkDB as a service for your operating system. (This document describes how to do that for both `init.d` and `systemd`-based Linux distributions, as well as OS X using `launchd`. Depending on how you've installed RethinkDB, this may already be done for you.)
+* Install RethinkDB as a service for your operating system. (This document describes how to do that for both `init.d` and `systemd`-based Linux distributions, as well as OS X using `launchd` and Windows services. Depending on how you've installed RethinkDB, this may already be done for you.)
 * Create a RethinkDB configuration file for each RethinkDB instance running on this physical server.
 
 # Startup with init.d #
@@ -23,8 +23,9 @@ RethinkDB packages automatically install an init script at `/etc/init.d/rethinkd
 
 ## Quick setup ##
 
-Copy the sample configuration file and use the [configuration file](/docs/config-file) documentation as a guide to customize it. (If you don't have the sample `.conf` file, you can download it [here][conf].)
+Copy the sample configuration file and use the [configuration file][cfdocs] documentation as a guide to customize it. (If you don't have the sample `.conf` file, you can download it [here][conf].)
 
+[cfdocs]: /docs/config-file
 [conf]: https://github.com/rethinkdb/rethinkdb/blob/next/packaging/assets/config/default.conf.sample
 
 ```bash
@@ -251,6 +252,45 @@ Under OS X, the system versions of Python and Ruby link to old versions of OpenS
 
 These may be specified as startup options to `rethinkdb` or in the configuration file.
 {% endinfobox %}
+
+# Startup as a Windows service #
+
+First, you'll need to create a configuration file. You can download the [sample file][conf] and customize it using the [configuration file][cfdocs] documentation as a guide. The most important line to change is `directory`: this points to the RethinkDB data directory. By default, RethinkDB will use `c:\Windows\System32\rethinkdb_data`.
+
+To test a configuration file before using it, start RethinkDB manually, specifying the configuration with the `--config-file` flag:
+
+```
+rethinkdb.exe --config-file <config-file>`
+```
+
+To actually install the RethinkDB service, execute:
+
+```
+rethinkdb.exe install-service --config-file <config-file>`
+```
+
+The service will be installed under the name `rethinkdb_default`, and will automatically be started after installation. You can use the Services tab in Task Manager to monitor, stop, and restart the service. By default, REthinkDB is set to automatically start on system startup.
+
+By default, the service will execute with System user privileges. If you'd like to install the service with a different user account, you can use the `--runuser` and `--runuser-password` options:
+
+```
+rethinkdb.exe install-service --config-file <config-file> --runuser <domain>\<username> --runuser-password <password>
+```
+
+If the user is local, the `<domain>` is the name of the server; otherwise, it's the name of the Windows Domain or Active Directory the user record is located in.
+
+If you want to uninstall the RethinkDB service:
+
+```
+rethinkdb.exe remove-service
+```
+
+Both `install-service` and `remove-service` also accept an `--instance-name <name>` option to give the RethinkDB instance a specific name that will appear in the service manager. This will let you run multiple instances of RethinkDB on the same server.
+
+## Caveats ##
+
+* The service sets the locations of the configuration file and the `rethinkdb.exe` binary on installation. If you move either of those, you'll need to remove the service and re-install it.
+* If you change options in the configuration file, the service will be need to be restarted to pick up the changes.
 
 # Troubleshooting #
 
