@@ -260,13 +260,13 @@ First, you'll need to create a configuration file. You can download the [sample 
 To test a configuration file before using it, start RethinkDB manually, specifying the configuration with the `--config-file` flag:
 
 ```
-rethinkdb.exe --config-file <config-file>`
+rethinkdb.exe --config-file <config-file>
 ```
 
 To actually install the RethinkDB service, execute:
 
 ```
-rethinkdb.exe install-service --config-file <config-file>`
+rethinkdb.exe install-service --config-file <config-file>
 ```
 
 The service will be installed under the name `rethinkdb_default`, and will automatically be started after installation. You can use the Services tab in Task Manager to monitor, stop, and restart the service. By default, REthinkDB is set to automatically start on system startup.
