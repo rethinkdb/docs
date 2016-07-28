@@ -27,3 +27,5 @@ sudo apt-get install rethinkdb
 {% include docs/debian-based-install-from-source.md %}
 
 {% include docs/install-next-step.md %}
+
+A step-by-step tutorial on how to install RethinkDB on Ubuntu can be found [here](https://www.rosehosting.com/blog/install-rethinkdb-on-ubuntu-14-04/)
