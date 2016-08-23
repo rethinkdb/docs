@@ -4,7 +4,7 @@ title: Using secondary indexes in RethinkDB
 docs_active: secondary-indexes
 permalink: docs/secondary-indexes/javascript/
 switcher: true
-language : JavaScript 
+language : JavaScript
 js: [fancybox]
 ---
 
@@ -21,9 +21,6 @@ RethinkDB supports different types of secondary indexes:
 
 {% toctag %}
 
-<img src="/assets/images/docs/api_illustrations/secondary-indexes.png"
-     alt="Secondary Indexes Illustration"
-     class="api_command_illustration" />
 
 # Simple indexes #
 
@@ -242,7 +239,7 @@ Secondary indexes will not store `null` values or objects. Thus, the results of 
 r.table("users").indexCreate("group").run(conn, callback)
 r.table("users").orderBy({index: "group"}).run(conn, callback)
 ```
-    
+
 may be different from an equivalent command without an index:
 
 ```js

@@ -19,8 +19,6 @@ table.insert(object | [object1, object2, ...][, durability="hard", return_change
 
 # Description #
 
-<img src="/assets/images/docs/api_illustrations/insert_python.png" class="api_command_illustration" />
-
 Insert documents into a table. Accepts a single document or an array of
 documents.
 

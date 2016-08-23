@@ -23,7 +23,7 @@ Some highlights:
 {% toctag %}
 
 <img alt="Dates and Times Illustration" class="api_command_illustration"
-     src="/assets/images/docs/api_illustrations/datesntimes.png" />
+     src="/assets/images/docs/api_illustrations/dates-and-times.png" />
 
 # A quick example #
 

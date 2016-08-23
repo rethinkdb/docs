@@ -23,7 +23,7 @@ Some highlights:
 {% toctag %}
 
 <img alt="Dates and Times Illustration" class="api_command_illustration"
-     src="/assets/images/docs/api_illustrations/datesntimes.png" />
+     src="/assets/images/docs/api_illustrations/dates-and-times.png" />
 
 # A quick example #
 
@@ -94,7 +94,7 @@ Leap-seconds aren't well-supported right now: `2012-06-30T23:59:60` and
 
 # Inserting times #
 
-You can insert times by simply passing a native `Date` object. 
+You can insert times by simply passing a native `Date` object.
 
 ```js
 > r.table('events').insert({id: 2, timestamp: new Date()}).run(conn, callback);

@@ -12,7 +12,7 @@ language: JavaScript
 
 {% toctag %}
 
-They allow clients to receive changes on a table, a single document, or even the results from a specific query as they happen. 
+They allow clients to receive changes on a table, a single document, or even the results from a specific query as they happen.
 
 <img alt="Data Modeling Illustration" class="api_command_illustration"
     src="/assets/images/docs/api_illustrations/change-feeds.png" />

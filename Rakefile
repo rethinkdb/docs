@@ -95,7 +95,7 @@ def jekyll(opts='')
     else
         dev = ''
     end
-    sh "bundle exec jekyll #{opts}#{dev} --trace"
+    sh "bundle exec jekyll #{opts}#{dev} --trace --watch"
 end
 
 # Check if all generated files are present: by default abort if files aren't present, otherwise show a warning
