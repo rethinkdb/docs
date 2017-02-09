@@ -191,7 +191,7 @@ var aboutBatman = function(topic){
 ## Try out the repubsub demo ##
 
 The example documentation includes a
-[demo script](https://github.com/rethinkdb/example-pubsub/blob/master/javascript/demo.js')
+[demo script](https://github.com/rethinkdb/example-pubsub/blob/master/javascript/demo.js)
 that shows off the three topic patterns described above. The script
 implements both a publisher and a subscriber with each pattern
 type. You can use this script to try out multiple publishers and
