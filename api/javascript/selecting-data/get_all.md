@@ -58,4 +58,11 @@ r.do(
 
 Calling `getAll` with zero arguments&mdash;which could happen in this example if the `heroines` list had no elements&mdash;will return nothing, i.e., a zero length stream.
 
+
+__Example:__ If you pass the same key to `getAll` multiple times, the same document will be returned multiple times in a single call to `getAll`.
+
+```js
+r.table('dc').getAll('a', 'b', 'a').run(conn, callback)
+```
+
 Secondary indexes can be used in extremely powerful ways with `getAll` and other commands; read the full article on [secondary indexes](/docs/secondary-indexes) for examples using boolean operations, `contains` and more.

@@ -55,4 +55,10 @@ r.do(
 
 Calling `get_all` with zero arguments&mdash;which could happen in this example if the `heroines` list had no elements&mdash;will return nothing, i.e., a zero length stream.
 
+__Example:__ If you pass the same key to `get_all` multiple times, the same document will be returned multiple times in a single call to `get_all`.
+
+```py
+r.table('dc').get_all('a', 'b', 'a').run(conn)
+```
+
 Secondary indexes can be used in extremely powerful ways with `get_all` and other commands; read the full article on [secondary indexes](/docs/secondary-indexes) for examples using boolean operations, `contains` and more.
