@@ -21,12 +21,11 @@ You can use the drivers from Ruby like this:
 
 ```bash
 $ irb
-require 'rubygems'
 require 'rethinkdb'
 include RethinkDB::Shortcuts
-r.connect(:host => 'localhost', :port => 28015).repl
+r.connect(host: 'localhost', port: 28015).repl
 r.db('test').table_create('tv_shows').run
-r.table('tv_shows').insert({ 'name'=>'Star Trek TNG' }).run
+r.table('tv_shows').insert('name' => 'Star Trek TNG').run
 ```
 
 # Next steps #
