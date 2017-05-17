@@ -38,13 +38,13 @@ If you don't have the Python driver installed, you can install a previous versio
 
 # Rebuild indexes
 
-When you upgrade a major release (i.e., 2.1 to 2.2), you should rebuild outdated secondary indexes manually. This can be done easily from the command line:
+When you upgrade a minor release (i.e., 2.1 to 2.2), you should rebuild outdated secondary indexes manually. This can be done easily from the command line:
 
     rethinkdb index-rebuild
 
 This is *required* if you're upgrading from versions before 1.16; in those cases, you'll need to upgrade to version 2.0.5 first. (You can download 2.0.5 and other older versions at RethinkDB's [download archive](http://download.rethinkdb.com)). If you're upgrading from RethinkDB version 1.16 or later, you can move to 2.2 or higher directly.
 
-Note that rebuilding indexes is *not* required if you're upgrading between minor releases (i.e., 2.2.0 to 2.2.1).
+Note that rebuilding indexes is *not* required if you're upgrading between patch releases (i.e., 2.2.0 to 2.2.1).
 
 # Migrating old data
 
