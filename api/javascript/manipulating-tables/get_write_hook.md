@@ -7,7 +7,7 @@ io:
     -   - table
         - object
 related_commands:
-    getWriteHook: get_write_hook/
+    setWriteHook: set_write_hook/
 ---
 
 # Command syntax #
