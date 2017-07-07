@@ -85,12 +85,15 @@ Sharding and replication can be controlled through the `table_config` table, alo
 	* `replicas`: a list of servers, including the primary, storing replicas of the shard.
 	* `nonvoting_replicas`: a list of servers which do not participate in "voting" as part of [failover][]. If this field is omitted, it is treated as an empty list. This list must be a subset of the `replicas` field and must not contain the primary replica.
 * `indexes`: a list of secondary indexes in the table. Read-only.
+* `write_hook`: the configured write hook for this table, if any. Read-only.
+  * `function`: binary representation of the write hook function,
+  * `query`: ReQL string representation of the write hook function
 * `write_acks`: the write acknowledgement settings for the table. When set to `majority` (the default), writes will be acknowledged when a majority of replicas have acknowledged their writes; when set to `single` writes will be acknowledged when a single replica acknowledges it.
 * `durability`: `soft` or `hard` (the default). In `hard` durability mode, writes are committed to disk before acknowledgements are sent; in `soft` mode, writes are acknowledged immediately upon receipt. The `soft` mode is faster but slightly less resilient to failure.
 
 [failover]: /docs/failover/
 
-If you `delete` a row from `table_config` the table will be deleted. If you `insert` a row, the `name` and `db` fields are required; the other fields are optional, and will be automatically generated or set to their default if they are not specified. Do not include the `id` field. The system will auto-generate a UUID. 
+If you `delete` a row from `table_config` the table will be deleted. If you `insert` a row, the `name` and `db` fields are required; the other fields are optional, and will be automatically generated or set to their default if they are not specified. Do not include the `id` field. The system will auto-generate a UUID.
 
 If you `replace` a row in `table_config`, you must include all the fields. It's usually easier to `update` specific fields.
 

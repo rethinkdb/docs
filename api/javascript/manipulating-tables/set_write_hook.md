@@ -20,9 +20,9 @@ table.setWriteHook(null) &rarr; object
 
 # Description #
 
-Sets the write hook on a table or overwrites it if one already exists. The write hook function has . `oldVal` and `newVal` can also be `null`.
+Sets the write hook on a table or overwrites it if one already exists.
 
-The `function` can be an anonymous function with the signature `(context: object, oldVal : object, newVal : object) -> object` or a binary representation obtained from the `function` field of [getWriteHook](/api/javascript/get_write_hook). The function must be deterministic, and so cannot use a subquery or the `r.js` command.
+The `function` can be an anonymous function with the signature `(context: object, oldVal: object, newVal: object) -> object` or a binary representation obtained from the `function` field of [getWriteHook](/api/javascript/get_write_hook). The function must be deterministic, and so cannot use a subquery or the `r.js` command.
 
 The first argument, `context` is a ReQL object containing the following properties:
 
@@ -37,7 +37,7 @@ Whenever a write operation on the table inserts, deletes or modifies a given doc
 
 For simplicity, the write hook function is allowed to return `null` exactly if and only if `newVal` is `null`. This is just a safeguard to ensure you don't accidentally turn an insert/update into a deletion, or a deletion into an update.
 
-If successful, `setWriteHook` will return an object of the following form.
+If successful, `setWriteHook` returns an object of the following form:
 
 ``` js
 {
@@ -66,6 +66,6 @@ __Example:__ Recreate an outdated write hook on a table.
 
 ```js
 r.table('posts').getWriteHook().do(function(writeHook) {
-  return r.table('posts').setWriteHook(writeHook("function"));
-})
+  return r.table('posts').setWriteHook(writeHook('function'));
+}).run(conn, callback)
 ```
