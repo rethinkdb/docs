@@ -56,9 +56,3 @@ func Example() {
 ```
 
 To view the full documentation check out [GoDoc](https://godoc.org/github.com/rethinkdb/rethinkdb-go).
-
-# Next steps #
-
-{% infobox %}
-Move on to the [ten-minute guide](/docs/guide/javascript/) and learn how to use RethinkDB.
-{% endinfobox %}
