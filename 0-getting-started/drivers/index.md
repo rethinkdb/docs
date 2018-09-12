@@ -34,6 +34,12 @@ alias: docs/guides/drivers/
                     <p class="name">Java</p>
                 </a>
             </li>
+            <li>
+                <a href="go/">
+                    <img src="/assets/images/docs/driver-languages/go.png" />
+                    <p class="name">Go</p>
+                </a>
+            </li>
         </ul>
     </section>
     
@@ -93,12 +99,6 @@ alias: docs/guides/drivers/
                 <a href="https://github.com/kureikain/relang">
                     <img src="/assets/images/docs/driver-languages/erlang.png" />
                     <p class="name">Erlang</p>
-                </a>
-            </li>
-            <li>
-                <a href="https://github.com/dancannon/gorethink">
-                    <img src="/assets/images/docs/driver-languages/go.png" />
-                    <p class="name">Go</p>
                 </a>
             </li>
             <li>
@@ -207,7 +207,7 @@ __Thanks to all our amazing driver contributors!__
 - [@bchavez](https://github.com/bchavez) (C#/.NET): [https://github.com/bchavez/RethinkDb.Driver](https://github.com/bchavez/RethinkDb.Driver)
 - [@billysometimes](https://github.com/billysometimes) (Dart): <https://github.com/billysometimes/rethinkdb>
 - [@brandonhamilton](https://github.com/brandonhamilton) (Delphi): <https://github.com/brandonhamilton/rethinkdb-delphi>
-- [@dancannon](https://github.com/dancannon) (Go): <https://github.com/dancannon/gorethink>
+- [@dancannon](https://github.com/dancannon) (Go): <https://github.com/rethinkdb/rethinkdb-go>
 - [@danielmewes](https://github.com/danielmewes) (PHP): <https://github.com/danielmewes/php-rql>
 - [@dkhenry](https://github.com/dkhenry) (Java): <https://github.com/dkhenry/rethinkjava>
 - [@dparnell](https://github.com/dparnell) (Objective-C): <https://github.com/dparnell/rethink-db-client>
