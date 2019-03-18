@@ -46,13 +46,14 @@ First, start a Python shell:
 $ python
 ```
 
-Then, import the RethinkDB driver:
+Then, import the RethinkDB driver and create a RethinkDB object:
 
 ```python
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 ```
 
-You can now access RethinkDB commands through the `r` module.
+You can now access RethinkDB commands through the `r` object.
 
 # Open a connection #
 

@@ -40,11 +40,11 @@ and pushes them to RabbitMQ.
 First we'll need to set up the connection to the RethinkDB server:
 
 ```python
-
-import rethinkdb as r
+from rethinkdb import RethinkDB
 import pika
 import json
 
+r = RethinkDB()
 rethink_conn = r.connect(host='localhost', port=28015)
 ```
 

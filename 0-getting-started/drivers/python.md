@@ -25,7 +25,8 @@ You can use the drivers from Python like this:
 
 ```bash
 $ python
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 r.connect('localhost', 28015).repl()
 r.db('test').table_create('tv_shows').run()
 r.table('tv_shows').insert({ 'name': 'Star Trek TNG' }).run()
