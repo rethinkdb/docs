@@ -22,7 +22,7 @@
       });
     }
     $('.docs-nav h1, .mobile-doc-links h1').click(function(event) {
-      $(this).toggleClass('expand').next('ul').slideToggle('fast', function() {
+      $(event.target).parent().toggleClass('expand').next('ul').slideToggle('fast', function() {
         if (typeof Waypoint !== "undefined" && Waypoint !== null) {
           return Waypoint.refreshAll();
         }
