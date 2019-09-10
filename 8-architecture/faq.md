@@ -71,7 +71,7 @@ example use cases:
 - [Jive Software][] and [Mediafly][] use RethinkDB to power reactive web and mobile apps
 - [Pristine.io][] and [Narrative Clip][] use RethinkDB to power cloud infrastructure for connected devices
 - [Platzi][] and [Workshape.io][] use RethinkDB to power realtime analytics
-- [CMUNE][] and [NodeCraft][] use RethinkDB to power massively scalable multiplayer games
+- [NodeCraft][] uses RethinkDB to power massively scalable multiplayer games
 
 [Pristine.io]: https://pristine.io/
 [Narrative Clip]: http://getnarrative.com/
@@ -79,7 +79,6 @@ example use cases:
 [Mediafly]: http://www.mediafly.com/
 [Platzi]: https://platzi.com/
 [Workshape.io]: https://www.workshape.io/
-[CMUNE]: http://www.cmune.com/
 [NodeCraft]: https://nodecraft.com/
 
 RethinkDB has a vibrant community of over 100,000 developers, and hundreds of contributors from around the world.
