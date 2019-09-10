@@ -77,7 +77,7 @@ example use cases:
 [Narrative Clip]: http://getnarrative.com/
 [Jive Software]: https://www.jivesoftware.com/
 [Mediafly]: http://www.mediafly.com/
-[Platzi]: https://platzi.com
+[Platzi]: https://platzi.com/
 [Workshape.io]: https://www.workshape.io/
 [CMUNE]: http://www.cmune.com/
 [NodeCraft]: https://nodecraft.com/
