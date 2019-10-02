@@ -516,13 +516,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #FBFBF9;
-  color: #647276;
+  color: #000000;
   font-family: "freight-sans-pro", "FreightSans";
   line-height: 1.5;
   font-weight: 400; }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #647276;
+  color: #000000;
   font-family: "freight-sans-pro", "FreightSans";
   line-height: 1.25;
   margin: 0;
@@ -870,7 +870,7 @@ body {
   line-height: 25.92px;
   font-size: 1.8rem;
   line-height: 2.592rem;
-  color: #647276; }
+  color: #000000; }
 
 .site-container {
   max-width: 108.8rem;
@@ -2437,7 +2437,7 @@ body.landing hr.section-divider {
       color: grey;
       font-style: italic; }
   .blog .post .post-body {
-    color: #647276;
+    color: #000000;
     padding-top: 2rem; }
     .blog .post .post-body ul li:last-child {
       margin-bottom: 2rem; }
@@ -2463,7 +2463,7 @@ body.landing hr.section-divider {
    Blog: post bylines (author, tags, date)
    --- */
 .blog .post-byline {
-  color: #647276; }
+  color: #000000; }
   .blog .post-byline .avatar, .blog .post-byline .post-timestamp, .blog .post-byline .post-tags {
     display: inline-block; }
   .blog .post-byline .avatar {
@@ -2857,7 +2857,7 @@ section.used-by .testimonials {
       font-size: 2.8rem;
       margin-bottom: 0.8rem; }
       .community-wrapper .events li.event h1 a {
-        color: #647276; }
+        color: #000000; }
     .community-wrapper .events li.event h2 {
       font-size: 2rem;
       font-weight: 400;
@@ -2915,7 +2915,7 @@ section.used-by .testimonials {
    --- */
 section.document {
   padding: 4rem 0;
-  color: #647276;
+  color: #000000;
   padding-top: 2rem; }
   section.document h1 {
     font-size: 33px;
@@ -3049,7 +3049,7 @@ nav.lang-selector {
     font-size: 1.6rem;
     line-height: 2.304rem;
     font-weight: 600;
-    color: #647276; }
+    color: #000000; }
   nav.lang-selector .languages {
     display: inline-block; }
     nav.lang-selector .languages span.divider {
@@ -3089,7 +3089,7 @@ nav.lang-selector {
         nav.lang-selector .languages a i.ruby {
           background-image: url("/assets/images/docs/driver-languages/minicons/ruby-bw.png"); }
     nav.lang-selector .languages a.active span {
-      color: #647276;
+      color: #000000;
       font-weight: 600;
       border-bottom: 0; }
     nav.lang-selector .languages a.active i.javascript {
