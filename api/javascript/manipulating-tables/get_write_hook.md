@@ -1,8 +1,8 @@
 ---
 layout: api-command
 language: JavaScript
-permalink: api/javascript/set_write_hook/
-command: setWriteHook
+permalink: api/javascript/get_write_hook/
+command: getWriteHook
 io:
     -   - table
         - object
@@ -20,10 +20,10 @@ table.getWriteHook() &rarr; null/object
 
 Get the write hook of this table. If a write hook exists the result is an object of the following form:
 
-``` js
+```js
 {
-  "function": binary,
-  "query": "setWriteHook(function(_var1, _var2, _var3) { return ...; })" ,
+  "function": <binary>,
+  "query": "setWriteHook(function(_var1, _var2, _var3) { return ...; })",
 }
 ```
 
