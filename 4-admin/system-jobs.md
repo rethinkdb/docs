@@ -49,7 +49,9 @@ These entries represent queries issued by a specific client.
 ```
 info: {
     "client_address": <IP address string>,
-    "client_port": <number>
+    "client_port": <number>,
+    "query": <query string>,
+    "user": <string>
 }
 ```
 
