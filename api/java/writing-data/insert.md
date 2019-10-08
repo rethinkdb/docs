@@ -31,6 +31,7 @@ You can pass the following options using [optArg](/api/java/optarg/):
     - `"replace"`: [Replace](/api/java/replace/) the old document in its entirety with the new one.
     - `"update"`: [Update](/api/java/update/) fields of the old document with fields from the new one.
     - `(id, oldDoc, newDoc) -> resolvedDoc`: a function that receives the id, old and new documents as arguments and returns a document which will be inserted in place of the conflicted one.
+- `ignore_write_hook`: If `true`, and if the user has the config permission, ignores any [write hook](/api/java/manipulating-tables/set_write_hook.md), inserting the document unmodified.
 
 If `return_changes` is set to `true` or `"always"`, the `changes` array will follow the same order as the inserted documents. Documents in `changes` for which an error occurs (such as a key conflict) will have a third field, `error`, with an explanation of the error.
 

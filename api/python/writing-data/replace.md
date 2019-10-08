@@ -12,11 +12,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.replace(object | function[, durability="hard", return_changes=False, non_atomic=False])
+table.replace(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
-selection.replace(object | function[, durability="hard", return_changes=False, non_atomic=False])
+selection.replace(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
-singleSelection.replace(object | function[, durability="hard", return_changes=False, non_atomic=False])
+singleSelection.replace(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
 {% endapibody %}
 
@@ -50,6 +50,10 @@ The optional arguments are:
   result to replicas in a non-atomic fashion. This flag is required to perform
   non-deterministic updates, such as those that require reading data from
   another table.
+- `ignore_write_hook`: If `True`, and if the user has the config permission,
+  ignores any [write
+  hook](/api/python/manipulating-tables/set_write_hook.md) when performing
+  the replacement.
 
 Replace returns an object that contains the following attributes:
 

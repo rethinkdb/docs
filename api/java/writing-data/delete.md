@@ -29,14 +29,14 @@ Delete one or more documents from a table.
 You can pass the following options using [optArg](/api/java/optarg/):
 
 - `durability`: possible values are `hard` and `soft`. This option will override the
-table or query's durability setting (set in [run](/api/java/run/)).  
+table or query's durability setting (set in [run](/api/java/run/)).
 In soft durability mode RethinkDB will acknowledge the write immediately after
 receiving it, but before the write has been committed to disk.
 - `return_changes`:
     - `true`: return a `changes` array consisting of `old_val`/`new_val` objects describing the changes made, only including the documents actually updated.
     - `false`: do not return a `changes` array (the default).
     - `"always"`: behave as `true`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `true` pre-2.0.)
-
+- `ignore_write_hook`: If `true`, and if the user has the config permission, ignores any [write hook](/api/java/manipulating-tables/set_write_hook.md), which might have prohibited the deletion.
 
 `delete` returns an object that contains the following attributes:
 
