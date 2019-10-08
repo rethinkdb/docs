@@ -19,11 +19,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.delete([{durability: "hard", returnChanges: false}])
+table.delete([{durability: "hard", returnChanges: false, ignoreWriteHook: false}])
     &rarr; object
-selection.delete([{durability: "hard", returnChanges: false}])
+selection.delete([{durability: "hard", returnChanges: false, ignoreWriteHook: false}])
     &rarr; object
-singleSelection.delete([{durability: "hard", returnChanges: false}])
+singleSelection.delete([{durability: "hard", returnChanges: false, ignoreWriteHook: false}])
     &rarr; object
 {% endapibody %}
 
@@ -34,14 +34,14 @@ Delete one or more documents from a table.
 The optional arguments are:
 
 - `durability`: possible values are `hard` and `soft`. This option will override the
-table or query's durability setting (set in [run](/api/javascript/run/)).  
+table or query's durability setting (set in [run](/api/javascript/run/)).
 In soft durability mode RethinkDB will acknowledge the write immediately after
 receiving it, but before the write has been committed to disk.
 - `returnChanges`:
     - `true`: return a `changes` array consisting of `old_val`/`new_val` objects describing the changes made, only including the documents actually updated.
     - `false`: do not return a `changes` array (the default).
     - `"always"`: behave as `true`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `true` pre-2.0.)
-
+- `ignoreWriteHook`: If `true`, and if the user has the config permission, ignores any [write hook](/api/javascript/manipulating-tables/set_write_hook.md), which might have prohibited the deletion.
 
 Delete returns an object that contains the following attributes:
 

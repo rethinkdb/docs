@@ -20,11 +20,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+table.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false, ignoreWriteHook: false}])
     &rarr; object
-selection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+selection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false, ignoreWriteHook: false}])
     &rarr; object
-singleSelection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+singleSelection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false, ignoreWriteHook: false}])
     &rarr; object
 {% endapibody %}
 
@@ -40,6 +40,10 @@ The optional arguments are:
     - `false`: do not return a `changes` array (the default).
     - `"always"`: behave as `true`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `true` pre-2.0.)
 - `nonAtomic`: if set to `true`, executes the update and distributes the result to replicas in a non-atomic fashion. This flag is required to perform non-deterministic updates, such as those that require reading data from another table.
+- `ignoreWriteHook`: If `true`, and if the user has the config permission,
+  ignores any [write
+  hook](/api/javascript/manipulating-tables/set_write_hook.md) when performing
+  the update.
 
 Update returns an object that contains the following attributes:
 

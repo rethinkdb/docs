@@ -12,11 +12,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.update(object | function[, durability="hard", return_changes=False, non_atomic=False])
+table.update(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
-selection.update(object | function[, durability="hard", return_changes=False, non_atomic=False])
+selection.update(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
-singleSelection.update(object | function[, durability="hard", return_changes=False, non_atomic=False])
+singleSelection.update(object | function[, durability="hard", return_changes=False, non_atomic=False, ignore_write_hook=False])
     &rarr; object
 {% endapibody %}
 
@@ -32,6 +32,10 @@ The optional arguments are:
     - `False`: do not return a `changes` array (the default).
     - `"always"`: behave as `True`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `True` pre-2.0.)
 - `non_atomic`: if set to `True`, executes the update and distributes the result to replicas in a non-atomic fashion. This flag is required to perform non-deterministic updates, such as those that require reading data from another table.
+- `ignore_write_hook`: If `True`, and if the user has the config permission,
+  ignores any [write
+  hook](/api/python/manipulating-tables/set_write_hook.md) when performing
+  the update.
 
 Update returns an object that contains the following attributes:
 
