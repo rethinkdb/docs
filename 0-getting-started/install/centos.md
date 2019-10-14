@@ -12,12 +12,12 @@ permalink: docs/install/centos/
 We provide binaries for both 32-bit and 64-bit CentOS 6, 64-bit CentOS
 7, and 64-bit CentOS 8.
 
-To install the server, first add the [RethinkDB yum repository](http://download.rethinkdb.com/centos) to your list of repositories.
+To install the server, first add the [RethinkDB yum repository](https://download.rethinkdb.com/centos) to your list of repositories.
 
 ## For CentOS 8
 
 ```bash
-sudo wget http://download.rethinkdb.com/centos/8/`uname -m`/rethinkdb.repo \
+sudo wget https://download.rethinkdb.com/centos/8/`uname -m`/rethinkdb.repo \
           -O /etc/yum.repos.d/rethinkdb.repo
 sudo yum install rethinkdb
 ```
@@ -25,7 +25,7 @@ sudo yum install rethinkdb
 ## For CentOS 7
 
 ```bash
-sudo wget http://download.rethinkdb.com/centos/7/`uname -m`/rethinkdb.repo \
+sudo wget https://download.rethinkdb.com/centos/7/`uname -m`/rethinkdb.repo \
           -O /etc/yum.repos.d/rethinkdb.repo
 sudo yum install rethinkdb
 ```
@@ -65,7 +65,7 @@ sudo yum install protobuf-devel protobuf-static jemalloc-devel
 Download and extract the source tarball:
 
 ```bash
-wget http://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz
+wget https://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz
 tar xf rethinkdb-{{site.version.full}}.tgz
 ```
 

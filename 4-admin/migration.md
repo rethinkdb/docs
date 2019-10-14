@@ -42,7 +42,7 @@ When you upgrade a major release (i.e., 2.1 to 2.2), you should rebuild outdated
 
     rethinkdb index-rebuild
 
-This is *required* if you're upgrading from versions before 1.16; in those cases, you'll need to upgrade to version 2.0.5 first. (You can download 2.0.5 and other older versions at RethinkDB's [download archive](http://download.rethinkdb.com)). If you're upgrading from RethinkDB version 1.16 or later, you can move to 2.2 or higher directly.
+This is *required* if you're upgrading from versions before 1.16; in those cases, you'll need to upgrade to version 2.0.5 first. (You can download 2.0.5 and other older versions at RethinkDB's [download archive](https://download.rethinkdb.com)). If you're upgrading from RethinkDB version 1.16 or later, you can move to 2.2 or higher directly.
 
 Note that rebuilding indexes is *not* required if you're upgrading between minor releases (i.e., 2.2.0 to 2.2.1).
 
@@ -57,7 +57,7 @@ Migration consists of three simple steps:
   - Import the data into the new version of RethinkDB
 
 {% infobox alert %}
-You must export your data **before** you've upgraded RethinkDB to a new version! If you've already updated, you can find binaries for previous versions in the [download archive](http://download.rethinkdb.com).
+You must export your data **before** you've upgraded RethinkDB to a new version! If you've already updated, you can find binaries for previous versions in the [download archive](https://download.rethinkdb.com).
 {% endinfobox %}
 
 ## Exporting your data
