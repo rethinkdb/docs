@@ -9,14 +9,15 @@ permalink: docs/install/centos/
 
 # With binaries #
 
-We provide binaries for both 32-bit and 64-bit CentOS 6 and 64-bit CentOS 7.
+We provide binaries for both 32-bit and 64-bit CentOS 6, 64-bit CentOS
+7, and 64-bit CentOS 8.
 
 To install the server, first add the [RethinkDB yum repository](http://download.rethinkdb.com/centos) to your list of repositories.
 
-## For CentOS 6
+## For CentOS 8
 
 ```bash
-sudo wget https://download.rethinkdb.com/centos/6/`uname -m`/rethinkdb.repo \
+sudo wget http://download.rethinkdb.com/centos/8/`uname -m`/rethinkdb.repo \
           -O /etc/yum.repos.d/rethinkdb.repo
 sudo yum install rethinkdb
 ```
@@ -25,6 +26,14 @@ sudo yum install rethinkdb
 
 ```bash
 sudo wget http://download.rethinkdb.com/centos/7/`uname -m`/rethinkdb.repo \
+          -O /etc/yum.repos.d/rethinkdb.repo
+sudo yum install rethinkdb
+```
+
+## For CentOS 6
+
+```bash
+sudo wget https://download.rethinkdb.com/centos/6/`uname -m`/rethinkdb.repo \
           -O /etc/yum.repos.d/rethinkdb.repo
 sudo yum install rethinkdb
 ```
