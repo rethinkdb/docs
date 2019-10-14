@@ -10,7 +10,7 @@ permalink: docs/install/fedora/
 
 # With binaries #
 
-The <a href="/docs/install/centos/">Centos RPMs</a> are known to work with
+The <a href="/docs/install/centos/">CentOS RPMs</a> are known to work with
 Fedora.
 
 To install the server, add the RethinkDB yum repository to your list of repositories and install:

@@ -9,11 +9,11 @@ permalink: docs/install/centos/
 
 # With binaries #
 
-We provide binaries for both 32-bit and 64-bit CentOS 6 and 64-bit Centos 7.
+We provide binaries for both 32-bit and 64-bit CentOS 6 and 64-bit CentOS 7.
 
 To install the server, first add the [RethinkDB yum repository](http://download.rethinkdb.com/centos) to your list of repositories.
 
-## For Centos 6
+## For CentOS 6
 
 ```bash
 sudo wget https://download.rethinkdb.com/centos/6/`uname -m`/rethinkdb.repo \
@@ -21,7 +21,7 @@ sudo wget https://download.rethinkdb.com/centos/6/`uname -m`/rethinkdb.repo \
 sudo yum install rethinkdb
 ```
 
-## For Centos 7
+## For CentOS 7
 
 ```bash
 sudo wget http://download.rethinkdb.com/centos/7/`uname -m`/rethinkdb.repo \
@@ -29,7 +29,7 @@ sudo wget http://download.rethinkdb.com/centos/7/`uname -m`/rethinkdb.repo \
 sudo yum install rethinkdb
 ```
 
-# Compile from source on Centos 7 #
+# Compile from source on CentOS 7 #
 
 ## Get the build dependencies ##
 
@@ -71,13 +71,13 @@ make
 sudo make install
 ```
 
-# Compile from source on Centos 6 #
+# Compile from source on CentOS 6 #
 
 These instructions have been tested on CentOS 6.5.
 
 ## Get the build dependencies ##
 
-The version of GCC included with Centos 6 is too old to compile RethinkDB. A newer version can be installed using devtoolset:
+The version of GCC included with CentOS 6 is too old to compile RethinkDB. A newer version can be installed using devtoolset:
 
 ```bash
 rpm --import http://ftp.scientificlinux.org/linux/scientific/5x/x86_64/RPM-GPG-KEYs/RPM-GPG-KEY-cern
