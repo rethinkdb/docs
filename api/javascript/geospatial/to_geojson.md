@@ -17,14 +17,12 @@ geometry.toGeojson() &rarr; object
 
 # Description #
 
-Convert a ReQL geometry object to a [GeoJSON][] object.
-
-[GeoJSON]: http://geojson.org
+Convert a ReQL geometry object to a [GeoJSON](http://geojson.org) object.
 
 __Example:__ Convert a ReQL geometry object to a GeoJSON object.
 
 ```js
-r.table('geo').get('sfo')('location').toGeojson().run(conn, callback);
+r.table('geo').get('sfo')('location').toGeojson.run(conn, callback);
 // result passed to callback
 {
     'type': 'Point',

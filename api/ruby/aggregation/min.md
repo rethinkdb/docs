@@ -18,11 +18,15 @@ related_commands:
 {% apibody %}
 sequence.min(field | function) &rarr; element
 sequence.min({:index => <indexname>}) &rarr; element
+r.min(sequence, field | function) &rarr; element
+r.min(sequence, {:index => <indexname>}) &rarr; element
 {% endapibody %}
 
 # Description #
 
-Finds the minimum element of a sequence. The `min` command can be called with:
+Finds the minimum element of a sequence.
+
+The `min` command can be called with:
 
 * a **field name**, to return the element of the sequence with the smallest value in that field;
 * an **index** (the primary key or a secondary index), to return the element of the sequence with the smallest value in that index;
@@ -42,6 +46,7 @@ __Example:__ Return the user who has scored the fewest points.
 
 ```rb
 r.table('users').min('points').run(conn)
+```
 
 __Example:__ The same as above, but using a secondary index on the `points` field.
 

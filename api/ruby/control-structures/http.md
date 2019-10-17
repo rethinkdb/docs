@@ -27,6 +27,8 @@ __Example:__ Perform an HTTP `GET` and store the result in a table.
 r.table('posts').insert(r.http('http://httpbin.org/get')).run(conn)
 ```
 
+<!-- stop -->
+
 See [the tutorial](/docs/external-api-access/) on `r.http` for more examples on how to use this command.
 
 # Options #
@@ -34,7 +36,7 @@ See [the tutorial](/docs/external-api-access/) on `r.http` for more examples on 
 ## General Options ##
 
 * `timeout`: timeout period in seconds to wait before aborting the connect (default `30`).
-* `reattempts`: number of retry attempts to make after failed connections (default `5`).
+* `attempts`: number of retry attempts to make after failed connections (default `5`).
 * `redirects`: number of redirect and location headers to follow (default `1`).
 * `verify`: if `true`, verify the server's SSL certificate (default `true`).
 * `result_format`: string specifying the format to return results in. One of the following:

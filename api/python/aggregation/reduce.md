@@ -17,12 +17,13 @@ related_commands:
 
 {% apibody %}
 sequence.reduce(function) &rarr; value
+r.reduce(sequence, function) &rarr; value
 {% endapibody %}
 
 # Description #
 
-Produce a single value from a sequence through repeated application of a reduction
-function.  
+Produce a single value from a sequence through repeated application of a reduction function.
+
 The reduction function can be called on:
 
 - two elements of the sequence

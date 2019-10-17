@@ -45,6 +45,9 @@ Update returns an object that contains the following attributes:
 - `deleted` and `inserted`: 0 for an update operation.
 - `changes`: if `return_changes` is set to `true`, this will be an array of objects, one for each objected affected by the `update` operation. Each object will have two keys: `{:new_val => <new value>, :old_val => <old value>}`.
 
+{% infobox alert %}
+RethinkDB write operations will only throw exceptions if errors occur before any writes. Other errors will be listed in `first_error`, and `errors` will be set to a non-zero count. To properly handle errors with this term, code must both handle exceptions and check the `errors` return value!
+{% endinfobox %}
 
 __Example:__ Update the status of the post with `id` of `1` to `published`.
 
@@ -63,6 +66,10 @@ __Example:__ Update the status of all the posts written by William.
 ```rb
 r.table("posts").filter({:author => "William"}).update({:status => "published"}).run(conn)
 ```
+
+{% infobox alert %}
+Note that `filter`, `get_all` and similar operations do _not_ execute in an atomic fashion with `update`. Read [Consistency guarantees](/docs/consistency) for more details. Also, see the example for conditional updates below for a solution using `branch` in an `update` clause.
+{% endinfobox %}
 
 __Example:__ Increment the field `view` of the post with `id` of `1`.
 This query will throw an error if the field `views` doesn't exist.
@@ -222,6 +229,16 @@ new_note = {
 }
 r.table("users").get(10001).update{ |row|
     {:notes => row["notes"].append(new_note)}
+}.run(conn)
+```
+
+This will fail if the `notes` field does not exist in the document. To perform this as an "upsert" (update or insert), use the [default][] command to ensure the field is initialized as an empty list.
+
+[default]: /api/ruby/default/
+
+```rb
+r.table("users").get(10001).update{ |row|
+    {:notes => row["notes"].default([]).append(new_note)}
 }.run(conn)
 ```
 

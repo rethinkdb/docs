@@ -59,6 +59,10 @@ Get the sample `.conf` file [here][conf].
 
 # Startup with systemd #
 
+{% infobox %}
+**Running Ubuntu?** Use the [Startup with init.d](#startup-with-initd) instructions above, not the `systemd` instructions.
+{% endinfobox %}
+
 Full support for systemd is planned&mdash;you can track progress on [issue 2014](https://github.com/rethinkdb/rethinkdb/issues/2014). For now, you'll have to create a couple configuration files manually.
 
 ## Basic setup ##
@@ -220,7 +224,7 @@ sudo pico /etc/rethinkdb.conf
 To start RethinkDB, use `launchctl`:
 
 ```bash
-launchctl load /Library/LaunchDaemons/com.rethinkdb.server.plist
+sudo launchctl load /Library/LaunchDaemons/com.rethinkdb.server.plist
 ```
 
 RethinkDB will automatically load on startup. To disable this behavior, change the `RunAtLoad` key to `<false/>` in the `plist` file.
@@ -239,6 +243,13 @@ In each configuration file, set a different data directory, and include the `joi
 
 {% infobox alert %}
 The `bind=all` option is a security risk if your machine is open to the internet, and you should take steps to prevent unauthorized access. See the [security page](/docs/security/) for more details.
+
+Under OS X, the system versions of Python and Ruby link to old versions of OpenSSL which do not support RethinkDB's defaults for TLS. To use those drivers under OS X, the server must specify:
+
+* `tls-min-protocol TLSv1`
+* `tls-ciphers EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH:AES256-SHA`
+
+These may be specified as startup options to `rethinkdb` or in the configuration file.
 {% endinfobox %}
 
 # Troubleshooting #

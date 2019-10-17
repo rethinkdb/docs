@@ -33,6 +33,12 @@ alias: install/
                     <p class="name">Debian</p>
                 </a>
             </li>
+            <li>
+                <a href="windows/">
+                    <img src="/assets/images/docs/install-platforms/windows.png" />
+                    <p class="name">Windows</p>
+                </a>
+            </li>
         </ul>
     </section>
     <section class="platform-category">
@@ -66,6 +72,12 @@ alias: install/
                 <a href="raspbian/">
                     <img src="/assets/images/docs/install-platforms/raspbian.png"/>
                     <p class="name">Raspbian</p>
+                </a>
+            </li>
+            <li>
+                <a href="gentoo/">
+                    <img src="/assets/images/docs/install-platforms/gentoo.png"/>
+                    <p class="name">Gentoo</p>
                 </a>
             </li>
         </ul>
@@ -121,4 +133,4 @@ more platforms.
 
 # Older versions #
 
-Binaries for previous versions of RethinkDB are available in the [download archive](http://download.rethinkdb.com).
+Binaries for previous versions of RethinkDB are available in the [download archive](https://download.rethinkdb.com).

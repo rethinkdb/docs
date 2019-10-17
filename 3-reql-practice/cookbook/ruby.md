@@ -201,6 +201,7 @@ If we want to retrieve all users on the Galactica and Pegasus, we can write:
 r.table("user").filter{ |user|
     r.expr(["Galactica", "Pegasus"]).contains(user["ship"])
 }.run()
+```
 
 ## Filtering based on nested fields ##
 
@@ -505,7 +506,7 @@ r.table("users").order_by(:index => "name"}).limit(25).run(conn)
 For each successive page, start with the last name in the previous page.
 
 ```rb
-r.table("users").between(last_name, nil, {:left_bound => "open",
+r.table("users").between(last_name, r.maxval, {:left_bound => "open",
     :index => "name"}).order_by({:index => "name"}).limit(25).run(conn)
 ```
 
@@ -766,6 +767,7 @@ But you'd like to get a document more like a "report card":
     "Mathematics" => 70,
     "English" => 90
 }
+```
 
 You can accomplish this with `object` and a pivot.
 
@@ -801,4 +803,27 @@ query = r.table('posts')
 query = query.filter(request.filter) if request.filter
 query = query.order_by('date')
 query = query.run(conn)
+```
+
+## Joining multiple changefeeds into one ##
+
+You might want to produce a "union" changefeed to watch multiple tables or queries on just one feed. Since the `union` command works with `changes`, ReQL makes this fairly straightforward. To monitor two tables at once:
+
+```rb
+r.table('table1').union(r.table('table2')).changes().run(conn)
+```
+
+You might want to "tag" the tables to make it clear which changes belong to which table.
+
+```rb
+r.table("table1").merge({:table => "table1"}).union(
+    r.table("table2").merge({:table => "table2"}).changes().run(conn)
+```
+
+Also, you can use `changes` with each query rather than after the whole.
+
+```rb
+r.table("table1").filter({:flag => "blue"}).changes().union(
+    r.table("table2").filter({:flag => "red"}).changes()
+).run(conn)
 ```

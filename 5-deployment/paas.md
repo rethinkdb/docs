@@ -25,18 +25,21 @@ Each deployment provided by Compose is configured as a high-availability cluster
 
 If you haven't already added billing information to your Compose account, you'll be prompted to do so before deployment.
 
-Compose uses SSH tunneling to provide secure access to your hosted cluster. After your RethinkDB deployment is created, the admin console will give you the host and port information that you need to use to set up the SSH tunnel. Once the tunnel is set up on your system, you can work with the hosted RethinkDB instance the same way you'd work with a local installation of the database.
+You can connect to your hosted cluster on Compose in one of two ways: via SSL or via SSH tunneling. With SSL, you can get a direct Admin URL and driver connection URL to your RethinkDB instance. SSL driver connections are only supported with the official RethinkDB drivers and the community-supported Go driver. For more details, read Compose's [RethinkDB and SSL][cssl] blog post.
 
-Read Compose's [overview][over] of RethinkDB support and their [How to Connect to RethinkDB][conn] documentation for more information.
+SSH tunneling lets you connect directly to the virtual private network of your RethinkDB cluster. This is more complicated to set up, but lets you work with the hosted RethinkDB instance the same way you'd work with a local installation, and it can work with any community RethinkDB driver. After your RethinkDB deployment is created, the admin console will give you the host and port information that you need to use to set up the SSH tunnel.
 
+Read Compose's [overview][over] of RethinkDB support and their [Connecting to RethinkDB][conn] documentation for more information.
+
+[cssl]: https://www.compose.io/articles/rethinkdb-and-ssl-think-secure/
 [over]: https://docs.compose.io/getting-started/rethinkdb-deployments.html
-[conn]: https://docs.compose.io/common-questions/how-to-connect-to-rethinkdb.html
+[conn]: https://help.compose.io/docs/connecting-to-rethinkdb
 
 # Deploying on AWS #
 
 ## Launching an instance ##
 
-The smallest recommended instance type is `m1.small`. However, `t1.micro` works for simple tests. Follow these instructions to set up an AMI:
+The smallest recommended instance type is `t2.small`. However, `t2.micro` works for simple tests. Follow these instructions to set up an AMI:
 
 1. On the [RethinkDB marketplace page][rmp], click the __Continue__ button.
 2. Select the __1-Click Launch__ tab, select the size of the instance you wish to configure, and click on the __Launch with 1-Click__ button on the right.
@@ -65,7 +68,7 @@ The RethinkDB AMI is preconfigured with the following options:
 
 - Ubuntu Server 12.04 LTS
 - RethinkDB server
-- Official RethinkDB client drivers for Python, JavaScript, and Ruby
+- Official RethinkDB client drivers for Python, JavaScript, Java, and Ruby
 - 5 GB of free EBS space for your data
 
 {% infobox %}
@@ -111,15 +114,15 @@ The default security group opens 4 ports:
 To secure your instance more tightly, we recommend that you perform
 the following steps:
 
-* __Change the authentication key.__
+* __Change the admin user password.__
 
     Open the RethinkDB Data Explorer in the web UI and execute the following command:
 
     ```js
-    r.db('rethinkdb').table('cluster_config').get('auth').update({auth_key: 'newkey'})
+    r.db('rethinkdb').table('users').get('admin').update({password: 'newpass'})
     ```
     
-    Where "newkey" is the new key you want to use.
+    Where "newpass" is the new password you want to use.
 
 * __Restrict access to port 28015__ to allow only IP addresses or
   security groups that should have driver access.
@@ -135,18 +138,11 @@ htpasswd /etc/nginx/htpasswd rethinkdb
 
 The `htpasswd` tool will prompt for your new password.
 
-## Changing the driver API key ##
+## Set a user account and password for your application ##
 
-To change the API key used by the server to authenticate the drivers,
-follow the "Change the authentication key" instructions above.
+For details about this, read [Permissions and user accounts][pua].
 
-You can run the following commands to generate a good API key:
-
-```
-API_KEY=$(head /dev/urandom | md5sum | cut -f 1 -d ' ')
-htpasswd /etc/nginx/htpasswd rethinkdb $API_KEY
-echo $API_KEY
-```
+[pua]: /docs/permissions-and-accounts
 
 ## Setting up VPC security groups ##
 

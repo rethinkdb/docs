@@ -7,7 +7,7 @@ module Jekyll
 
         def render(context)
             site = context.registers[:site]
-            converter = site.getConverterImpl(Jekyll::Converters::Markdown)
+            converter = site.find_converter_instance(Jekyll::Converters::Markdown)
             # Temporarily commented out TODO -- Markdown conversion seems to be causing some bugs
             #content = converter.convert(super.strip)
             content = super.strip 

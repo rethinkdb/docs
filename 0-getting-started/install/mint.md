@@ -10,24 +10,35 @@ permalink: docs/install/mint/
 The following instructions were tested on Linux Mint 16.
 
 # With binaries #
-Add the [RethinkDB repository](http://download.rethinkdb.com/apt) to your list of
+Add the [RethinkDB repository](https://download.rethinkdb.com/apt) to your list of
 repositories and then install via `apt-get`:
 
 ## Linux Mint 16 ##
 ```bash
-echo "deb http://download.rethinkdb.com/apt saucy main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+echo "deb https://download.rethinkdb.com/apt saucy main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
 ```
 
 ## Linux Mint 17 ##
 ```bash
-echo "deb http://download.rethinkdb.com/apt trusty main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+echo "deb https://download.rethinkdb.com/apt trusty main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+```
+
+## Linux Mint 18 ##
+```bash
+echo "deb https://download.rethinkdb.com/apt xenial main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
 ```
 
 ## Install RethinkDB ##
 ```bash
-wget -qO- http://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
+wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install rethinkdb
+```
+
+If you followed the above instructions before July 2017 and want to upgrade to a newer version of RethinkDB, you will need to first download the new key (0742918E5C8DA04A):
+
+```bash
+$ wget -qO- https://download.rethinkdb.com/apt/pubkey.gpg | sudo apt-key add -v -
 ```
 
 {% include docs/debian-based-install-from-source.md %}

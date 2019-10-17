@@ -21,7 +21,7 @@ table.reconfigure(emergencyRepair: <option>, dryRun: false) &rarr; object
 
 Reconfigure a table's sharding and replication.
 
-* `shards`: the number of shards, an integer from 1-32. Required.
+* `shards`: the number of shards, an integer from 1-64. Required.
 * `replicas`: either an integer or a mapping object. Required.
     * If `replicas` is an integer, it specifies the number of replicas per shard. Specifying more replicas than there are servers will return an error.
     * If `replicas` is an object, it specifies key-value pairs of server tags and the number of replicas to assign to those servers: `{tag1: 2, tag2: 4, tag3: 2, ...}`. For more information about server tags, read [Administration tools](/docs/administration-tools/).
@@ -43,7 +43,7 @@ The return value of `reconfigure` is an object with three fields:
 
 For `config_changes` and `status_changes`, see the [config](/api/javascript/config) and [status](/api/javascript/status) commands for an explanation of the objects returned in the `old_val` and `new_val` fields.
 
-A table will lose availability temporarily after `reconfigure` is called; use the [tableStatus](/api/javascript/table_status) command to determine when the table is available again.
+A table will lose availability temporarily after `reconfigure` is called; use the [wait](/api/javascript/wait) command to wait for the table to become available again, or [status](/api/javascript/status) to check if the table is available for writing.
 
 **Note:** Whenever you call `reconfigure`, the write durability will be set to `hard` and the write acknowledgments will be set to `majority`; these can be changed by using the `config` command on the table.
 
@@ -55,7 +55,13 @@ __Example:__ Reconfigure a table.
 
 ```js
 > r.table('superheroes').reconfigure({shards: 2, replicas: 1}).run(conn, callback);
-// Result passed to callback
+```
+
+<!-- stop -->
+
+Example return:
+
+```js
 {
   "reconfigured": 1,
   "config_changes": [

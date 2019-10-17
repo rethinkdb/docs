@@ -164,6 +164,27 @@ r.table("test").run( conn, function(error, cursor) {
 
 You may need to adjust RethinkDB's page cache size, using the `--cache-size` argument or configuration file option. Read "[Understanding RethinkDB memory requirements](/docs/memory-usage/)" for a more detailed explanation of how RethinkDB uses memory and how to tune its performance.
 
+If you're running RethinkDB on Linux and see a "Data from a process on this server has been placed into swap memory" warning in the [System issues table](/docs/system-issues/#memory-availability-issues) even though your server has RAM available, it's possible you need to adjust the `swappiness` kernel parameter. A swappiness setting of 0 prevents swap space from being used unless the server is completely out of physical memory; a setting of 100 uses swap space all the time. To check the swappiness of your kernel:
+
+```
+$ cat /proc/sys/vm/swappiness
+60
+```
+
+A setting of 60 (the default for Ubuntu) means that your system will start using swap when RAM usage is at about 40%. If you'd like this to be closer to 90%, set the swappiness to 10. You can do that by editing the `/etc/sysctl.conf` file (as root) and change the setting there:
+
+```
+vm.swappiness = 10
+```
+
+This change won't take effect until you reboot. You can change it while the system is still running, also:
+
+```
+$ sysctl vm.swappiness=10
+$ swapoff -a
+$ swapon -a
+```
+
 ## I get incorrect results when I pass functions with if/for statements to ReQL ##
 
 When you pass functions to ReQL, your language's driver serializes those functions into ReQL lambda functions that are run on the server, not in your client language. (See [All about lambda functions in RethinkDB queries](/blog/lambda-functions/) for more details.) A consequence of this is that native language constructs like `if` and `for` will not produce the expected result when their conditions involve ReQL commands. While they may not cause errors, they will be executed on the client side before the function is compiled for ReQL, and thus give an incorrect result. Instead, you must use equivalent ReQL control functions such as [branch](/api/javascript/branch/) and [forEach](/api/javascript/for_each/). Here's an example in Python from the [Introduction to ReQL](/docs/introduction-to-reql/) document:
@@ -321,3 +342,23 @@ json.dumps(today)
 
 '{"timezone": "-07:00", "$reql_type$": "TIME", "epoch_time": 1433368112.289}'
 ```
+
+## "Cannot use r.row in nested queries" error ##
+
+The JavaScript and Python drivers support a convenience command, `row()`, which simply returns the currently selected document for use with other ReQL functions in the query. However, `row` won't work within nested queries. The solution to this error is to rewrite the `row` clause as an anonymous function. So the following:
+
+```py
+r.table('users').filter(
+    r.row['name'] == r.table('prizes').get('winner')
+).run(conn)
+```
+
+Can be rewritten with this function instead:
+
+```py
+r.table('users').filter(
+    lambda doc: doc['name'] == r.table('prizes').get('winner')
+).run(conn)
+```
+
+Any query, nested or otherwise, can be written with an anonymous function instead of `row`. (The official Ruby and Java drivers don't include `row` at all.)

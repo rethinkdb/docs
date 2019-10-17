@@ -10,30 +10,34 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-stream.changes({:squash => false, :include_states => false}) &rarr; stream
-singleSelection.changes({:squash => false, :include_states => false}) &rarr; stream
+stream.changes([options) &rarr; stream
+singleSelection.changes([options]) &rarr; stream
 {% endapibody %}
 
 # Description #
 
-Return a changefeed, an infinite stream of objects representing changes to a query. A changefeed may return changes to a table or an individual document (a "point" changefeed), and document transformation commands such as `filter` or `map` may be used before the `changes` command to affect the output.
+Turn a query into a changefeed, an infinite stream of objects representing changes to the query's results as they occur. A changefeed may return changes to a table or an individual document (a "point" changefeed). Commands such as `filter` or `map` may be used before the `changes` command to transform or filter the output, and many commands that operate on sequences can be chained after `changes`.
 
-The `squash` optional argument controls how `changes` batches change notifications:
+There are six optional arguments to `changes`.
 
-* `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server.
-* `false`: All changes will be sent to the client verbatim. This is the default.
-* `n`: A numeric value (floating point). Similar to `true`, but the server will wait `n` seconds to respond in order to squash as many changes together as possible, reducing network traffic.
+* `squash`: Controls how change notifications are batched. Acceptable values are `true`, `false` and a numeric value:
+    * `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server.
+    * `false`: All changes will be sent to the client verbatim. This is the default.
+    * `n`: A numeric value (floating point). Similar to `true`, but the server will wait `n` seconds to respond in order to squash as many changes together as possible, reducing network traffic. The first batch will always be returned immediately.
+* `changefeed_queue_size`: the number of changes the server will buffer between client reads before it starts dropping changes and generates an error (default: 100,000).
+* `include_initial`: if `true`, the changefeed stream will begin with the current contents of the table or selection being monitored. These initial results will have `new_val` fields, but no `old_val` fields. The initial results may be intermixed with actual changes, as long as an initial result for the changed document has already been given. If an initial result for a document has been sent and a change is made to that document that would move it to the unsent part of the result set (e.g., a changefeed monitors the top 100 posters, the first 50 have been sent, and poster 48 has become poster 52), an "uninitial" notification will be sent, with an `old_val` field but no `new_val` field.
+* `include_states`: if `true`, the changefeed stream will include special status documents consisting of the field `state` and a string indicating a change in the feed's state. These documents can occur at any point in the feed between the notification documents described below. If `include_states` is `false` (the default), the status documents will not be sent.
+* `include_offsets`: if `true`, a changefeed stream on an `order_by.limit` changefeed will include `old_offset` and `new_offset` fields in status documents that include `old_val` and `new_val`. This allows applications to maintain ordered lists of the stream's result set. If `old_offset` is set and not `nil`, the element at `old_offset` is being deleted; if `new_offset` is set and not `nil`, then `new_val` is being inserted at `new_offset`. Setting `include_offsets` to `true` on a changefeed that does not support it will raise an error.
+* `include_types`: if `true`, every result on a changefeed will include a `type` field with a string that indicates the kind of change the result represents: `add`, `remove`, `change`, `initial`, `uninitial`, `state`. Defaults to `false`.
 
-If the `include_states` optional argument is `true`, the changefeed stream will include special status documents consisting of the field `state` and a string indicating a change in the feed's state. These documents can occur at any point in the feed between the notification documents described below. There are currently two states:
+There are currently two states:
 
 * `{:state => "initializing"}` indicates the following documents represent initial values on the feed rather than changes. This will be the first document of a feed that returns initial values.
 * `{:state => "ready"}` indicates the following documents represent changes. This will be the first document of a feed that does *not* return initial values; otherwise, it will indicate the initial values have all been sent.
 
-Point changefeeds will always return initial values and have an `initializing` state; feeds that return changes on unfiltered tables will never return initial values. Feeds that return changes on more complex queries may or may not return return initial values, depending on the kind of aggregation. Read the article on [Changefeeds in RethinkDB][cfr] for a more detailed discussion. If `include_states` is `true` on a changefeed that does not return initial values, the first document on the feed will be `{:state => 'ready'}`.
-
-[cfr]: /docs/changefeeds/ruby/
-
-If `include_states` is `false` (the default), the status documents will not be sent on the feed.
+{% infobox %}
+Starting with RethinkDB 2.2, state documents will *only* be sent if the `include_states` option is `true`, even on point changefeeds. Initial values will only be sent if `include_initial` is `true`. If `include_states` is `true` and `include_initial` is false, the first document on the feed will be `{:state => 'ready'}`.
+{% endinfobox %}
 
 If the table becomes unavailable, the changefeed will be disconnected, and a runtime exception will be thrown by the driver.
 
@@ -46,13 +50,25 @@ Changefeed notifications take the form of a two-field object:
 }
 ```
 
-The first notification object in the changefeed stream will contain the query's initial value in `new_val` and have no `old_val` field. When a document is deleted, `new_val` will be `nil`; when a document is inserted, `old_val` will be `nil`.
+When `include_types` is `true`, there will be three fields:
+
+```rb
+{
+    :old_val => <document before change>,
+    :new_val => <document after change>,
+    :type => <result type>
+}
+```
+
+When a document is deleted, `new_val` will be `nil`; when a document is inserted, `old_val` will be `nil`.
 
 {% infobox %}
 Certain document transformation commands can be chained before changefeeds. For more information, read the [discussion of changefeeds](/docs/changefeeds/ruby/) in the "Query language" documentation.
+
+__Note:__ Changefeeds ignore the `read_mode` flag to `run`, and always behave as if it is set to `single` (i.e., the values they return are in memory on the primary replica, but have not necessarily been written to disk yet). For more details read [Consistency guarantees](/docs/consistency).
 {% endinfobox %}
 
-The server will buffer up to 100,000 elements. If the buffer limit is hit, early changes will be discarded, and the client will receive an object of the form `{:error => "Changefeed cache over array size limit, skipped X elements."}` where `X` is the number of elements skipped.
+The server will buffer up to `changefeed_queue_size` elements (default 100,000). If the buffer limit is hit, early changes will be discarded, and the client will receive an object of the form `{:error => "Changefeed cache over array size limit, skipped X elements."}` where `X` is the number of elements skipped.
 
 Commands that operate on streams (such as [filter](/api/ruby/filter/) or [map](/api/ruby/map/)) can usually be chained after `changes`.  However, since the stream produced by `changes` has no ending, commands that need to consume the entire stream before returning (such as [reduce](/api/ruby/reduce/) or [count](/api/ruby/count/)) cannot.
 
@@ -109,10 +125,10 @@ r.table('test').changes().filter{ |row|
 }.run(conn)
 ```
 
-__Example:__ Return all the changes to game 1, with state notifications.
+__Example:__ Return all the changes to game 1, with state notifications and initial values.
 
 ```rb
-r.table('games').get(1).changes({:include_states => true}).run(conn)
+r.table('games').get(1).changes({:include_initial => true, :include_states => true}).run(conn)
 
 # result returned on changefeed
 {:state => "initializing"}
@@ -132,5 +148,25 @@ r.table('games').get(1).changes({:include_states => true}).run(conn)
 __Example:__ Return all the changes to the top 10 games. This assumes the presence of a `score` secondary index on the `games` table.
 
 ```rb
-r.table('games').order_by({:index => r.desc('score')}).limit(10).run(conn)
+r.table('games').order_by(
+    {:index => r.desc('score')}
+).limit(10).changes().run(conn)
 ```
+__Example:__ Maintain the state of an array based on a changefeed.
+
+```rb
+EventMachine.run {
+    r.table('data').changes(
+        {:include_initial => true, :include_offsets => true}
+    ).em_run(conn) { |change|
+        # delete item at old_offset before inserting at new_offset
+        my_array.delete_at(change.old_offset) if change.old_offset != nil
+        my.array.insert(change.new_offset, change.new_val) if change.new_offset != nil
+    }
+}
+```
+
+(This is a simplistic implementation; for more information about RethinkDB's EventMachine support, read the documentation for [em_run][emr]. For a more sophisticated example, see the `applyChange` function in Horizon's [client/src/ast.js][ast] source; it's written in JavaScript, but the principles apply to all languages.)
+
+[emr]: /api/ruby/em_run
+[ast]: https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js

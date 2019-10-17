@@ -54,6 +54,7 @@ r.table("users").between("Smith", "Wade", {index: "last_name"}).run(conn, callba
 r.table("users").orderBy({index: "last_name"}).run(conn, callback)
 
 // For each blog post, return the post and its author using the last_name index
+// (assume "author_full_name" is the name of a field in "posts")
 r.table("posts").eqJoin("author_last_name", r.table("users"), {index: "last_name"}) \
     .zip().run(conn, callback)
 ```
@@ -107,12 +108,16 @@ r.table("posts").eqJoin(
 ```
 
 Internally, compound indexes and simple indexes are the same type of index in RethinkDB; compound indexes are simply a special case of regular index that returns an array rather than a single value.
+Note that this affects sorting: compound index values are sorted lexicographically, with the first (leftmost) elements of the compound value being more significant than the last (rightmost) ones.
+Therefore, using the `full_name` index, the above example "all users whose last name is Smith" only works for the `last_name` field.
+Searching by `first_name` with a query like `between([r.minval, "John"], [r.maxval, "John"], {index: "full_name"})` would effectively select _every_ user in the table, except (theoretically) users that have `r.minval` as last name and a first name lexicographically smaller than "John" (or the reverse for `r.maxval`).
 
 # Multi indexes #
 
 With simple and compound indexes, a document will be indexed using at most one index key: a single value for a simple index and a set of values for a compound index. Multiple documents may have the same index key. With a _multi index_, a document can be indexed using more than one key in the same index. For instance, a blog post might have multiple tags, and each tag might refer to multiple blog posts.
 
 The keys in a multi index can be single values, compound values or even arbitrary expressions. (See the section below for more detail on indexes using functions.)
+What matters is that the "multi-value" that gets indexed is an _array_: the document will be referenced in the index multiple times, one for each element of this array.
 
 ## Creation ##
 
@@ -177,6 +182,48 @@ r.table("users").indexCreate("activities", r.row("hobbies").add(r.row("sports"))
     {multi: true}).run(conn, callback)
 ```
 
+This can be useful if you want to search documents by multiple criteria at the same time, like messages posted in a forum that should be identifiable by:
+
+* the author
+* a tag (among many)
+* the publication time (range queries should be possible)
+
+This would be an example document representing a posted message:
+
+```
+{
+  id: "XXYYZZ",
+  author: "John"
+  tags: ["art", "hobby", "fun"],
+  time: 123,
+  text: "Text goes here..."
+}
+```
+
+One way to build the index would be:
+
+```
+r.db("db").table("posts").indexCreate(
+  "myIndex",
+  function(post) {
+    return post("tags").map(function(tag) {
+      return [tag, post("author"), post("time")];
+    })
+  },
+  {multi: true}
+)
+```
+
+Then the query selecting posts about `"fun"`, by `"John"`, and posted between `120` and `130`, would be:
+
+```
+r.db("db").table("posts").between(["fun", "John", 120], ["fun", "John", 130], {index:"myIndex"})
+```
+
+Note that, due to the index being sorted lexicographically (and the fact that `between` returns a single contiguous interval of rows), it would be possible to search for posts about `"fun"` by any author but then it would not be possible to limit the time range (not without building a different index, of course).
+
+For the same reason, using this index to look for posts by `"John"` with any tag would not be possible.
+
 ## Use a multi index and a mapping function to speed getAll/contains ##
 
 If your program frequently executes a [getAll](/api/javascript/get_all) followed by a [contains](/api/javascript/contains), that operation can be made more efficient by creating a compound multi index using a mapping function on the field that contains the list.
@@ -230,6 +277,10 @@ view.
 # Notes #
 
 The primary index of a table can be used in any ReQL command that uses a secondary index.
+
+Indexes (both secondary and primary) are guaranteed to be updated by successful write operations. If an `insert`, `update` or `delete` operation is successful, the change will be correctly reflected in the index. (Read about RethinkDB [Consistency guarantees][cg] for write operations.)
+
+[cg]: /docs/consistency/
 
 The part of a secondary index key that's used for fast lookups depends on the length of the primary key (which must be 127 bytes or less). The length of this part is 238&minus;*PK*, where *PK* is the primary key length; if the primary key length is a 36-character GUID, for instance, this means that 202 characters in the secondary index will be significant. If a table has multiple entries where the first 238&minus;*PK* characters are identical, lookup performance will be sharply degraded, as RethinkDB will have to perform a linear search to find the correct entries.
 

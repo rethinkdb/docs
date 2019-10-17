@@ -18,6 +18,22 @@ __Before you start:__
 
 <img src="/assets/images/docs/api_illustrations/10-minute-guide.png" class="api_command_illustration" />
 
+# Start the server #
+
+For a more detailed look, make sure to read the [quickstart](/docs/quickstart/).
+
+## Linux and OS X ##
+
+Start the server from a terminal window.
+
+    $ rethinkdb
+
+## Windows ##
+
+Start the server from the Windows command prompt.
+
+    C:\Users\Slava\RethinkDB\>rethinkdb.exe
+
 # Import the driver #
 
 First, start a Ruby shell:
@@ -50,7 +66,7 @@ The `repl` command is a convenience method that sets a default connection in you
 __Note:__ the `repl` command is useful to experiment in the shell, but
 you should pass the connection to the `run` command explicitly in
 real applications. See [an example
-project](/docs/examples/sinatra-pastie/) for more details.
+project](https://github.com/rethinkdb/rethinkdb-example-sinatra-pastie) for more details.
 {% endinfobox%}
 
 # Create a new table #
@@ -348,7 +364,7 @@ Browse the [API reference](/api/ruby/) for many more array operations available 
 Suppose we'd like to trim down our database and delete every document
 with less than three posts (sorry Laura and Jean-Luc):
 
-```python
+```ruby
 r.table("authors").
     filter{ |author| author["posts"].count < 3 }.
     delete.run

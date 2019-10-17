@@ -1,10 +1,10 @@
 # RethinkDB Documentation #
 
-This repository contains all the documentation available at [rethinkdb.com](http://rethinkdb.com/). Documentation is written in [kramdown](http://kramdown.gettalong.org/), which is a superset of Markdown.
+This repository contains all the documentation available at <http://rethinkdb.com/>. Documentation is written in [kramdown](http://kramdown.gettalong.org/), which is a superset of Markdown.
 
 ## Building standalone documentation ##
 
-The documentation for the latest RethinkDB release is always available at [rethinkdb.com/docs](). However, if you like, you can build a local version of the documentation for offline viewing or to preview changes.
+The documentation for the latest RethinkDB release is always available at <http://rethinkdb.com/docs>. However, if you like, you can build a local version of the documentation for offline viewing or to preview changes.
 
 __Prerequisites:__
   - Ruby
@@ -22,7 +22,7 @@ Then, to build and serve the docs, simply run:
 rake
 ```
 
-...and visit [http://localhost:4000]() in your browser.
+...and visit <http://localhost:4000> in your browser.
 
 To reset the build environment and purge all generated files:
 
@@ -58,7 +58,7 @@ We use use [kramdown](http://kramdown.gettalong.org/) to parse the Markdown file
 
 Some documentation pages have multiple versions for different languages, client drivers, platforms, etc. All updates need to be reflected in each version of the page.
 
-For example, if you add a recipe to the [Cookbook](http://rethinkdb.com/docs/cookbook/javascript/), you will have to add it to the JavaScript, Python and Ruby versions of the recipe. If you aren't familiar with one of the languages, we'll be more than happy to help you add all the versions.
+For example, if you add a recipe to the [Cookbook](http://rethinkdb.com/docs/cookbook/javascript/), you will have to add it to the JavaScript, Python, Java and Ruby versions of the recipe. If you aren't familiar with one of the languages, we'll be more than happy to help you add all the versions.
 
 ### API docs ###
 
@@ -70,7 +70,7 @@ Each command has a dedicated Markdown file for each language. A [YAML](http://ya
 ---
 # The layout of the document
 layout: api-command
-# The language, valid values are JavaScript, Python, Ruby
+# The language, valid values are JavaScript, Python, Ruby, Java
 language: JavaScript
 # The permalink
 permalink: api/javascript/add_listener/

@@ -28,9 +28,13 @@ RethinkDB supports different types of secondary indexes:
 - *Geospatial indexes* based on indexes of geometry objects, created when the `geo` optional argument is true.
 - Indexes based on *arbitrary expressions*.
 
-The `index_function` can be an anonymous function or a binary representation obtained from the `function` field of [index_status](/api/ruby/index_status).
+The `index_function` can be an anonymous function or a binary representation obtained from the `function` field of [index_status](/api/ruby/index_status). The function must be deterministic, and so cannot use a subquery or the `r.js` command.
 
 If successful, `create_index` will return an object of the form `{:created => 1}`. If an index by that name already exists on the table, a `ReqlRuntimeError` will be thrown.
+
+{% infobox %}
+Note that an index may not be immediately available after creation. If your application needs to use indexes immediately after creation, use the [index_wait](/api/ruby/index_wait) command to ensure the indexes are ready before use.
+{% endinfobox %}
 
 __Example:__ Create a simple index based on the field `post_id`.
 

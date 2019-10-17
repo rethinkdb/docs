@@ -19,6 +19,8 @@
           permalink: changes
         - name: noreply_wait
           permalink: noreply_wait
+        - name: server
+          permalink: server
         - name: set_loop_type
           permalink: set_loop_type
 - section:
@@ -137,6 +139,8 @@
           permalink: ungroup
         - name: reduce
           permalink: reduce
+        - name: fold
+          permalink: fold
         - name: count
           permalink: count
         - name: sum
@@ -192,6 +196,10 @@
           permalink: change_at
         - name: keys
           permalink: keys
+        - name: values
+          permalink: values
+        - name: literal
+          permalink: literal
         - name: object
           permalink: object
 - section:
@@ -354,6 +362,8 @@
 - section:
     name: Administration
     commands:
+      - name: grant
+        permalink: grant
       - name: config
         permalink: config
       - name: rebalance

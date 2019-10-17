@@ -21,7 +21,8 @@ instance. We will assume that RethinkDB is running on the same server and on
 the default port (you can change the parameters passed to `connect`): 
 
 ```python
-> import rethinkdb as r
+> from rethinkdb import RethinkDB
+> r = RethinkDB()
 > # connect and make the connection available to subsequent commands 
 > r.connect('localhost', 28015).repl()
 > print r.db_list().run()

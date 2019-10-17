@@ -15,30 +15,34 @@ io:
 # Command syntax #
 
 {% apibody %}
-stream.changes({squash: false, includeStates: false}) &rarr; stream
-singleSelection.changes({squash: false, includeStates: false}) &rarr; stream
+stream.changes([options]) &rarr; stream
+singleSelection.changes([options]) &rarr; stream
 {% endapibody %}
 
 # Description #
 
-Return a changefeed, an infinite stream of objects representing changes to a query. A changefeed may return changes to a table or an individual document (a "point" changefeed), and document transformation commands such as `filter` or `map` may be used before the `changes` command to affect the output.
+Turn a query into a changefeed, an infinite stream of objects representing changes to the query's results as they occur. A changefeed may return changes to a table or an individual document (a "point" changefeed). Commands such as `filter` or `map` may be used before the `changes` command to transform or filter the output, and many commands that operate on sequences can be chained after `changes`.
 
-The `squash` optional argument controls how `changes` batches change notifications:
+There are six optional arguments to `changes`.
 
-* `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server.
-* `false`: All changes will be sent to the client verbatim. This is the default.
-* `n`: A numeric value (floating point). Similar to `true`, but the server will wait `n` seconds to respond in order to squash as many changes together as possible, reducing network traffic.
+* `squash`: Controls how change notifications are batched. Acceptable values are `true`, `false` and a numeric value:
+    * `true`: When multiple changes to the same document occur before a batch of notifications is sent, the changes are "squashed" into one change. The client receives a notification that will bring it fully up to date with the server.
+    * `false`: All changes will be sent to the client verbatim. This is the default.
+    * `n`: A numeric value (floating point). Similar to `true`, but the server will wait `n` seconds to respond in order to squash as many changes together as possible, reducing network traffic. The first batch will always be returned immediately.
+* `changefeedQueueSize`: the number of changes the server will buffer between client reads before it starts dropping changes and generates an error (default: 100,000).
+* `includeInitial`: if `true`, the changefeed stream will begin with the current contents of the table or selection being monitored. These initial results will have `new_val` fields, but no `old_val` fields. The initial results may be intermixed with actual changes, as long as an initial result for the changed document has already been given. If an initial result for a document has been sent and a change is made to that document that would move it to the unsent part of the result set (e.g., a changefeed monitors the top 100 posters, the first 50 have been sent, and poster 48 has become poster 52), an "uninitial" notification will be sent, with an `old_val` field but no `new_val` field.
+* `includeStates`: if `true`, the changefeed stream will include special status documents consisting of the field `state` and a string indicating a change in the feed's state. These documents can occur at any point in the feed between the notification documents described below. If `includeStates` is `false` (the default), the status documents will not be sent.
+* `includeOffsets`: if `true`, a changefeed stream on an `orderBy.limit` changefeed will include `old_offset` and `new_offset` fields in status documents that include `old_val` and `new_val`. This allows applications to maintain ordered lists of the stream's result set. If `old_offset` is set and not `null`, the element at `old_offset` is being deleted; if `new_offset` is set and not `null`, then `new_val` is being inserted at `new_offset`. Setting `includeOffsets` to `true` on a changefeed that does not support it will raise an error.
+* `includeTypes`: if `true`, every result on a changefeed will include a `type` field with a string that indicates the kind of change the result represents: `add`, `remove`, `change`, `initial`, `uninitial`, `state`. Defaults to `false`.
 
-If the `includeStates` optional argument is `true`, the changefeed stream will include special status documents consisting of the field `state` and a string indicating a change in the feed's state. These documents can occur at any point in the feed between the notification documents described below. There are currently two states:
+There are currently two states:
 
 * `{state: 'initializing'}` indicates the following documents represent initial values on the feed rather than changes. This will be the first document of a feed that returns initial values.
 * `{state: 'ready'}` indicates the following documents represent changes. This will be the first document of a feed that does *not* return initial values; otherwise, it will indicate the initial values have all been sent.
 
-Point changefeeds will always return initial values and have an `initializing` state; feeds that return changes on unfiltered tables will never return initial values. Feeds that return changes on more complex queries may or may not return return initial values, depending on the kind of aggregation. Read the article on [Changefeeds in RethinkDB][cfr] for a more detailed discussion. If `includeStates` is `true` on a changefeed that does not return initial values, the first document on the feed will be `{state: 'ready'}`.
-
-[cfr]: /docs/changefeeds/javascript/
-
-If `includeStates` is `false` (the default), the status documents will not be sent on the feed.
+{% infobox %}
+Starting with RethinkDB 2.2, state documents will *only* be sent if the `includeStates` option is `true`, even on point changefeeds. Initial values will only be sent if `includeInitial` is `true`. If `includeStates` is `true` and `includeInitial` is false, the first document on the feed will be `{state: 'ready'}`.
+{% endinfobox %}
 
 If the table becomes unavailable, the changefeed will be disconnected, and a runtime exception will be thrown by the driver.
 
@@ -51,13 +55,25 @@ Changefeed notifications take the form of a two-field object:
 }
 ```
 
-The first notification object in the changefeed stream will contain the query's initial value in `new_val` and have no `old_val` field. When a document is deleted, `new_val` will be `null`; when a document is inserted, `old_val` will be `null`.
+When `includeTypes` is `true`, there will be three fields:
+
+```js
+{
+    "old_val": <document before change>,
+    "new_val": <document after change>,
+    "type": <result type>
+}
+```
+
+When a document is deleted, `new_val` will be `null`; when a document is inserted, `old_val` will be `null`.
 
 {% infobox %}
 Certain document transformation commands can be chained before changefeeds. For more information, read the [discussion of changefeeds](/docs/changefeeds/javascript/) in the "Query language" documentation.
+
+__Note:__ Changefeeds ignore the `read_mode` flag to `run`, and always behave as if it is set to `single` (i.e., the values they return are in memory on the primary replica, but have not necessarily been written to disk yet). For more details read [Consistency guarantees](/docs/consistency).
 {% endinfobox %}
 
-The server will buffer up to 100,000 elements. If the buffer limit is hit, early changes will be discarded, and the client will receive an object of the form `{error: "Changefeed cache over array size limit, skipped X elements."}` where `X` is the number of elements skipped.
+The server will buffer up to `changefeedQueueSize` elements (default 100,000). If the buffer limit is hit, early changes will be discarded, and the client will receive an object of the form `{error: "Changefeed cache over array size limit, skipped X elements."}` where `X` is the number of elements skipped.
 
 Commands that operate on streams (such as [filter](/api/javascript/filter/) or [map](/api/javascript/map/)) can usually be chained after `changes`.  However, since the stream produced by `changes` has no ending, commands that need to consume the entire stream before returning (such as [reduce](/api/javascript/reduce/) or [count](/api/javascript/count/)) cannot.
 
@@ -112,10 +128,10 @@ __Example:__ Return all the inserts on a table.
 r.table('test').changes().filter(r.row('old_val').eq(null)).run(conn, callback)
 ```
 
-__Example:__ Return all the changes to game 1, with state notifications.
+__Example:__ Return all the changes to game 1, with state notifications and initial values.
 
 ```js
-r.table('games').get(1).changes({includeStates: true}).run(conn, callback);
+r.table('games').get(1).changes({includeInitial: true, includeStates: true}).run(conn, callback);
 // Result returned on changefeed
 {state: 'initializing'}
 {new_val: {id: 1, score: 12, arena: 'Hobbiton Field'}}
@@ -133,5 +149,27 @@ r.table('games').get(1).changes({includeStates: true}).run(conn, callback);
 __Example:__ Return all the changes to the top 10 games. This assumes the presence of a `score` secondary index on the `games` table.
 
 ```js
-r.table('games').orderBy({index: r.desc('score')}).limit(10).run(conn, callback);
+r.table('games').orderBy(
+    { index: r.desc('score') }
+).limit(10).changes().run(conn, callback);
 ```
+
+__Example:__ Maintain the state of an array based on a changefeed.
+
+```js
+r.table('data').changes(
+    {includeInitial: true, includeOffsets: true}
+).run(conn, function (err, change) {
+    // delete item at old_offset before inserting at new_offset
+    if (change.old_offset != null) {
+        myArray.splice(change.old_offset, 1);
+    }
+    if (change.new_offset != null) {
+        myArray.splice(change.new_offset, 0, change.new_val);
+    }
+});
+```
+
+(This is a simplistic implementation; for a more sophisticated treatment, see the `applyChange` function in Horizon's [client/src/ast.js][ast] source.)
+
+[ast]: https://github.com/rethinkdb/horizon/blob/next/client/src/ast.js

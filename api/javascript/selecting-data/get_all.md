@@ -14,7 +14,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.getAll(key[, key2...], [, {index:'id'}]) &rarr; selection
+table.getAll([key, key2...], [, {index:'id'}]) &rarr; selection
 {% endapibody %}
 
 <img src="/assets/images/docs/api_illustrations/get-all.png" class="api_command_illustration" />
@@ -35,11 +35,15 @@ __Example:__ Without an index argument, we default to the primary index. While `
 r.table('dc').getAll('superman').run(conn, callback)
 ```
 
-__Example:__ You can get multiple documents in a single call to `get_all`.
+__Example:__ You can get multiple documents in a single call to `getAll`.
 
 ```js
 r.table('dc').getAll('superman', 'ant man').run(conn, callback)
 ```
+
+{% infobox %}
+__Note:__ `getAll` does not perform any de-duplication. If you pass the same key more than once, the same document will be returned multiple times.
+{% endinfobox %}
 
 __Example:__ You can use [args](/api/javascript/args/) with `getAll` to retrieve multiple documents whose keys are in a list. This uses `getAll` to get a list of female superheroes, coerces that to an array, and then gets a list of villains who have those superheroes as enemies.
 
@@ -51,5 +55,7 @@ r.do(
     }
 ).run(conn, callback)
 ```
+
+Calling `getAll` with zero arguments&mdash;which could happen in this example if the `heroines` list had no elements&mdash;will return nothing, i.e., a zero length stream.
 
 Secondary indexes can be used in extremely powerful ways with `getAll` and other commands; read the full article on [secondary indexes](/docs/secondary-indexes) for examples using boolean operations, `contains` and more.

@@ -249,7 +249,7 @@ If we want to retrieve all users on the Galactica and Pegasus, we can write:
 
 ```js
 r.table("user").filter(function (user) {
-    r(["Galactica", "Pegasus"]).contains(user("ship"))
+    return r.expr(["Galactica", "Pegasus"]).contains(user("ship"))
 }).run(conn, function(err, result) {
     if (err) throw err;
     console.log(result);
@@ -638,7 +638,7 @@ For each successive page, start with the last name in the previous page.
 
 
 ```javascript
-r.table("users").between(lastName, null, {leftBound: "open", index: "name"})
+r.table("users").between(lastName, r.maxval, {leftBound: "open", index: "name"})
  .orderBy({index: "name"}).limit(25).run(conn, function(err, result) {
     if (err) throw err;
     console.log(result);
@@ -983,4 +983,28 @@ if (request.filter !== undefined) {
 }
 query = query.orderBy('date');
 query.run(conn, callback);
+```
+
+## Joining multiple changefeeds into one ##
+
+You might want to produce a "union" changefeed to watch multiple tables or queries on just one feed. Since the `union` command works with `changes`, ReQL makes this fairly straightforward. To monitor two tables at once:
+
+```js
+r.table('table1').union(r.table('table2')).changes().run(conn, callback);
+```
+
+You might want to "tag" the tables to make it clear which changes belong to which table.
+
+```js
+r.table('table1').merge({table: 'table1'})
+ .union(r.table('table2').merge({table: 'table2'})
+ .changes().run(conn, callback);
+```
+
+Also, you can use `changes` with each query rather than after the whole.
+
+```js
+r.table('table1').filter({flag: 'blue'}).changes()
+ .union(r.table('table2').filter({flag: 'red'}).changes())
+ .run(conn, callback);
 ```

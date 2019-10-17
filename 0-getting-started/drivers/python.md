@@ -5,6 +5,7 @@ title_image: /assets/images/docs/driver-languages/python.png
 docs_active: install-drivers
 permalink: docs/install-drivers/python/
 ---
+
 {% include docs/install-driver-docs-header.md %}
 
 # Installation #
@@ -13,10 +14,21 @@ permalink: docs/install-drivers/python/
 From version 1.14, the Python driver for RethinkDB supports Python 2 and 3. Version 1.13 and older support Python 2 only.
 {% endinfobox %}
 
-Install the driver with pip:
+Install the driver with pip. Using a virtual environment is the recommended way to install Python packages so start by
+creating a virtual environment to use:
 
 ```bash
-$ sudo pip install rethinkdb
+# Python 2
+$ sudo pip install virtualenv && vitualenv ./venv
+# Python 3
+$ python3 -m venv ./venv
+```
+
+Then use the `pip` binary from your virtual environment to install the RethinkDB driver:
+
+```bash
+$ source venv/bin/activate
+$ pip install rethinkdb
 ```
 
 # Usage #
@@ -25,7 +37,8 @@ You can use the drivers from Python like this:
 
 ```bash
 $ python
-import rethinkdb as r
+from rethinkdb import r
+
 r.connect('localhost', 28015).repl()
 r.db('test').table_create('tv_shows').run()
 r.table('tv_shows').insert({ 'name': 'Star Trek TNG' }).run()

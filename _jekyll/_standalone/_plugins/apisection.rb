@@ -13,7 +13,7 @@ module Jekyll
 
         def render(context)
             site = context.registers[:site]
-            converter = site.getConverterImpl(Jekyll::Converters::Markdown)
+            converter = site.find_converter_instance(Jekyll::Converters::Markdown)
             content = converter.convert(super.strip)
             "<section class='api-section'><h1 data-alt='#{@name}'>#{@alt_name}</h1>#{content}</section>".strip
         end
@@ -27,7 +27,7 @@ module Jekyll
 
         def render(context)
             site = context.registers[:site]
-            converter = site.getConverterImpl(Jekyll::Converters::Markdown)
+            converter = site.find_converter_instance(Jekyll::Converters::Markdown)
             content = "<p>#{super.gsub('<', '&lt;').gsub('>', '&gt;').strip.gsub(/\n([^\s])/, '</p><p>\1')}</p>"  #.gsub(/\n$/, '').gsub(/(?:\n\r?|\r\n?)/, '<br/>')
            "<section class='command-syntax'>#{content}</section>".strip
         end
@@ -41,7 +41,7 @@ module Jekyll
         end
 
         def render(context)
-            '/'+super.gsub(/python|javascript|ruby/, @lang)
+            '/'+super.gsub(/\b(python|javascript|ruby|java)\b/, @lang)
         end
     end
 end

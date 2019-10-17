@@ -17,6 +17,8 @@
           permalink: changes
         - name: noreplyWait
           permalink: noreply_wait
+        - name: server
+          permalink: server
         - name: EventEmitter (connection)
           permalink: event_emitter
 - section:
@@ -26,12 +28,14 @@
           permalink: next
         - name: each
           permalink: each
+        - name: eachAsync
+          permalink: each_async
         - name: toArray
           permalink: to_array
         - name: close
           permalink: close-cursor
         - name: EventEmitter (cursor)
-          permalink: event_emitter-cursor
+          permalink: ee-cursor
 - section:
     name: Manipulating databases
     commands:
@@ -137,6 +141,8 @@
           permalink: ungroup
         - name: reduce
           permalink: reduce
+        - name: fold
+          permalink: fold
         - name: count
           permalink: count
         - name: sum
@@ -192,6 +198,8 @@
           permalink: change_at
         - name: keys
           permalink: keys
+        - name: values
+          permalink: values
         - name: literal
           permalink: literal
         - name: object
@@ -356,6 +364,8 @@
 - section:
     name: Administration
     commands:
+      - name: grant
+        permalink: grant
       - name: config
         permalink: config
       - name: rebalance

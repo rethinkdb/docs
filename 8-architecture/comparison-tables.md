@@ -26,7 +26,7 @@ documentation for further details.
 
 | | RethinkDB | MongoDB |  
 | ------ | ------ | ------ |  
-| Platforms | Linux, OS X | Linux, OS X, Windows, Solaris |  
+| Platforms | Linux, OS X, Windows | Linux, OS X, Windows, Solaris |  
 | Data model | JSON documents | BSON documents |  
 | Data access | Unified chainable dynamic query language | Dynamic rich query language |  
 | JavaScript integration | V8 engine | Spidermonkey/V8 engine |  
@@ -99,7 +99,7 @@ libraries](http://docs.mongodb.org/ecosystem/drivers/). MongoDB's [wire
 protocol is TCP based and uses
 BSON](http://docs.mongodb.org/meta-driver/latest/legacy/mongodb-wire-protocol/).
 
-RethinkDB provides official libraries for JavaScript/Node.js, Python, Ruby.
+RethinkDB provides official libraries for JavaScript/Node.js, Python, Java, and Ruby.
 In addition, there are [community supported client drivers](/docs/install-drivers/) for more than half a dozen other languages.
 RethinkDB uses JSON over TCP for client-server communications.
 
@@ -131,7 +131,7 @@ RethinkDB can be manually deployed on cloud platforms such as AWS.
 
 |           | RethinkDB | MongoDB |
 | :-------- | --------- | ------- |
-| CLI tools | Admin CLI | JavaScript interactive shell |
+| CLI tools | ReQL admin commands | JavaScript interactive shell |
 | UI tools  | Web-based admin UI | Simple HTTP interface |
 | Failover  | Auto primary re-election | Replica-sets with auto primary re-election |
 | Backup    | `rethinkdb-dump` | `mongodump` or snapshotting |
@@ -143,9 +143,9 @@ shell](http://docs.mongodb.org/manual/reference/program/mongo/) that
 can be used for inspecting data, testing queries, creating indexes, maintenance
 scripts, and other administrative functions.
 
-RethinkDB has an administration CLI that can be attached to any node in the
-cluster and provides fine grained administrative control of the cluster
-resources. The command-line client offers integrated help and auto-completion.
+RethinkDB administration tasks, including fine-grained cluster and server
+configuration, can be scripted in any language with a ReQL driver. These
+commands can also be executed in the admin UI's Data Explorer.
 
 ## UI tools ##
 
@@ -256,9 +256,10 @@ Official performance numbers for RethinkDB have not been published yet. (We're s
 
 MongoDB uses [locks at various
 levels](http://docs.mongodb.org/manual/faq/concurrency/#which-operations-lock-the-database)
-for ensuring data consistency. In MongoDB, v2.2 writes and map-reduce require
-write locks at the database level. MongoDB uses threads for handling client
-connections.
+for ensuring data consistency. In MongoDB starting with v3.0, MMAPv1 engine supports
+collection-level locking and WiredTiger storage engine uses [document-level
+locking and multiversion concurrency control](https://docs.mongodb.com/manual/core/wiredtiger/).
+MongoDB uses threads for handling client connections.
 
 RethinkDB implements [block-level multiversion concurrency
 control](/docs/architecture/#how-does-rethinkdb-execute-queries)

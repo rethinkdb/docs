@@ -13,6 +13,7 @@ related_commands:
 
 {% apibody %}
 sequence.contains([value | predicate_function, ...]) &rarr; bool
+r.contains(sequence, [value | predicate_function, ...]) &rarr; bool
 {% endapibody %}
 
 # Description #
@@ -36,6 +37,14 @@ __Example:__ Has Iron Man ever defeated Superman in battle?
 ```rb
 r.table('marvel').get('ironman')[:battles].contains{|battle|
     battle[:winner].eq('ironman') & battle[:loser].eq('superman')
+}.run(conn)
+```
+
+__Example:__ Return all heroes who have fought _both_ Loki and the Hulk.
+
+```rb
+r.table('marvel').filter{ |hero|
+    hero[:opponents].contains('loki', 'hulk')
 }.run(conn)
 ```
 

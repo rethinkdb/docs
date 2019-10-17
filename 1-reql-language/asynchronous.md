@@ -21,7 +21,7 @@ No special procedures or commands are necessary to execute RethinkDB queries asy
 
 In addition, RethinkDB's cursors and feeds implement an [EventEmitter interface][ee] compatible with Node's. This allows your application to set up listeners to receive data from queries as the data becomes available.
 
-[ee]: /api/javascript/event_emitter-cursor/
+[ee]: /api/javascript/ee-cursor/
 
 # Ruby with EventMachine
 
@@ -216,7 +216,8 @@ A changefeed is handled like any other stream; when you pass a block to `em_run`
 
 In addition, there are changefeed-specific methods that may be defined.
 
-* `on_initial_val`: if the changefeed returns initial values (such as `.get.changes` or `.order_by.limit.changes`), those initial values will be passed to this method.
+* `on_initial_val`: if the changefeed returns initial values (`include_initial` has been specified as an option to [changes](/api/ruby/changes/), those values will be passed to this method.
+* `on_uninitial_val`: a changefeed that returns initial values may also return "uninitial" values to indicate a document already sent as an initial value has been changed (see the `changes` documentation for details); those values, if any, will be passed to this method.
 * `on_change`: changes will be passed to this method.
 * `on_change_error`: if the feed includes a document specifying errors that do not cause the feed to abort (for instance, a notification the server discarded some changes), those errors will be passed to this method.
 * `on_state`: a feed may include documents specifying the state of the stream; those documents will be passed to this function if defined.
@@ -358,11 +359,12 @@ The RethinkDB Python driver integrates with both the [Tornado web framework][tor
 Before `connect`, use the `set_loop_type("tornado")` command to set RethinkDB to use asynchronous event loops compatible with Tornado.
 
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
 from tornado import ioloop, gen
 from tornado.concurrent import Future, chain_future
 import functools
 
+r = RethinkDB()
 r.set_loop_type("tornado")
 connection = r.connect(host='localhost', port=28015)
 ```
@@ -453,7 +455,7 @@ def print_cfeed_data(connection_future, table):
     connection = yield connection_future
     feed = yield r.table(table).changes().run(connection)
     while (yield feed.fetch_next()):
-        item = yield field.next()
+        item = yield feed.next()
         print(item)
 ```
 
@@ -542,15 +544,16 @@ Here, we listen for changes on multiple tables at once.  We simultaneously write
 Before `connect`, use the `set_loop_type("twisted")` command to set RethinkDB to use asynchronous event loops compatible with the Twisted reactor.
  
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
 from twisted.internet import reactor, defer
 from twisted.internet.defer import inlineCallbacks, returnValue
 
+r = RethinkDB()
 r.set_loop_type('twisted')
 connection = r.connect(host='localhost', port=28015)
 ```
 
-After executing `set_loop_type`, `r.connect` will return a Tornado `Deferred`, as will `r.run`.
+After executing `set_loop_type`, `r.connect` will return a Twisted `Deferred`, as will `r.run`.
 
 __Example:__ Simple use
 

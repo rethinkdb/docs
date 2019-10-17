@@ -4,6 +4,7 @@ language: JavaScript
 permalink: api/javascript/row/
 command: row
 rb: false
+java: false
 io:
     -   - r
         - value
@@ -17,7 +18,11 @@ r.row &rarr; value
 
 # Description #
 
-Returns the currently visited document. Note that `row` does not work within subqueries to access nested documents; you should use anonymous functions to access those documents instead. (See the last example.)
+Returns the currently visited document.
+
+{% infobox %}
+Note that `row` does not work within subqueries to access nested documents; you should use anonymous functions to access those documents instead. (See the last example.)
+{% endinfobox %}
 
 __Example:__ Get all users whose age is greater than 5.
 
@@ -29,7 +34,7 @@ r.table('users').filter(r.row('age').gt(5)).run(conn, callback)
 __Example:__ Access the attribute 'child' of an embedded document.
 
 ```js
-r.table('users').filter(r.row('embedded_doc')('child') > 5).run(conn, callback)
+r.table('users').filter(r.row('embedded_doc')('child').gt(5)).run(conn, callback)
 ```
 
 

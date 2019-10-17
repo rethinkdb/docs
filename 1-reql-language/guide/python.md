@@ -22,6 +22,22 @@ From version 1.14, the Python driver for RethinkDB supports Python 2 and 3. Vers
 
 <img src="/assets/images/docs/api_illustrations/10-minute-guide.png" class="api_command_illustration" />
 
+# Start the server #
+
+For a more detailed look, make sure to read the [quickstart](/docs/quickstart/).
+
+## Linux and OS X ##
+
+Start the server from a terminal window.
+
+    $ rethinkdb
+
+## Windows ##
+
+Start the server from the Windows command prompt.
+
+    C:\Users\Slava\RethinkDB\>rethinkdb.exe
+
 # Import the driver #
 
 First, start a Python shell:
@@ -30,13 +46,14 @@ First, start a Python shell:
 $ python
 ```
 
-Then, import the RethinkDB driver:
+Then, import the RethinkDB driver and create a RethinkDB object:
 
 ```python
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 ```
 
-You can now access RethinkDB commands through the `r` module.
+You can now access RethinkDB commands through the `r` object.
 
 # Open a connection #
 

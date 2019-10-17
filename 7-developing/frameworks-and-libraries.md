@@ -1,6 +1,6 @@
 ---
 layout: documentation
-title: Integrations
+title: Third-party libraries
 docs_active: frameworks-and-libraries
 permalink: docs/frameworks-and-libraries/
 ---
@@ -17,19 +17,7 @@ Shoot us an email at <a href="mailto:info@rethinkdb.com">info@rethinkdb.com</a>.
 ## Drivers and extensions
 
 - [rethinkdbdash](https://github.com/neumino/rethinkdbdash) by [@neumino](https://github.com/neumino)  
-  An alternative Node.js driver with native promises and a connection pool.
-
-- [RQL Promise](https://github.com/guillaumervls/rql-promise) by [@guillaumervls](https://github.com/guillaumervls)  
-   Wraps the RethinkDB driver with [when](https://github.com/cujojs/when) to return promises.
-
-- [rethinkdb-co](https://github.com/hden/rethinkdb-co) by [@hden](https://github.com/hden)  
-  Allows using ECMAScript 6 generators with RethinkDB callbacks.
-
-- [rdb-cursor-stream](https://github.com/guillaumervls/rdb-cursor-stream) by [@guillaumervls](https://github.com/guillaumervls)  
-  Replaces cursors with streams.
-
-- [connect-rethinkdb](https://github.com/guillaumervls/connect-rethinkdb) by [@guillaumervls](https://github.com/guillaumervls)  
-  A RethinkDB session store for Connect, similar to connect-redis.
+  An alternative Node.js driver with a connection pool.
 
 - [express-session-rethinkdb](https://www.npmjs.com/package/express-session-rethinkdb) by [@armenfilipetyan](https://github.com/armenfilipetyan)  
   Use RethinkDB as session store with Express 4.x framework. Adapted from connect-rethinkdb.
@@ -40,6 +28,9 @@ Shoot us an email at <a href="mailto:info@rethinkdb.com">info@rethinkdb.com</a>.
 - [second-thought](https://github.com/robconery/second-thought) by [@robconery](https://github.com/robconery)  
   A light abstraction layer over RethinkDB adding methods you "wished you had."
 
+- [rethinkdb-fixtures](https://github.com/athlite/rethinkdb-fixtures) by [@athlite](https://github.com/athlite)  
+  Easily load fixtures into RethinkDB for testing purposes.
+
 ## ORMs
 
 - [js-data-rethinkdb](https://github.com/js-data/js-data-rethinkdb) by [@jmdobry](https://github.com/jmdobry)  
@@ -48,8 +39,8 @@ Shoot us an email at <a href="mailto:info@rethinkdb.com">info@rethinkdb.com</a>.
 - [Thinky][] by [@neumino](https://github.com/neumino)  
   JavaScript ORM for RethinkDB.
 
-- [JugglingDB-RethinkDB](https://github.com/fuwaneko/jugglingdb-rethink) by [@fuwaneko](https://github.com/fuwaneko)  
-  A RethinkDB adapter for [JugglingDB](https://github.com/1602/jugglingdb), a multi-database ORM for Node.js.
+- [ThinkAgain](https://github.com/mbroadst/thinkagain) by [@mbroadst](https://github.com/mbroadst)  
+  A fork of [Thinky][] with first-class support for [JSON Schema](http://json-schema.org).
 
 - [Osmos](https://github.com/mtabini/osmos) by [@mtabini](https://github.com/mtabini)  
   A store-agnostic object data mapper for Node.js with support for RethinkDB.
@@ -64,8 +55,11 @@ Shoot us an email at <a href="mailto:info@rethinkdb.com">info@rethinkdb.com</a>.
 - [koa-rethinkdb](https://github.com/hden/koa-rethinkdb) by [@hden](https://github.com/hden)  
   Koa middleware that automatically manages connections via a connection pool.
 
-- [sails-hook-thinky](https://github.com/mwielbut/sails-hook-thinky) by [@mwielbut](https://github.com/mwielbut)  
-  A hook to use [Thinky][] with [Sails](http://sailsjs.org/).
+- [thinky-loader](https://github.com/mwielbut/thinky-loader) by [@mwielbut](https://github.com/mwielbut)  
+  A general-purpose model loader for the [Thinky][] ORM. (Supersedes sails-hook-thinky.)
+
+- [hapi-rethinkdb-crud](https://github.com/athlite/hapi-rethinkdb-crud) by [@athlite](https://github.com/athlite)  
+  Basic CRUD mapping between [hapi](http://hapijs.com) and RethinkDB.
 
 # Python libraries
 

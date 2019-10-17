@@ -94,6 +94,9 @@
       - name: Scaling, sharding and replication
         permalink: sharding-and-replication
         url: /docs/sharding-and-replication/
+      - name: Permissions and user accounts
+        permalink: permissions-and-accounts
+        url: /docs/permissions-and-accounts/
       - name: Failover
         permalink: failover
         url: /docs/failover/
@@ -101,7 +104,7 @@
         permalink: backup
         url: /docs/backup/
       - name: System tables
-        permalink: system-tables/
+        permalink: system-tables
         url: /docs/system-tables/
       - name: Current issues
         permalink: system-issues
@@ -193,6 +196,15 @@
       - name: Stability report
         permalink: stability
         url: /docs/stability/
-      - name: Frequently Asked Questions
+      - name: Frequently asked questions
         permalink: faq
         url: /docs/faq/
+      - name: Performance report
+        permalink: 2-1-5-performance-report
+        url: /docs/2-1-5-performance-report/
+- section:
+    name: Security
+    docs:
+      - name: Vulnerabilities
+        permalink: vulnerabilities
+        url: /docs/vulnerabilities/

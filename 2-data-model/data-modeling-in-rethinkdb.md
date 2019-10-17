@@ -65,9 +65,7 @@ __Advantages of using embedded arrays:__
 
 __Disadvantages of using embedded arrays:__
 
-- Any operation on an author document requires loading all posts into
-  memory. Any update to the document requires rewriting the full array
-  to disk.
+- Deleting, adding or updating a post requires loading the entire `posts` array, modifying it, and writing the entire document back to disk.
 - Because of the previous limitation, it's best to keep the size of
   the `posts` array to no more than a few hundred documents.
 
@@ -115,7 +113,7 @@ In a relational database, we'd use a `JOIN` here; in RethinkDB, we use the `eq_j
 ```python
 # In order for this query to work, we need to have a secondary index
 # on the `author_id` field of the table `posts`.
-r.db("blog").table("authors").getAll("7644aaf2-9928-4231-aa68-4e65e31bf219").eq_join(
+r.db("blog").table("authors").get_all("7644aaf2-9928-4231-aa68-4e65e31bf219").eq_join(
     'id',
     r.db("blog").table("posts"),
     index='author_id'
@@ -139,7 +137,7 @@ __Disadvantages of using multiple tables:__
 - The queries linking the data between the authors and their posts
   tend to be more complicated.
 - With this approach you cannot atomically update both the author data
-  and and the posts data.
+  and the posts data.
 
 {% endinfobox %}
 
