@@ -18,8 +18,6 @@ table.insert(object | [object1, object2, ...][, :durability => "hard", :return_c
 
 # Description #
 
-<img src="/assets/images/docs/api_illustrations/insert_ruby.png" class="api_command_illustration" />
-
 Insert documents into a table. Accepts a single document or an array of
 documents.
 

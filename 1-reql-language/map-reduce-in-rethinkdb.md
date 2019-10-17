@@ -14,7 +14,7 @@ permalink: docs/map-reduce/
 
 {% toctag %}
 
-<img src="/assets/images/docs/api_illustrations/map-reduce.png"
+<img src="/assets/images/docs/api_illustrations/mapreduce.png"
      alt="Map-reduce Illustration"
      class="api_command_illustration" />
 

@@ -22,9 +22,6 @@ RethinkDB supports different types of secondary indexes:
 
 {% toctag %}
 
-<img src="/assets/images/docs/api_illustrations/secondary-indexes.png"
-     alt="Secondary Indexes Illustration"
-     class="api_command_illustration" />
 
 # Simple indexes #
 

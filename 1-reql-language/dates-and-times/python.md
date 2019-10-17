@@ -62,7 +62,7 @@ We can now filter based on these times:
 > r.table('events').filter(r.row['timestamp'].hours() > 20).run(conn)
 [{u'id': 1,
   u'timestamp': datetime.datetime(2013, 8, 13, 23, 32, 49, 923000, tzinfo=<rethinkdb.ast.RqlTzinfo object at 0x102cbde90>)}]
-  
+
 > r.table('events').filter(r.row['timestamp'].in_timezone('-02:00').hours() > 20).run(conn)
 [{u'id': 0,
   u'timestamp': datetime.datetime(2015, 2, 2, 11, 56, 31, 250000, tzinfo=<rethinkdb.ast.RqlTzinfo object at 0x102ca0c50>)},

@@ -19,7 +19,7 @@ perspective.
 
 {% toctag %}
 
-<img src="/assets/images/docs/api_illustrations/mongo_vs_rethink.png" class="api_command_illustration" />
+<img src="/assets/images/docs/api_illustrations/mongo-rethink.png" class="api_command_illustration" />
 
 # The best of both worlds #
 
