@@ -27,7 +27,8 @@ $ python3 -m venv ./venv
 Then use the `pip` binary from your virtual environment to install the RethinkDB driver:
 
 ```bash
-$ ./ven/bin/pip install rethinkdb
+$ source venv/bin/activate
+$ pip install rethinkdb
 ```
 
 # Usage #
