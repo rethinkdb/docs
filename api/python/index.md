@@ -20,7 +20,8 @@ The top-level ReQL namespace.
 __Example:__ Setup your top-level namespace.
 
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 ```
 
 [Read more about this command &rarr;](r/)

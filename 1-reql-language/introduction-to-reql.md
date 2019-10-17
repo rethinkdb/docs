@@ -46,8 +46,9 @@ You start using ReQL in your program similarly to how you'd use other
 databases:
 
 ```python
-import rethinkdb as r  # import the RethinkDB package
-conn = r.connect()       # connect to the server on localhost and default port
+from rethinkdb import RethinkDB # import the RethinkDB package
+r = RethinkDB()                 # create a RethinkDB object
+conn = r.connect()              # connect to the server on localhost and default port
 ```
 
 But this is where the similarity ends. Instead of constructing strings

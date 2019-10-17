@@ -33,7 +33,8 @@ These examples use Python, but there's equivalent functionality in Ruby, and any
 Load `python` (or [ipython](http://ipython.org)) and set up a connection to your database:
 
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 r.connect('localhost', 28015).repl()
 ```
 
@@ -78,7 +79,8 @@ The Data Explorer in the web administration UI is itself a JavaScript REPL, with
 By using ReQL with a language like Python, it becomes easy to script administrative and configuration tasks with RethinkDB. If you have complex table configurations that might need to be repeated for new tables or tweaked for the whole database, you can store them in a script.
 
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
+r = RethinkDB()
 conn = r.connect('localhost', 28015)
 
 # Configure the entire database

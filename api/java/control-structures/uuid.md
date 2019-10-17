@@ -22,6 +22,10 @@ RethinkDB's UUIDs are standards-compliant. Without the optional argument, a vers
 
 [uu]: https://en.wikipedia.org/wiki/Universally_unique_identifier
 
+{% infobox %} 
+Please take into consideration when you generating version 5 UUIDs can’t be considered guaranteed unique if they’re computing based on user data because they use SHA-1 algorithm.
+{% endinfobox %}
+
 __Example:__ Generate a UUID.
 
 ```java

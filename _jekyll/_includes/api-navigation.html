@@ -1,6 +1,6 @@
 {% comment %}
 <!-- Pick the correct index for the language on the page, based on the
-    `language` YAML flag. --!>
+    `language` YAML flag. -->
 {% endcomment %}
 {% case page.language %}
     {% when 'JavaScript' %}
@@ -20,7 +20,7 @@
 {% comment %}
 <!-- Get the unique ID for this command based on the page
     permalink (to highlight the active section / command in the nav)
---!>
+-->
 {% endcomment %}
 {% assign this_cmd = page.permalink | split: "/" | last %}
 
@@ -32,7 +32,7 @@
         <!-- If this is an API command, expand the nav section for this
             command, or expand it if the YAML flag `api_index` is `true`
             (used on the API index pages).  
-        --!>
+        -->
         {% endcomment %}
         {% assign expanded = false %}
         {% if commands_in_section contains this_cmd or page.api_index %}

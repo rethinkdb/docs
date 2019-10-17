@@ -359,11 +359,12 @@ The RethinkDB Python driver integrates with both the [Tornado web framework][tor
 Before `connect`, use the `set_loop_type("tornado")` command to set RethinkDB to use asynchronous event loops compatible with Tornado.
 
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
 from tornado import ioloop, gen
 from tornado.concurrent import Future, chain_future
 import functools
 
+r = RethinkDB()
 r.set_loop_type("tornado")
 connection = r.connect(host='localhost', port=28015)
 ```
@@ -543,10 +544,11 @@ Here, we listen for changes on multiple tables at once.  We simultaneously write
 Before `connect`, use the `set_loop_type("twisted")` command to set RethinkDB to use asynchronous event loops compatible with the Twisted reactor.
  
 ```py
-import rethinkdb as r
+from rethinkdb import RethinkDB
 from twisted.internet import reactor, defer
 from twisted.internet.defer import inlineCallbacks, returnValue
 
+r = RethinkDB()
 r.set_loop_type('twisted')
 connection = r.connect(host='localhost', port=28015)
 ```
