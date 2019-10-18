@@ -31,3 +31,9 @@ __Example:__ Select 3 random heroes.
 ```js
 r.table('marvel').sample(3).run(conn, callback)
 ```
+
+__Example:__ Select and stratify 3 random heroes by belovedness.
+
+```js
+r.table('marvel').group('belovedness').sample(3).run(conn, callback)
+```

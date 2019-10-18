@@ -24,3 +24,9 @@ __Example:__ Select 3 random heroes.
 ```py
 r.table('marvel').sample(3).run(conn)
 ```
+
+__Example:__ Select and stratify 3 random heroes by belovedness.
+
+```py
+r.table('marvel').group('belovedness').sample(3).run(conn)
+```
