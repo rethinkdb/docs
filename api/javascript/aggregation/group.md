@@ -20,7 +20,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.group(fieldOrFunction..., [{index: "indexName", multi: false}]) &rarr; grouped_stream
+sequence.group(field | function..., [{index: <indexname>, multi: false}]) &rarr; grouped_stream
+r.group(sequence, field | function..., [{index: <indexname>, multi: false}]) &rarr; grouped_stream
 {% endapibody %}
 
 <img src="/assets/images/docs/api_illustrations/group.png" class="api_command_illustration" />
@@ -31,8 +32,6 @@ Takes a stream and partitions it into multiple groups based on the
 fields or functions provided.
 
 With the `multi` flag single documents can be assigned to multiple groups, similar to the behavior of [multi-indexes](/docs/secondary-indexes/javascript). When `multi` is `true` and the grouping value is an array, documents will be placed in each group that corresponds to the elements of the array. If the array is empty the row will be ignored.
-
-__Example:__ Group games by player.
 
 Suppose that the table `games` has the following data:
 
@@ -45,7 +44,7 @@ Suppose that the table `games` has the following data:
 ]
 ```
 
-Grouping games by player can be done with:
+__Example:__ Group games by player.
 
 ```js
 > r.table('games').group('player').run(conn, callback)
@@ -69,6 +68,7 @@ Grouping games by player can be done with:
 ]
 ```
 
+<!-- stop -->
 
 Commands chained after `group` will be called on each of these grouped
 sub-streams, producing grouped data.

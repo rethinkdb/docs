@@ -19,7 +19,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.avg([fieldOrFunction]) &rarr; number
+sequence.avg([field | function]) &rarr; number
+r.avg(sequence, [field | function]) &rarr; number
 {% endapibody %}
 
 # Description #

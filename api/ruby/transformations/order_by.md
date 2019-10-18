@@ -15,9 +15,9 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.order_by([key1...], :index => index_name) -> selection<stream>
-selection.order_by(key1, [key2...]) -> selection<array>
-sequence.order_by(key1, [key2...]) -> array
+table.order_by([key | function], :index => index_name) &rarr; table_slice
+selection.order_by(key | function[, ...]) &rarr; selection<array>
+sequence.order_by(key | function[, ...]) &rarr; array
 {% endapibody %}
 
 # Description #
@@ -31,13 +31,17 @@ __Note:__ RethinkDB uses byte-wise ordering for `orderBy` and does not support U
 Sorting without an index requires the server to hold the sequence in
 memory, and is limited to 100,000 documents (or the setting of the `array_limit` option for [run](/api/ruby/run)). Sorting with an index can
 be done on arbitrarily large tables, or after a [between](/api/ruby/between/) command
-using the same index.
+using the same index. This applies to both secondary indexes and the primary key (e.g., `:index => 'id'`).
+
+Sorting functions passed to `order_by` must be deterministic. You cannot, for instance, order rows using the [random](/api/ruby/random/) command. Using a non-deterministic function with `order_by` will raise a `ReqlQueryLogicError`.
 
 __Example:__ Order all the posts using the index `date`.   
 
 ```rb
 r.table('posts').order_by(:index => 'date').run(conn)
 ```
+
+<!-- stop -->
 
 The index must either be the primary key or have been previously created with [index_create](/api/ruby/index_create/).
 

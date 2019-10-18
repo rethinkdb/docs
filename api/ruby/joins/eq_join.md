@@ -13,22 +13,22 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.eq_join(left_field, right_table[, :index => 'id']) &rarr; sequence
+sequence.eq_join(left_field, right_table[, :index => 'id', :ordered => false]) &rarr; sequence
+sequence.eq_join(function, right_table[, :index => 'id', :ordered => false]) &rarr; sequence
 {% endapibody %}
 
 # Description #
 
 
-<img alt="Data Modeling Illustration" class="api_command_illustration"
-    src="/assets/images/docs/api_illustrations/table-joins.png" />
+<img alt="Data Modeling Illustration" class="api_command_illustration" src="/assets/images/docs/api_illustrations/table-joins.png" />
 
-Join tables using a field on the left-hand sequence matching primary keys or secondary indexes on the right-hand table. `eq_join` is more efficient than other Re_qL join types, and operates much faster. Documents in the result set consist of pairs of left-hand and right-hand documents, matched when the field on the left-hand side exists and is non-null and an entry with that field's value exists in the specified index on the right-hand side.
+Join tables using a field or function on the left-hand sequence matching primary keys or secondary indexes on the right-hand table. `eq_join` is more efficient than other ReQL join types, and operates much faster. Documents in the result set consist of pairs of left-hand and right-hand documents, matched when the field on the left-hand side exists and is non-null and an entry with that field's value exists in the specified index on the right-hand side.
 
 The result set of `eq_join` is a stream or array of objects. Each object in the returned set will be an object of the form `{ left: <left-document>, right: <right-document> }`, where the values of `left` and `right` will be the joined documents. Use the <code><a href="/api/ruby/zip/">zip</a></code> command to merge the `left` and `right` fields together.
 
-**Example:** Match players with the games they've played against one another.
+The results from `eq_join` are, by default, not ordered. The optional `:ordered => true` parameter will cause `eq_join` to order the output based on the left side input stream. (If there are multiple matches on the right side for a document on the left side, their order is not guaranteed even if `ordered` is `true`.) Requiring ordered results can significantly slow down `eq_join`, and in many circumstances this ordering will not be required. (See the first example, in which ordered results are obtained by using `order_by` after `eq_join`.)
 
-The players table contains these documents:
+Suppose the players table contains these documents:
 
 ```rb
 [
@@ -50,6 +50,9 @@ The games table contains these documents:
     { :id => 3, :field => 'Bucklebury' }
 ]
 ```
+
+
+__Example:__ Match players with the games they've played against one another.
 
 Join these tables using `game_id` on the player table and `id` on the games table:
 
@@ -73,6 +76,8 @@ This will return a result set such as the following:
 ]
 ```
 
+<!-- stop -->
+
 What you likely want is the result of using `zip` with that. For clarity, we'll use `without` to drop the `id` field from the games table (it conflicts with the `id` field for the players and it's redundant anyway), and we'll order it by the games.
 
 ```rb
@@ -88,15 +93,15 @@ r.table('players').eq_join('game_id', r.table('games')).without({:right => "id"}
 ]
 ```
 
-For more information, see [Table joins in Rethink_dB](/docs/table-joins/).
+For more information, see [Table joins in RethinkDB](/docs/table-joins/).
 
-**Example:** Use a secondary index on the right table rather than the primary key. If players have a secondary index on their cities, we can get a list of arenas with players in the same area.
+__Example:__ Use a secondary index on the right table rather than the primary key. If players have a secondary index on their cities, we can get a list of arenas with players in the same area.
 
 ```rb
-r.table('arenas').eq_join('city_id', r.table('arenas'), {:index => 'city_id'}).run(conn)
+r.table('players').eq_join('city_id', r.table('arenas'), {:index => 'city_id'}).run(conn)
 ```
 
-**Example:** Use a nested key as the join field. Suppose the documents in the players table were structured like this:
+__Example:__ Use a nested key as the join field. Suppose the documents in the players table were structured like this:
 
 ```rb
 { :id => 1, :player => 'George', :game => {:id => 1} },
@@ -119,10 +124,10 @@ r.table('players').eq_join(
 ]
 ```
 
-**Example:** Use a function instead of a field to join on a more complicated expression. Suppose the players have lists of favorite games ranked in order in a field such as `favorites: [3, 2, 1]`. Get a list of players and their top favorite:
+__Example:__ Use a function instead of a field to join on a more complicated expression. Suppose the players have lists of favorite games ranked in order in a field such as `favorites: [3, 2, 1]`. Get a list of players and their top favorite:
 
 ```rb
-r.table('players3').eq_join(
+r.table('players').eq_join(
     lambda { |player| player['favorites'].nth(0) },
     r.table('games')
 ).without([{:left => ['favorites', 'game_id', 'id']}, {:right => 'id'}]).zip()

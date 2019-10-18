@@ -18,8 +18,6 @@ table.insert(object | [object1, object2, ...][, :durability => "hard", :return_c
 
 # Description #
 
-<img src="/assets/images/docs/api_illustrations/insert_ruby.png" class="api_command_illustration" />
-
 Insert documents into a table. Accepts a single document or an array of
 documents.
 
@@ -30,10 +28,13 @@ The optional arguments are:
     - `true`: return a `changes` array consisting of `old_val`/`new_val` objects describing the changes made, only including the documents actually updated.
     - `false`: do not return a `changes` array (the default).
     - `"always"`: behave as `true`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `true` pre-2.0.)
-- `conflict`: Determine handling of inserting documents with the same primary key as existing entries. Possible values are `"error"`, `"replace"` or `"update"`.
+- `conflict`: Determine handling of inserting documents with the same primary key as existing entries. There are three built-in methods: `"error"`, `"replace"` or `"update"`; alternatively, you may provide a conflict resolution function.
     - `"error"`: Do not insert the new document and record the conflict as an error. This is the default.
     - `"replace"`: [Replace](/api/ruby/replace/) the old document in its entirety with the new one.
     - `"update"`: [Update](/api/ruby/update/) fields of the old document with fields from the new one.
+    - `lambda { |id, old_doc, new_doc| resolved_doc }`: a function that receives the id, old and new documents as arguments and returns a document which will be inserted in place of the conflicted one.
+
+If `return_changes` is set to `true` or `"always"`, the `changes` array will follow the same order as the inserted documents. Documents in `changes` for which an error occurs (such as a key conflict) will have a third field, `error`, with an explanation of the error.
 
 Insert returns an object that contains the following attributes:
 
@@ -47,6 +48,10 @@ Insert returns an object that contains the following attributes:
 - `warnings`: if the field `generated_keys` is truncated, you will get the warning _"Too many generated keys (&lt;X&gt;), array truncated to 100000."_.
 - `changes`: if `return_changes` is set to `true`, this will be an array of objects, one for each objected affected by the `insert` operation. Each object will have two keys: `{:new_val => <new value>, :old_val => nil}`.
 
+{% infobox alert %}
+RethinkDB write operations will only throw exceptions if errors occur before any writes. Other errors will be listed in `first_error`, and `errors` will be set to a non-zero count. To properly handle errors with this term, code must both handle exceptions and check the `errors` return value!
+{% endinfobox %}
+
 __Example:__ Insert a document into the table `posts`.
 
 ```rb
@@ -56,6 +61,8 @@ r.table("posts").insert({
     :content => "Dolor sit amet"
 }).run(conn)
 ```
+
+<!-- stop -->
 
 The result will be:
 
@@ -175,4 +182,13 @@ The result will be
         }
     ]
 }
+```
+
+__Example:__ Provide a resolution function that concatenates memo content in case of conflict.
+
+```rb
+# assume new_memos is a list of memo documents to insert
+r.table("memos").insert(new_memos, :conflict => lambda { |id, old_doc, new_doc|
+    new_doc.merge({:content => old_doc['content'] + "\n" + new_doc['content']})
+}).run(conn)
 ```

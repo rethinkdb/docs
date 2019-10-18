@@ -4,6 +4,7 @@ language: Python
 permalink: api/python/row/
 command: row
 rb: false
+java: false
 ---
 
 # Command syntax #
@@ -14,7 +15,11 @@ r.row &rarr; value
 
 # Description #
 
-Returns the currently visited document. Note that `row` does not work within subqueries to access nested documents; you should use anonymous functions to access those documents instead. (See the last example.)
+Returns the currently visited document.
+
+{% infobox %}
+Note that `row` does not work within subqueries to access nested documents; you should use anonymous functions to access those documents instead. (See the last example.)
+{% endinfobox %}
 
 __Example:__ Get all users whose age is greater than 5.
 

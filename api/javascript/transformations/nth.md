@@ -24,8 +24,6 @@ selection.nth(index) &rarr; selection&lt;object&gt;
 
 Get the *nth* element of a sequence, counting from zero. If the argument is negative, count from the last element.
 
-In JavaScript, you can use `()` with an integer as a shorthand for `nth`.
-
 __Example:__ Select the second element in the array.
 
 ```js
@@ -36,7 +34,7 @@ r.expr([1,2,3])(1).run(conn, callback)
 __Example:__ Select the bronze medalist from the competitors.
 
 ```js
-r.table('players').orderBy({index: r.desc('score')}).nth(3).run(conn, callback)
+r.table('players').orderBy({index: r.desc('score')}).nth(2).run(conn, callback)
 ```
 
 __Example:__ Select the last place competitor.

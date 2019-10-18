@@ -13,9 +13,9 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-selection.filter(predicate[, :default => false]) &rarr; selection
-stream.filter(predicate[, :default => false]) &rarr; stream
-array.filter(predicate[, :default => false]) &rarr; array
+selection.filter(predicate_function[, :default => false]) &rarr; selection
+stream.filter(predicate_function[, :default => false]) &rarr; stream
+array.filter(predicate_function[, :default => false]) &rarr; array
 {% endapibody %}
 
 # Description #
@@ -25,7 +25,7 @@ Return all the elements in a sequence for which the given predicate is true. The
 By default, `filter` will silently skip documents with missing fields: if the predicate tries to access a field that doesn't exist (for instance, the predicate `{:age => 30}` applied to a document with no `age` field), that document will not be returned in the result set, and no error will be generated. This behavior can be changed with the `default` optional argument.
 
 * If `default` is set to `true`, documents with missing fields will be returned rather than skipped.
-* If `default` is set to `r.error()`, an `RqlRuntimeError` will be thrown when a document with a missing field is tested.
+* If `default` is set to `r.error()`, an `ReqlRuntimeError` will be thrown when a document with a missing field is tested.
 * If `default` is set to `false` (the default), documents with missing fields will be skipped.
 
 {% infobox %}
@@ -41,6 +41,8 @@ r.table('users').filter({:age => 30}).run(conn)
 ```
 
 The predicate `{'age': 30}` selects documents in the `users` table with an `age` field whose value is `30`. Documents with an `age` field set to any other value *or* with no `age` field present are skipped.
+
+<!-- stop -->
 
 While the `{'field': value}` style of predicate is useful for exact matches, a more general way to write a predicate is to use a Ruby block that returns `true` or `false`.
 

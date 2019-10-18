@@ -20,11 +20,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+table.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
-selection.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+selection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
-singleSelection.update(object | expr[, {durability: "hard", returnChanges: false, nonAtomic: false}])
+singleSelection.update(object | function[, {durability: "hard", returnChanges: false, nonAtomic: false}])
     &rarr; object
 {% endapibody %}
 
@@ -51,6 +51,9 @@ Update returns an object that contains the following attributes:
 - `deleted` and `inserted`: 0 for an update operation.
 - `changes`: if `returnChanges` is set to `true`, this will be an array of objects, one for each objected affected by the `update` operation. Each object will have two keys: `{new_val: <new value>, old_val: <old value>}`.
 
+{% infobox alert %}
+RethinkDB write operations will only throw exceptions if errors occur before any writes. Other errors will be listed in `first_error`, and `errors` will be set to a non-zero count. To properly handle errors with this term, code must both handle exceptions and check the `errors` return value!
+{% endinfobox %}
 
 __Example:__ Update the status of the post with `id` of `1` to `published`.
 
@@ -70,8 +73,11 @@ __Example:__ Update the status of all the posts written by William.
 r.table("posts").filter({author: "William"}).update({status: "published"}).run(conn, callback)
 ```
 
+{% infobox alert %}
+Note that `filter`, `getAll` and similar operations do _not_ execute in an atomic fashion with `update`. Read [Consistency guarantees](/docs/consistency) for more details. Also, see the example for conditional updates below for a solution using `branch` in an `update` clause.
+{% endinfobox %}
 
-__Example:__ Increment the field `view` with `id` of `1`.
+__Example:__ Increment the field `view` of the post with `id` of `1`.
 This query will throw an error if the field `views` doesn't exist.
 
 ```js
@@ -84,7 +90,7 @@ __Example:__ Increment the field `view` of the post with `id` of `1`.
 If the field `views` does not exist, it will be set to `0`.
 
 ```js
-r.table("posts").update({
+r.table("posts").get(1).update({
     views: r.row("views").add(1).default(0)
 }).run(conn, callback)
 ```
@@ -112,10 +118,10 @@ r.table("posts").get(1).update({
 }).run(conn, callback)
 ```
 
-If you forget to specify the `nonAtomic` flag, you will get a `RqlRuntimeError`:
+If you forget to specify the `nonAtomic` flag, you will get a `ReqlRuntimeError`:
 
-```
-RqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
+```text
+ReqlRuntimeError: Could not prove function deterministic.  Maybe you want to use the non_atomic flag? 
 ```
 
 __Example:__ Update the field `numComments` with a random value between 0 and 100. This update cannot be proven deterministic because of `r.js` (and in fact is not), so you must pass the `nonAtomic` flag.
@@ -148,7 +154,7 @@ The result will now include a `changes` field:
 
 ```js
 {
-    deleted: 1,
+    deleted: 0,
     errors: 0,
     inserted: 0,
     changes: [
@@ -169,7 +175,7 @@ The result will now include a `changes` field:
             }
         }
     ],
-    replaced: 0,
+    replaced: 1,
     skipped: 0,
     unchanged: 0
 }
@@ -236,6 +242,16 @@ var newNote = {
 };
 r.table("users").get(10001).update(
     {notes: r.row("notes").append(newNote)}
+).run(conn, callback)
+```
+
+This will fail if the `notes` field does not exist in the document. To perform this as an "upsert" (update or insert), use the [default][] command to ensure the field is initialized as an empty list.
+
+[default]: /api/javascript/default/
+
+```js
+r.table("users").get(10001).update(
+    {notes: r.row("notes").default([]).append(newNote)}
 ).run(conn, callback)
 ```
 

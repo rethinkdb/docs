@@ -26,9 +26,6 @@ The format of the array returned by `ungroup` is the same as the
 default native format of grouped data in the JavaScript driver and
 data explorer.
 
-__Example:__ What is the maximum number of points scored by each
-player, with the highest scorers first?
-
 Suppose that the table `games` has the following data:
 
 ```rb
@@ -40,7 +37,8 @@ Suppose that the table `games` has the following data:
 ]
 ```
 
-We can use this query:
+__Example:__ What is the maximum number of points scored by each
+player, with the highest scorers first?
 
 ```rb
 r.table('games')
@@ -48,7 +46,9 @@ r.table('games')
    .ungroup().order_by(r.desc('reduction')).run(conn)
 ```
 
-Result: 
+<!-- stop -->
+
+Result:
 
 ```rb
 [
@@ -101,6 +101,18 @@ Result:
         {"id" => 11, "player" => "Bob", "points" => 10, "type" => "free"}
     ]
 }
+```
+
+__Example:__ Finding the arithmetic mode of an array of values:
+
+```ruby
+r.expr([1,2,2,2,3,3]).group(){|row| row}.count().ungroup().order_by('reduction').nth(-1)['group'].run(conn)
+```
+
+Result:
+
+```json
+2
 ```
 
 __Example:__ Types!

@@ -16,13 +16,14 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.reduce(reduction_function) &rarr; value
+sequence.reduce(function) &rarr; value
+r.reduce(sequence, function) &rarr; value
 {% endapibody %}
 
 # Description #
 
-Produce a single value from a sequence through repeated application of a reduction
-function.  
+Produce a single value from a sequence through repeated application of a reduction function.
+
 The reduction function can be called on:
 
 - two elements of the sequence
@@ -35,7 +36,7 @@ mistaken when using the `reduce` command is to suppose that the reduction is exe
 from left to right. Read the [map-reduce in RethinkDB](/docs/map-reduce/) article to
 see an example.
 
-If the sequence is empty, the server will produce a `RqlRuntimeError` that can be
+If the sequence is empty, the server will produce a `ReqlRuntimeError` that can be
 caught with `default`.  
 If the sequence has only one element, the first element will be returned.
 
@@ -49,7 +50,6 @@ r.table("posts").map{|doc| 1 }
 ```
 
 A shorter way to execute this query is to use [count](/api/ruby/count).
-
 
 __Example:__ Suppose that each `post` has a field `comments` that is an array of
 comments.  

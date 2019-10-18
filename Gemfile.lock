@@ -1,0 +1,69 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    bourbon (4.2.3)
+      sass (~> 3.4)
+      thor
+    colorator (1.1.0)
+    ffi (1.11.1)
+    forwardable-extended (2.6.0)
+    jekyll (3.6.3)
+      addressable (~> 2.4)
+      colorator (~> 1.0)
+      jekyll-sass-converter (~> 1.0)
+      jekyll-watch (~> 1.1)
+      kramdown (~> 1.14)
+      liquid (~> 4.0)
+      mercenary (~> 0.3.3)
+      pathutil (~> 0.9)
+      rouge (>= 1.7, < 3)
+      safe_yaml (~> 1.0)
+    jekyll-sass-converter (1.5.2)
+      sass (~> 3.4)
+    jekyll-watch (1.5.1)
+      listen (~> 3.0)
+    kramdown (1.17.0)
+    libv8 (3.16.14.19)
+    liquid (4.0.3)
+    listen (3.1.5)
+      rb-fsevent (~> 0.9, >= 0.9.4)
+      rb-inotify (~> 0.9, >= 0.9.7)
+      ruby_dep (~> 1.2)
+    mercenary (0.3.6)
+    mini_portile2 (2.3.0)
+    neat (1.7.2)
+      bourbon (>= 4.0)
+      sass (>= 3.3)
+    nokogiri (1.8.5)
+      mini_portile2 (~> 2.3.0)
+    pathutil (0.16.2)
+      forwardable-extended (~> 2.6)
+    public_suffix (3.1.1)
+    rb-fsevent (0.10.3)
+    rb-inotify (0.10.0)
+      ffi (~> 1.0)
+    ref (2.0.0)
+    rouge (1.10.1)
+    ruby_dep (1.5.0)
+    safe_yaml (1.0.5)
+    sass (3.4.14)
+    therubyracer (0.12.3)
+      libv8 (~> 3.16.14.15)
+      ref
+    thor (0.19.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bourbon (~> 4.2.1)
+  jekyll (~> 3.6.3)
+  neat (~> 1.7.1)
+  nokogiri (~> 1.8.5)
+  rouge (~> 1.10.1)
+  therubyracer (~> 0.12.3)
+
+BUNDLED WITH
+   1.17.3

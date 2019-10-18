@@ -29,9 +29,6 @@ The format of the array returned by `ungroup` is the same as the
 default native format of grouped data in the javascript driver and
 data explorer.
 
-__Example:__ What is the maximum number of points scored by each
-player, with the highest scorers first?
-
 Suppose that the table `games` has the following data:
 
 ```js
@@ -43,7 +40,8 @@ Suppose that the table `games` has the following data:
 ]
 ```
 
-We can use this query:
+__Example:__ What is the maximum number of points scored by each
+player, with the highest scorers first?
 
 ```js
 r.table('games')
@@ -51,7 +49,9 @@ r.table('games')
    .ungroup().orderBy(r.desc('reduction')).run(conn, callback)
 ```
 
-Result: 
+<!-- stop -->
+
+Result:
 
 ```js
 [
@@ -92,7 +92,7 @@ Note that if you didn't call `ungroup`, you would instead select one
 random game from each player:
 
 ```js
-r.table('games').group('player').sample(1).run(conn)
+r.table('games').group('player').sample(1).run(conn, callback)
 ```
 
 Result:
@@ -114,7 +114,17 @@ Result:
 }
 ```
 
+__Example:__ Finding the arithmetic mode of an array of values:
 
+```js
+r.expr([1,2,2,2,3,3]).group(r.row).count().ungroup().orderBy('reduction').nth(-1)('group').run(conn, callback)
+```
+
+Result:
+
+```json
+2
+```
 
 __Example:__ Types!
 

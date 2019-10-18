@@ -12,7 +12,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.contains(value|predicate[, value|predicate, ...]) &rarr; bool
+sequence.contains([value | predicate_function, ...]) &rarr; bool
+r.contains(sequence, [value | predicate_function, ...]) &rarr; bool
 {% endapibody %}
 
 # Description #
@@ -36,6 +37,14 @@ __Example:__ Has Iron Man ever defeated Superman in battle?
 ```py
 r.table('marvel').get('ironman')['battles'].contains(lambda battle:
     (battle['winner'] == 'ironman') & (battle['loser'] == 'superman')
+).run(conn)
+```
+
+__Example:__ Return all heroes who have fought _both_ Loki and the Hulk.
+
+```py
+r.table('marvel').filter(
+    lambda hero: hero['opponents'].contains('loki', 'hulk')
 ).run(conn)
 ```
 

@@ -17,7 +17,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-sequence.group(field_or_function..., [:index => 'index_name', :multi => true]) &rarr; grouped_stream
+sequence.group(field | function..., [:index => <indexname>, :multi => true]) &rarr; grouped_stream
+r.group(sequence, field | function..., [:index => <indexname>, :multi => true]) &rarr; grouped_stream
 {% endapibody %}
 
 <img src="/assets/images/docs/api_illustrations/group.png" class="api_command_illustration" />
@@ -28,9 +29,6 @@ Takes a stream and partitions it into multiple groups based on the
 fields or functions provided.
 
 With the `multi` flag single documents can be assigned to multiple groups, similar to the behavior of [multi-indexes](/docs/secondary-indexes/ruby). When `multi` is `true` and the grouping value is an array, documents will be placed in each group that corresponds to the elements of the array. If the array is empty the row will be ignored.
-
-
-__Example:__ Grouping games by player.
 
 Suppose that the table `games` has the following data:
 
@@ -43,7 +41,7 @@ Suppose that the table `games` has the following data:
 ]
 ```
 
-Grouping games by player can be done with:
+__Example:__ Group games by player.
 
 ```rb
 > r.table('games').group('player').run(conn)
@@ -59,6 +57,8 @@ Grouping games by player can be done with:
     ]
 }
 ```
+
+<!-- stop -->
 
 Commands chained after `group` will be called on each of these grouped
 sub-streams, producing grouped data.
@@ -198,15 +198,7 @@ r.table('games3').group(:multi => true){ |row| row['matches'].keys()
             set['matches'][doc['group']].sum()
         }
     }
-}.run
-
-
-r.table('games2').group(r.row['matches'].keys(), multi=True).ungroup().map(
-    lambda doc: { 'match': doc['group'], 'total': doc['reduction'].sum(
-        lambda set: set['matches'][doc['group']].sum()
-    )}).run(conn)
-
-
+}.run(conn)
 
 [
     { 'match': 'a', 'total': 36 },

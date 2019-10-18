@@ -15,8 +15,8 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-stream.concatMap(mappingFunction) &rarr; stream
-array.concatMap(mappingFunction) &rarr; array
+stream.concatMap(function) &rarr; stream
+array.concatMap(function) &rarr; array
 {% endapibody %}
 
 # Description #
@@ -61,7 +61,7 @@ __Example:__ Simulate an [eqJoin](/api/javascript/eq_join/) using `concatMap`. (
 
 ```js
 r.table("posts").concatMap(function(post) {
-	r.table("comments").getAll(
+	return r.table("comments").getAll(
 		post("id"),
 		{ index:"postId" }
 	).map(function(comment) {

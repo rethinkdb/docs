@@ -27,10 +27,11 @@ Matches against a regular expression. If there is a match, returns an object wit
 
 If no match is found, returns `null`.
 
-Accepts RE2 syntax
-([https://code.google.com/p/re2/wiki/Syntax](https://code.google.com/p/re2/wiki/Syntax)).
-You can enable case-insensitive matching by prefixing the regular expression with
-`(?i)`. See the linked RE2 documentation for more flags.
+<!-- break -->
+
+Accepts [RE2 syntax][re2]. You can enable case-insensitive matching by prefixing the regular expression with `(?i)`. See the linked RE2 documentation for more flags.
+
+[re2]: https://github.com/google/re2/wiki/Syntax
 
 The `match` command does not support backreferences.
 

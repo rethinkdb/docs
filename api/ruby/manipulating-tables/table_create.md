@@ -12,6 +12,7 @@ related_commands:
 
 {% apibody %}
 db.table_create(table_name[, options]) &rarr; object
+r.table_create(table_name[, options]) &rarr; object
 {% endapibody %}
 
 # Description #
@@ -27,26 +28,34 @@ If successful, the command returns an object with two fields:
     * `old_val`: always `nil`.
     * `new_val`: the table's new [config](/api/ruby/config) value.
 
-If a table with the same name already exists, the command throws `RqlRuntimeError`.
+If a table with the same name already exists, the command throws `ReqlOpFailedError`.
 
-Note: Only alphanumeric characters and underscores are valid for the table name.
+{% infobox %}
+__Note:__ Only alphanumeric characters and underscores are valid for the table name.
+
+Invoking `table_create` without specifying a database using [db](/api/ruby/db/) creates a table in the database specified in [connect](/api/ruby/connect/), or `test` if no database was specified.
+{% endinfobox %}
 
 When creating a table you can specify the following options:
 
 * `primary_key`: the name of the primary key. The default primary key is `id`.
 * `durability`: if set to `soft`, writes will be acknowledged by the server immediately and flushed to disk in the background. The default is `hard`: acknowledgment of writes happens after data has been written to disk.
-* `shards`: the number of shards, an integer from 1-32. Defaults to `1`.
+* `shards`: the number of shards, an integer from 1-64. Defaults to `1`.
 * `replicas`: either an integer or a mapping object. Defaults to `1`.
     * If `replicas` is an integer, it specifies the number of replicas per shard. Specifying more replicas than there are servers will return an error.
     * If `replicas` is an object, it specifies key-value pairs of server tags and the number of replicas to assign to those servers: `{:tag1 => 2, :tag2 => 4, :tag3 => 2, ...}`.
 * `primary_replica_tag`: the primary server specified by its server tag. Required if `replicas` is an object; the tag must be in the object. This must *not* be specified if `replicas` is an integer.
 
-The [data type](/docs/data-types/) of a primary key is usually a string (like a UUID) or a number, but it can also be a time, binary object, boolean or an array. It cannot be an object.
+The [data type](/docs/data-types/) of a primary key is usually a string (like a UUID) or a number, but it can also be a time, binary object, boolean or an array. Data types can be mixed in the primary key field, but all values must be unique. Using an array as a primary key causes the primary key to behave like a compound index; read the documentation on [compound secondary indexes][ci] for more information, as it applies to primary keys as well. (Note that the primary index still only covers a single field, while compound secondary indexes can cover multiple fields in a single index.) Primary keys cannot be objects.
+
+[ci]: /docs/secondary-indexes/ruby/#compound-indexes
+
+Tables will be available for writing when the command returns.
 
 __Example:__ Create a table named 'dc_universe' with the default settings.
 
 ```rb
-r.db('test').table_create('dc_universe').run(conn)
+r.db('heroes').table_create('dc_universe').run(conn)
 
 {
     :config_changes => [
