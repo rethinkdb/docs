@@ -5,7 +5,7 @@ docs_active: rethinkdb-vs-mongodb
 permalink: docs/rethinkdb-vs-mongodb/
 ---
 {% infobox %}
-**Interested in a less biased overview?** Browse through the [technical comparison tables](/docs/comparison-tables/) between RethinkDB and MongoDB. 
+**Interested in a less biased overview?** Browse through the [technical comparison tables](/docs/comparison-tables/) between RethinkDB and MongoDB.
 {% endinfobox %}
 
 Many people have been asking how RethinkDB differs from MongoDB and

@@ -60,4 +60,3 @@ Large cluster deployments have been extensively tested and all known systemic is
 | Scalability                  | There are no known systemic scalability issues in large cluster deployments. |
 | Extent of testing            | Large cluster deployments have been extensively tested. |
 | Migration                    | Migration for major feature releases is automatic. |
-
