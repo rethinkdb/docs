@@ -7,13 +7,13 @@ permalink: docs/cookbook/
 You can find three cookbooks for the three official drivers. The recipes come from the most
 frequently asked questions.
 
-- [JavaScript](javascript/)
-- [Python](python/)
-- [Ruby](ruby/)
+- [JavaScript](/docs/cookbook/javascript/)
+- [Python](/docs/cookbook/python/)
+- [Ruby](/docs/cookbook/ruby/)
 
-All of the cookbooks are pretty similar, but each may contain additional recipes specific to its language. 
+All of the cookbooks are pretty similar, but each may contain additional recipes specific to its language.
 
-__Looking for another language?__ 
+__Looking for another language?__
 So far, we've only created cookbooks for the three official RethinkDB drivers.
 We'll eventually create ones for our community-supported drivers as well, but
 if you'd like to help us move that process along, contact us at <a
