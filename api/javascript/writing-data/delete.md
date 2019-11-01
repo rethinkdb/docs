@@ -85,7 +85,7 @@ __Example:__ Delete a single document from the table `comments` and return its v
 r.table("comments").get("7eab9e63-73f1-4f33-8ce4-95cbea626f59").delete({returnChanges: true}).run(conn, callback)
 ```
 
-The result look like:
+The result will look like:
 
 ```js
 {
