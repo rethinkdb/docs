@@ -652,9 +652,7 @@ r.table("test").indexWait().run(conn);
 ## [setWriteHook](set_write_hook/) ##
 
 {% apibody %}
-table.setWriteHook(function) &rarr; object
-table.setWriteHook(binary) &rarr; object
-table.setWriteHook(null) &rarr; object
+table.setWriteHook(function | binary | null) &rarr; object
 {% endapibody %}
 
 Sets the write hook on a table or overwrites it if one already exists.

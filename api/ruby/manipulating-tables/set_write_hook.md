@@ -10,9 +10,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.set_write_hook(function) &rarr; object
-table.set_write_hook(binary) &rarr; object
-table.set_write_hook(null) &rarr; object
+table.set_write_hook(function | binary | null) &rarr; object
 {% endapibody %}
 
 # Description #
