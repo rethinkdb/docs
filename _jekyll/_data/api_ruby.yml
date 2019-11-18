@@ -64,6 +64,10 @@
           permalink: index_status
         - name: index_wait
           permalink: index_wait
+        - name: set_write_hook
+          permalink: set_write_hook
+        - name: get_write_hook
+          permalink: get_write_hook
 - section:
     name: Writing data
     commands:
