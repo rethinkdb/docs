@@ -18,7 +18,7 @@ table.getWriteHook() &rarr; null/object
 
 # Description #
 
-Get the write hook of this table. If a write hook exists the result is an object of the following form:
+Gets the write hook of this table. If a write hook exists, the result is an object of the following form:
 
 ```js
 {
