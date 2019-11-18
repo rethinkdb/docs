@@ -13,9 +13,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.setWriteHook(function) &rarr; object
-table.setWriteHook(binary) &rarr; object
-table.setWriteHook(null) &rarr; object
+table.setWriteHook(function | binary | null) &rarr; object
 {% endapibody %}
 
 # Description #

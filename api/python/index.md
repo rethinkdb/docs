@@ -614,9 +614,7 @@ r.table('test').index_wait().run(conn)
 ## [set_write_hook(set_write_hook/) ##
 
 {% apibody %}
-table.set_write_hook(function) &rarr; object
-table.set_write_hook(binary) &rarr; object
-table.set_write_hook(null) &rarr; object
+table.set_write_hook(function | binary | null) &rarr; object
 {% endapibody %}
 
 Sets the write hook on a table or overwrites it if one already exists.
