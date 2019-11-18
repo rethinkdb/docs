@@ -611,6 +611,37 @@ r.table('test').index_wait().run(conn)
 
 [Read more about this command &rarr;](index_wait/)
 
+## [set_write_hook(set_write_hook/) ##
+
+{% apibody %}
+table.set_write_hook(function) &rarr; object
+table.set_write_hook(binary) &rarr; object
+table.set_write_hook(null) &rarr; object
+{% endapibody %}
+
+Sets the write hook on a table or overwrites it if one already exists.
+
+The `function` can be an anonymous function with the signature `(context: object, old_val: object, new_val: object) -> object` or a binary representation obtained from the `function` field of [get_write_hook](/api/python/get_write_hook). The function must be deterministic, and so cannot use a subquery or the `r.js` command.
+
+[Read more about this command &rarr;](set_write_hook/)
+
+## [getWriteHook](get_write_hook/) ##
+
+{% apibody %}
+table.get_write_hook() &rarr; null/object
+{% endapibody %}
+
+Gets the write hook of this table. If a write hook exists, the result is an object of the following form:
+
+```py
+{
+  "function": <binary>,
+  "query": "setWriteHook(function(_var1, _var2, _var3) { return ...; })",
+}
+```
+
+[Read more about this command &rarr;](get_write_hook/)
+
 {% endapisection %}
 
 {% apisection Writing data %}
