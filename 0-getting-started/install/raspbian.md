@@ -8,7 +8,7 @@ permalink: docs/install/raspbian/
 {% include docs/install-docs-header.md %}
 {% include docs/install-community-platform-warning.md %}
 
-These instructions were updated after the 1.16 release, but have not been tested.
+These instructions were updated before the 2.3.7 release, but have not been tested.
 
 # Compile from source #
 
@@ -44,9 +44,8 @@ Kick off the build process:
 
 ```bash
 cd rethinkdb-{{site.version.full}}
-./configure --with-system-malloc --allow-fetch
-make ALLOW_WARNINGS=1
-sudo make install ALLOW_WARNINGS=1
+./configure --allow-fetch CXX=clang++
+sudo make install
 ```
 
 {% include docs/install-next-step.md %}
