@@ -28,7 +28,7 @@ alias: install/
                 </a>
             </li>
             <li>
-                <a href="https://marketplace.digitalocean.com/apps/rethinkdb/?action=deploy&refcode=438afa41d795" target="_blank">
+                <a href="https://marketplace.digitalocean.com/apps/rethinkdb-fantasia/?action=deploy&refcode=438afa41d795" target="_blank">
                     <img src="/assets/images/docs/install-platforms/digitalocean.png" />
                     <p class="name">DigitalOcean</p>
                 </a>
