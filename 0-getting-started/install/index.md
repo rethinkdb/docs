@@ -16,12 +16,6 @@ alias: install/
                 </a>
             </li>
             <li>
-                <a href="osx/">
-                    <img src="/assets/images/docs/install-platforms/osx.png" />
-                    <p class="name">OS X</p>
-                </a>
-            </li>
-            <li>
                 <a href="centos/">
                     <img src="/assets/images/docs/install-platforms/centos.png" />
                     <p class="name">CentOS</p>
@@ -31,6 +25,18 @@ alias: install/
                 <a href="debian/">
                     <img src="/assets/images/docs/install-platforms/debian.png" />
                     <p class="name">Debian</p>
+                </a>
+            </li>
+            <li>
+                <a href="https://marketplace.digitalocean.com/apps/rethinkdb-fantasia/?action=deploy&refcode=438afa41d795" target="_blank">
+                    <img src="/assets/images/docs/install-platforms/digitalocean.png" />
+                    <p class="name">DigitalOcean</p>
+                </a>
+            </li>
+            <li>
+                <a href="osx/">
+                    <img src="/assets/images/docs/install-platforms/osx.png" />
+                    <p class="name">OS X</p>
                 </a>
             </li>
             <li>
