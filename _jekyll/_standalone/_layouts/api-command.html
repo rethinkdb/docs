@@ -25,7 +25,7 @@ body_class: api
                     <h1>Related commands</h1>
                     <ul>
                         {% for related in page.related_commands %}
-                            <li><a href="../{{related[1]}}">{{related[0]}}</a></li>
+                            <li><a href="{{ page.url | replace: page.path, related[1] }}">{{related[0]}}</a></li>
                         {% endfor %}
                     </ul>
                 </section>
