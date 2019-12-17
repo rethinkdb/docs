@@ -250,6 +250,22 @@
           permalink: ceil
         - name: floor
           permalink: floor
+        - name: bit_and
+          permalink: bit_and
+        - name: bit_or
+          permalink: bit_or
+        - name: bit_xor
+          permalink: bit_xor
+        - name: bit_not
+          permalink: bit_not
+        - name: bit_sal
+          permalink: bit_sal
+        - name: bit_sar
+          permalink: bit_sar
+        - name: bit_shl
+          permalink: bit_shl
+        - name: bit_shr
+          permalink: bit_shr
 - section:
     name: Dates and times
     commands:
