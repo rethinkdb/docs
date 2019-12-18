@@ -3,6 +3,9 @@ layout: api-command
 language: JavaScript
 permalink: api/javascript/bit_and/
 command: bitAnd
+io:
+    -   - number
+        - number
 related_commands:
     bit_not: bit_not/
     bit_or: bit_or/
