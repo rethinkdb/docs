@@ -2185,6 +2185,141 @@ These evaluate to `false`.
 
 [Read more about this command &rarr;](not/)
 
+## [bit_and](bit_and/) ##
+
+{% apibody %}
+r.bit_and(number) &rarr; number
+r.bit_and(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "and" of one or more values. `bit_and` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "and" of `6` and `4`
+
+```rb
+r.expr(6).bit_and(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_and/)
+
+## [bit_or](bit_or/) ##
+
+{% apibody %}
+r.bit_or(number) &rarr; number
+r.bit_or(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "or" of one or more values. `bit_or` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "or" of `6` and `4`
+
+```rb
+r.expr(6).bit_or(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_or/)
+
+## [bit_xor](bit_xor/) ##
+
+{% apibody %}
+r.bit_xor(number) &rarr; number
+r.bit_xor(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "and" of one or more values. `bit_xor` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "and" of `6` and `4`
+
+```rb
+r.expr(6).bit_xor(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_xor/)
+
+## [bit_not](bit_not/) ##
+
+{% apibody %}
+r.bit_not() &rarr; number
+{% endapibody %}
+
+Compute the arithmetic inverse (not) of an expression. `bit_not` takes no arguments.
+
+__Example:__ Negate the arithmetice expression
+
+```rb
+r.expr(15).bit_not().run(conn)
+```
+
+[Read more about this command &rarr;](bit_not/)
+
+## [bit_sal](bit_sal/) ##
+
+{% apibody %}
+r.bit_sal(number) &rarr; number
+r.bit_sal(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the left arithmetic shift (left logical shift) of one or more values. `bit_sal` takes one or more arguments.
+
+__Example:__ Compute the left arithmetic shift of `5` and `4`
+
+```rb
+r.expr(5).bit_sal(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_sal/)
+
+## [bit_shl](bit_shl/) ##
+
+{% apibody %}
+r.bit_shl(number) &rarr; number
+r.bit_shl(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the left logical shift of one or more values. `bit_shl` takes one or more arguments.
+
+__Example:__ Compute the left logical shift of `5` and `4`
+
+```rb
+r.expr(5).bit_shl(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_shl/)
+
+## [bit_sar](bit_sar/) ##
+
+{% apibody %}
+r.bit_sar(number) &rarr; number
+r.bit_sar(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the right arithmetic shift of one or more values. `bit_sar` takes one or more arguments.
+
+__Example:__ Compute the right arithmetic shift of `32` and `3`
+
+```rb
+r.expr(32).bit_sar(3).run(conn)
+```
+
+[Read more about this command &rarr;](bit_sar/)
+
+## [bit_shr](bit_shr/) ##
+
+{% apibody %}
+r.bit_shr(number) &rarr; number
+r.bit_shr(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the right logical shift of one or more values. `bit_shr` takes one or more arguments.
+
+__Example:__ Compute the logical right shift of `6` and `4`
+
+```rb
+r.expr(6).bit_shr(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_shr/)
+
 ## [random](random/) ##
 
 {% apibody %}
