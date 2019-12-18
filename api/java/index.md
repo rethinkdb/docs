@@ -2235,7 +2235,7 @@ Compute the arithmetic "and" of one or more values. `bitAnd` takes one or more a
 
 __Example:__ Compute the arithmetic "and" of `6` and `4`
 
-```py
+```java
 r.expr(6).bitAnd(4).run(conn)
 ```
 
@@ -2252,7 +2252,7 @@ Compute the arithmetic "or" of one or more values. `bitOr` takes one or more arg
 
 __Example:__ Compute the arithmetic "or" of `6` and `4`
 
-```py
+```java
 r.expr(6).bitOr(4).run(conn)
 ```
 
@@ -2269,7 +2269,7 @@ Compute the arithmetic "and" of one or more values. `bitXor` takes one or more a
 
 __Example:__ Compute the arithmetic "and" of `6` and `4`
 
-```py
+```java
 r.expr(6).bitXor(4).run(conn)
 ```
 
@@ -2285,7 +2285,7 @@ Compute the arithmetic inverse (not) of an expression. `bitNot` takes no argumen
 
 __Example:__ Negate the arithmetice expression
 
-```py
+```java
 r.expr(15).bitNot().run(conn)
 ```
 
@@ -2302,7 +2302,7 @@ Compute the left arithmetic shift (left logical shift) of one or more values. `b
 
 __Example:__ Compute the left arithmetic shift of `5` and `4`
 
-```py
+```java
 r.expr(5).bitSal(4).run(conn)
 ```
 
@@ -2319,7 +2319,7 @@ Compute the left logical shift of one or more values. `bitShl` takes one or more
 
 __Example:__ Compute the left logical shift of `5` and `4`
 
-```py
+```java
 r.expr(5).bitShl(4).run(conn)
 ```
 
@@ -2336,7 +2336,7 @@ Compute the right arithmetic shift of one or more values. `bitSar` takes one or 
 
 __Example:__ Compute the right arithmetic shift of `32` and `3`
 
-```py
+```java
 r.expr(32).bitSar(3).run(conn)
 ```
 
@@ -2353,7 +2353,7 @@ Compute the right logical shift of one or more values. `bitShr` takes one or mor
 
 __Example:__ Compute the logical right shift of `6` and `4`
 
-```py
+```java
 r.expr(6).bitShr(4).run(conn)
 ```
 
