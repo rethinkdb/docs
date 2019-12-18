@@ -13,11 +13,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
+table.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false, :ignore_write_hook => false])
     &rarr; object
-selection.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
+selection.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false, :ignore_write_hook => false])
     &rarr; object
-singleSelection.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false])
+singleSelection.replace(object | function[, :durability => "hard", :return_changes => false, :non_atomic => false, :ignore_write_hook => false])
     &rarr; object
 {% endapibody %}
 
@@ -51,6 +51,10 @@ The optional arguments are:
   result to replicas in a non-atomic fashion. This flag is required to perform
   non-deterministic updates, such as those that require reading data from
   another table.
+- `ignore_write_hook`: If `true`, and if the user has the config permission,
+  ignores any [write
+  hook](/api/ruby/manipulating-tables/set_write_hook.md) when performing
+  the replacement.
 
 Replace returns an object that contains the following attributes:
 

@@ -13,7 +13,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.insert(object | [object1, object2, ...][, durability="hard", return_changes=False, conflict="error"])
+table.insert(object | [object1, object2, ...][, durability="hard", return_changes=False, conflict="error", ignore_write_hook=False])
     &rarr; object
 {% endapibody %}
 
@@ -34,6 +34,8 @@ The optional arguments are:
     - `"replace"`: [Replace](/api/python/replace/) the old document in its entirety with the new one.
     - `"update"`: [Update](/api/python/update/) fields of the old document with fields from the new one.
     - `lambda id, old_doc, newdoc: resolved_doc`: a function that receives the id, old and new documents as arguments and returns a document which will be inserted in place of the conflicted one.
+- `ignore_write_hook`: If `True`, and if the user has the config permission, ignores any [write hook](/api/python/manipulating-tables/set_write_hook.md), inserting the document unmodified.
+
 
 If `return_changes` is set to `True` or `"always"`, the `changes` array will follow the same order as the inserted documents. Documents in `changes` for which an error occurs (such as a key conflict) will have a third field, `error`, with an explanation of the error.
 
