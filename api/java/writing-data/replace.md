@@ -49,6 +49,10 @@ You can pass the following options using [optArg](/api/java/optarg/):
   result to replicas in a non-atomic fashion. This flag is required to perform
   non-deterministic updates, such as those that require reading data from
   another table.
+- `ignore_write_hook`: If `true`, and if the user has the config permission,
+  ignores any [write
+  hook](/api/java/manipulating-tables/set_write_hook.md) when performing
+  the replacement.
 
 Replace returns an object that contains the following attributes:
 

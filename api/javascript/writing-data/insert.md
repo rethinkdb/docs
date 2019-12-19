@@ -19,7 +19,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.insert(object | [object1, object2, ...][, {durability: "hard", returnChanges: false, conflict: "error"}]) &rarr; object
+table.insert(object | [object1, object2, ...][, {durability: "hard", returnChanges: false, conflict: "error", ignoreWriteHook: false}]) &rarr; object
 {% endapibody %}
 
 # Description #
@@ -39,6 +39,7 @@ The optional arguments are:
     - `"replace"`: [Replace](/api/javascript/replace/) the old document in its entirety with the new one.
     - `"update"`: [Update](/api/javascript/update/) fields of the old document with fields from the new one.
     - `function (id, oldDoc, newDoc) { return resolvedDoc }`: a function that receives the id, old and new documents as arguments and returns a document which will be inserted in place of the conflicted one.
+- `ignoreWriteHook`: If `true`, and if the user has the config permission, ignores any [write hook](/api/javascript/manipulating-tables/set_write_hook.md), inserting the document unmodified.
 
 If `returnChanges` is set to `true` or `"always"`, the `changes` array will follow the same order as the inserted documents. Documents in `changes` for which an error occurs (such as a key conflict) will have a third field, `error`, with an explanation of the error.
 

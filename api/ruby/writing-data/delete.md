@@ -13,11 +13,11 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-table.delete[({:durability => "hard", :return_changes => false})]
+table.delete[({:durability => "hard", :return_changes => false, :ignore_write_hook => false})]
     &rarr; object
-selection.delete[({:durability => "hard", :return_changes => false})]
+selection.delete[({:durability => "hard", :return_changes => false, :ignore_write_hook => false})]
     &rarr; object
-singleSelection.delete[({:durability => "hard", :return_changes => false})]
+singleSelection.delete[({:durability => "hard", :return_changes => false, :ignore_write_hook => false})]
     &rarr; object
 {% endapibody %}
 
@@ -28,14 +28,14 @@ Delete one or more documents from a table.
 The optional arguments are:
 
 - `durability`: possible values are `hard` and `soft`. This option will override the
-table or query's durability setting (set in [run](/api/ruby/run/)).  
+table or query's durability setting (set in [run](/api/ruby/run/)).
 In soft durability mode RethinkDB will acknowledge the write immediately after
 receiving it, but before the write has been committed to disk.
 - `return_changes`:
     - `true`: return a `changes` array consisting of `old_val`/`new_val` objects describing the changes made, only including the documents actually updated.
     - `false`: do not return a `changes` array (the default).
     - `"always"`: behave as `true`, but include all documents the command tried to update whether or not the update was successful. (This was the behavior of `true` pre-2.0.)
-
+- `ignore_write_hook`: If `true`, and if the user has the config permission, ignores any [write hook](/api/ruby/manipulating-tables/set_write_hook.md), which might have prohibited the deletion.
 
 Delete returns an object that contains the following attributes:
 

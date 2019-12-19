@@ -700,6 +700,35 @@ r.table('test').indexWait().run(conn, callback)
 
 [Read more about this command &rarr;](index_wait/)
 
+## [setWriteHook](set_write_hook/) ##
+
+{% apibody %}
+table.setWriteHook(function | binary | null) &rarr; object
+{% endapibody %}
+
+Sets the write hook on a table or overwrites it if one already exists.
+
+The `function` can be an anonymous function with the signature `(context: object, oldVal: object, newVal: object) -> object` or a binary representation obtained from the `function` field of [getWriteHook](/api/javascript/get_write_hook). The function must be deterministic, and so cannot use a subquery or the `r.js` command.
+
+[Read more about this command &rarr;](set_write_hook/)
+
+## [getWriteHook](get_write_hook/) ##
+
+{% apibody %}
+table.getWriteHook() &rarr; null/object
+{% endapibody %}
+
+Gets the write hook of this table. If a write hook exists, the result is an object of the following form:
+
+```js
+{
+  "function": <binary>,
+  "query": "setWriteHook(function(_var1, _var2, _var3) { return ...; })",
+}
+```
+
+[Read more about this command &rarr;](get_write_hook/)
+
 {% endapisection %}
 
 {% apisection Writing data %}
@@ -2273,6 +2302,107 @@ r.not(true).run(conn, callback)
 These evaluate to `false`.
 
 [Read more about this command &rarr;](not/)
+
+## [bitAnd](bit_and/) ##
+
+{% apibody %}
+r.bitAnd(number) &rarr; number
+r.bitAnd(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "and" of one or more values. `bitAnd` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "and" of `6` and `4`
+
+```js
+r.expr(6).bitAnd(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_and/)
+
+## [bitOr](bit_or/) ##
+
+{% apibody %}
+r.bitOr(number) &rarr; number
+r.bitOr(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "or" of one or more values. `bitOr` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "or" of `6` and `4`
+
+```js
+r.expr(6).bitOr(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_or/)
+
+## [bitXor](bit_xor/) ##
+
+{% apibody %}
+r.bitXor(number) &rarr; number
+r.bitXor(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the arithmetic "and" of one or more values. `bitXor` takes one or more arguments.
+
+__Example:__ Compute the arithmetic "and" of `6` and `4`
+
+```js
+r.expr(6).bitXor(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_xor/)
+
+## [bitNot](bit_not/) ##
+
+{% apibody %}
+r.bitNot() &rarr; number
+{% endapibody %}
+
+Compute the arithmetic inverse (not) of an expression. `bitNot` takes no arguments.
+
+__Example:__ Negate the arithmetice expression
+
+```js
+r.expr(15).bitNot().run(conn)
+```
+
+[Read more about this command &rarr;](bit_not/)
+
+## [bitSal](bit_sal/) ##
+
+{% apibody %}
+r.bitSal(number) &rarr; number
+r.bitSal(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the left arithmetic shift (left logical shift) of one or more values. `bitSal` takes one or more arguments.
+
+__Example:__ Compute the left arithmetic shift of `5` and `4`
+
+```js
+r.expr(5).bitSal(4).run(conn)
+```
+
+[Read more about this command &rarr;](bit_sal/)
+
+## [bitSar](bit_sar/) ##
+
+{% apibody %}
+r.bitSar(number) &rarr; number
+r.bitSar(number[, number, ...]) &rarr; number
+{% endapibody %}
+
+Compute the right arithmetic shift of one or more values. `bitSar` takes one or more arguments.
+
+__Example:__ Compute the right arithmetic shift of `32` and `3`
+
+```js
+r.expr(32).bitSar(3).run(conn)
+```
+
+[Read more about this command &rarr;](bit_sar/)
 
 ## [random](random/) ##
 

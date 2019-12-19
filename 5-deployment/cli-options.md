@@ -118,6 +118,8 @@ For details about these options, read [Securing your cluster][sec].
 * `rethinkdb dump`: export and compress data from an existing cluster
 * `rethinkdb restore`: import compressed data into an existing cluster
 * `rethinkdb index-rebuild`: rebuild outdated secondary indexes
+* `rethinkdb install-service`: install the RethinkDB Windows service (Windows only)
+* `rethinkdb remove-service`: uninstall the RethinkDB Windows service (Windows only)
 
 For more information about subcommands, type `rethinkdb help [subcommand]` at the command line.
 

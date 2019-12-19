@@ -66,6 +66,10 @@
           permalink: index_status
         - name: indexWait
           permalink: index_wait
+        - name: setWriteHook
+          permalink: set_write_hook
+        - name: getWriteHook
+          permalink: get_write_hook
 - section:
     name: Writing data
     commands:
@@ -254,6 +258,18 @@
           permalink: ceil
         - name: floor
           permalink: floor
+        - name: bitAnd
+          permalink: bit_and
+        - name: bitOr
+          permalink: bit_or
+        - name: bitXor
+          permalink: bit_xor
+        - name: bitNot
+          permalink: bit_not
+        - name: bitSal
+          permalink: bit_sal
+        - name: bitSar
+          permalink: bit_sar
 - section:
     name: Dates and times
     commands:
