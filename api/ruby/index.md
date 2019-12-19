@@ -2269,23 +2269,6 @@ r.expr(5).bit_sal(4).run(conn)
 
 [Read more about this command &rarr;](bit_sal/)
 
-## [bit_shl](bit_shl/) ##
-
-{% apibody %}
-r.bit_shl(number) &rarr; number
-r.bit_shl(number[, number, ...]) &rarr; number
-{% endapibody %}
-
-Compute the left logical shift of one or more values. `bit_shl` takes one or more arguments.
-
-__Example:__ Compute the left logical shift of `5` and `4`
-
-```rb
-r.expr(5).bit_shl(4).run(conn)
-```
-
-[Read more about this command &rarr;](bit_shl/)
-
 ## [bit_sar](bit_sar/) ##
 
 {% apibody %}
@@ -2302,23 +2285,6 @@ r.expr(32).bit_sar(3).run(conn)
 ```
 
 [Read more about this command &rarr;](bit_sar/)
-
-## [bit_shr](bit_shr/) ##
-
-{% apibody %}
-r.bit_shr(number) &rarr; number
-r.bit_shr(number[, number, ...]) &rarr; number
-{% endapibody %}
-
-Compute the right logical shift of one or more values. `bit_shr` takes one or more arguments.
-
-__Example:__ Compute the logical right shift of `6` and `4`
-
-```rb
-r.expr(6).bit_shr(4).run(conn)
-```
-
-[Read more about this command &rarr;](bit_shr/)
 
 ## [random](random/) ##
 

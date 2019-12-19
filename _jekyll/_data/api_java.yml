@@ -268,10 +268,6 @@
           permalink: bit_sal
         - name: bitSar
           permalink: bit_sar
-        - name: bitShl
-          permalink: bit_shl
-        - name: bitShr
-          permalink: bit_shr
 - section:
     name: Dates and times
     commands:

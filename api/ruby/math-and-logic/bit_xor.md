@@ -8,9 +8,7 @@ related_commands:
     bit_not: bit_not/
     bit_or: bit_or/
     bit_sal: bit_sal/
-    bit_shl: bit_shl/
     bit_sar: bit_sar/
-    bit_shr: bit_shr/
 ---
 
 # Command syntax #

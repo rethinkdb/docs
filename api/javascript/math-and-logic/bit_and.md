@@ -11,8 +11,6 @@ related_commands:
     bit_or: bit_or/
     bit_sal: bit_sal/
     bit_sar: bit_sar/
-    bit_shl: bit_shl/
-    bit_shr: bit_shr/
     bit_xor: bit_xor/
 ---
 
