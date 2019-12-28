@@ -5,7 +5,6 @@ permalink: api/java/index_wait/
 command: indexWait
 related_commands:
     indexStatus: index_status/
-
 ---
 
 # Command syntax #
