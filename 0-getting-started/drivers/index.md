@@ -11,25 +11,25 @@ alias: docs/guides/drivers/
         <h2>Official drivers</h2>
         <ul class="platform-buttons">
             <li>
-                <a href="javascript/">
+                <a href="/docs/install-drivers/javascript/">
                     <img src="/assets/images/docs/driver-languages/javascript.png" />
                     <p class="name">JavaScript</p>
                 </a>
             </li>
             <li>
-                <a href="ruby/">
+                <a href="/docs/install-drivers/ruby/">
                     <img src="/assets/images/docs/driver-languages/ruby.png" />
                     <p class="name">Ruby</p>
                 </a>
             </li>
             <li>
-                <a href="python/">
+                <a href="/docs/install-drivers/python/">
                     <img src="/assets/images/docs/driver-languages/python.png" />
                     <p class="name">Python</p>
                 </a>
             </li>
             <li>
-                <a href="java/">
+                <a href="/docs/install-drivers/java/">
                     <img src="/assets/images/docs/driver-languages/java.png" />
                     <p class="name">Java</p>
                 </a>
