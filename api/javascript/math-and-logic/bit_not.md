@@ -30,5 +30,5 @@ __Example:__
 r.expr(7).bitNot().run(conn);
 
 // Result:
-8
+-8
 ```

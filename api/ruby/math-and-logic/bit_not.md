@@ -26,5 +26,5 @@ __Example:__
 ```rb
 > r.expr(7).bitNot().run(conn)
 
-8
+-8
 ```
