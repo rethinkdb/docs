@@ -75,7 +75,7 @@ There are four different permissions that can be granted to a user:
 
 * `read` allows reading the data in tables.
 * `write` allows modifying data, including inserting, replacing/updating, and deleting.
-* `connect` allows a user to open HTTP connections via the [http][] command. (Restricting this offers security against an exploit in your code being used to circumvent firewall restrictions.)
+* `connect` allows a user to open HTTP connections via the [http][] command. **Restricting this offers security against an exploit in your code** being used to circumvent firewall restrictions.
 * `config` allows users different abilities, depending on its scope:
     * __table__ scope allows creating and dropping [secondary indexes][si] on a table, as well as changing the table's cluster configuration (commands such as `reconfigure` and `rebalance`).
     * __database__ scope allows the ability to create and drop tables, in addition to the above.
