@@ -14,15 +14,13 @@ io:
 # Command syntax #
 
 {% apibody %}
-query.run(conn)
+query.run(conn[, optArgs, fetchMode, typeRef]) &rarr; Result
+query.runAsync(conn[, optArgs, fetchMode, typeRef]) &rarr; CompletableFuture<Result>
 {% endapibody %}
-
-<img src="/assets/images/docs/api_illustrations/run.png" class="api_command_illustration" />
 
 # Description #
 
-Run a query on a connection, returning either a single JSON result or
-a cursor, depending on the query.
+Run a query on a connection either synchronosuly or asynchronously, returning either a result or a [CompletableFuture](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html) which will complete with the result.
 
 You can pass the following options using [optArg](/api/java/optarg/). Note that unlike other Java ReQL commands, you must create an OptArg object and pass it as an optional second argument to `run`:
 

@@ -78,8 +78,8 @@ __Example:__ Subscribe to the changes on a table.
 Start monitoring the changefeed in one client:
 
 ```java
-Cursor changeCursor = r.table("games").changes().run(conn);
-for (Object change : changeCursor) {
+Result<Object> changes = r.table("games").changes().run(conn);
+for (Object change : changes) {
     System.out.println(change);
 }
 ```
@@ -185,11 +185,11 @@ r.table("games").orderBy().optArg("index", r.desc("score"))
 __Example:__ Maintain the state of a list based on a changefeed.
 
 ```java
-Cursor changeCursor = r.table("data").changes()
+Result<Object> changes = r.table("data").changes()
     .optArg("include_initial", true)
     .optArg("include_offsets", true)
     .run((conn);
-for (Object change : changeCursor) {
+for (Object change : changes) {
     // Delete item at old_offset before inserting at new_offset
     if (change.old_offset != null) {
         myList.remove(change.old_offset);

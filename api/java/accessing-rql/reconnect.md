@@ -12,7 +12,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-conn.reconnect([boolean, timeout])
+conn.reconnect([boolean])
 {% endapibody %}
 
 # Description #
@@ -29,8 +29,8 @@ __Example:__ Cancel outstanding requests/queries that are no longer needed.
 conn.reconnect(false);
 ```
 
-__Example:__ Wait up to 5 seconds for outstanding requests to finish before reconnecting.
+__Example:__ Wait up for outstanding requests to finish before reconnecting.
 
 ```java
-conn.reconnect(true, 5);
+conn.reconnect();
 ```

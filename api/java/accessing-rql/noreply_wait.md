@@ -12,6 +12,7 @@ related_commands:
 
 {% apibody %}
 conn.noreplyWait()
+conn.noreplyWaitAsync() &rarr; CompletableFuture
 {% endapibody %}
 
 # Description #
