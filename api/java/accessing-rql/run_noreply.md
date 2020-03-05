@@ -14,10 +14,8 @@ rb: false
 # Command syntax #
 
 {% apibody %}
-query.runNoReply(conn)
+query.runNoReply(conn[, optArgs])
 {% endapibody %}
-
-<img src="/assets/images/docs/api_illustrations/run.png" class="api_command_illustration" />
 
 # Description #
 

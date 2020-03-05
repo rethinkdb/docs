@@ -8,7 +8,8 @@ command: server
 # Command syntax #
 
 {% apibody %}
-conn.server()
+conn.server() &rarr; Server
+conn.serverAsync() &rarr; CompletableFuture<Server>
 {% endapibody %}
 
 # Description #

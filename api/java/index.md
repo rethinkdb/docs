@@ -12,7 +12,7 @@ language: Java
 ## [r](r/) ##
 
 {% apibody %}
-r &rarr; r
+r &rarr; RethinkDB
 {% endapibody %}
 
 The top-level ReQL namespace.
@@ -34,19 +34,23 @@ public static final RethinkDB r = RethinkDB.r;
 ## [connection](connect/) ##
 
 {% apibody %}
-r.connection() &rarr; builder
+r.connection() &rarr; Connection.Builder
 {% endapibody %}
 
-Create a new connection to the database server. `connection` returns a builder object with the following methods:
+Create a new connection to the database server. `connection` returns a connection builder with the following methods:
 
-- `hostname()`: the host to connect to (default `localhost`).
-- `port()`: the port to connect on (default `28015`).
-- `dbname()`: the default database (default `test`).
-- `user()`: the user account and password to connect as (default `"admin", ""`).
-- `timeout()`: timeout period in seconds for the connection to be opened (default `20`).
-- `connect()`: instantiate a connection object with the parameters previously passed to the builder.
-- `certFile()`: a path to an SSL CA certificate.
-- `sslContext()`: an instance of an [SSLContext](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html) class to use for SSL connections.
+- `hostname(String)`: the host to connect to (default `localhost`).
+- `port(Integer)`: the port to connect on (default `28015`).
+- `db(String)`: the default database (default `test`).
+- `user(String, String)`: the user account and password to connect as (default `"admin", ""`).
+- `authKey(String)`: the auth key to connect with (default `null`).
+- `sslContext(SSLContext)`: an instance of an [SSLContext](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html) class to use for SSL connections.
+- `certFile(InputStream)`: an [InputStream](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html), which will be read and converted into an [SSLContext](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html).
+- `timeout(Long)`: timeout period in seconds for the connection to be opened (default `null`).
+- `socketFactory(ConnectionSocket.Factory)`: A factory to override the default connection socket (default `null`, which uses the default factory).
+- `pumpFactory(ResponsePump.Factory)`: A factory to override the default response pump (default `null`, which uses the default factory).
+- `unwrapLists(boolean)`: If enabled, will unwrap atom responses which are lists for convenience (default `false`).
+- `defaultFetchMode(Result.FetchMode)`: Overrides the connection's fetch mode regarding partial sequences (default `Result.FetchMode.LAZY`).
 
 Either `certFile` or `sslContext` must be supplied to make an SSL connection to the RethinkDB server. Only one should be used.
 
@@ -74,20 +78,21 @@ __Example:__ Close an open connection, waiting for noreply writes to finish.
 conn.close();
 ```
 
+
 [Read more about this command &rarr;](close/)
 
 ## [reconnect](reconnect/) ##
 
 {% apibody %}
-conn.reconnect([boolean, timeout])
+conn.reconnect([boolean])
 {% endapibody %}
 
-Close and reopen a connection.
+Close and reopen a connection. If the parameter is true, wait for noreply writes to finish before closing (default `false`).
 
 __Example:__ Cancel outstanding requests/queries that are no longer needed.
 
 ```java
-conn.reconnect(false);
+conn.reconnect();
 ```
 
 [Read more about this command &rarr;](reconnect/)
@@ -113,11 +118,11 @@ r.table("heroes").run(conn);  // refers to r.db("marvel").table("heroes")
 ## [run](run/) ##
 
 {% apibody %}
-query.run(conn)
+query.run(conn[, optArgs, fetchMode, typeRef]) &rarr; Result
+query.runAsync(conn[, optArgs, fetchMode, typeRef]) &rarr; CompletableFuture<Result>
 {% endapibody %}
 
-Run a query on a connection, returning either a single JSON result or
-a cursor, depending on the query.
+Run a query on a connection, returning a result object.
 
 __Example:__ If you are OK with potentially out of date data from all
 the tables involved in this query and want potentially faster reads,
@@ -136,7 +141,7 @@ r.table("marvel").run(conn, OptArgs.of("read_mode", "outdated"));
 ## [runNoReply](run_noreply/) ##
 
 {% apibody %}
-query.runNoReply(conn)
+query.runNoReply(conn[, optArgs])
 {% endapibody %}
 
 Run a query on a connection and immediately return, without waiting for any result data to be returned by the server.
@@ -163,8 +168,8 @@ __Example:__ Subscribe to the changes on a table.
 Start monitoring the changefeed in one client:
 
 ```java
-Cursor changeCursor = r.table("games").changes().run(conn);
-for (Object change : changeCursor) {
+Result<Object> changes = r.table("games").changes().run(conn);
+for (Object change : changes) {
     System.out.println(change);
 }
 ```
@@ -221,6 +226,7 @@ ReqlRuntimeError: Changefeed aborted (table unavailable)
 
 {% apibody %}
 conn.noreplyWait()
+conn.noreplyWaitAsync() &rarr; CompletableFuture
 {% endapibody %}
 
 Ensure that previous queries executed with [runNoReply](/api/java/run_noreply) have been processed by the server. Note that this guarantee only apples to queries run on the same connection.
@@ -277,29 +283,30 @@ To pass more than one optional argument, chain `optArg` once for each argument.
 
 {% endapisection %}
 
-{% apisection Cursors %}
+{% apisection Results %}
 
 ## [next](next/) ##
 
 {% apibody %}
-cursor.next([wait])
+result.next([timeout, unit])
 {% endapibody %}
 
-Get the next element in the cursor.
+Get the next element of the result.
 
 __Example:__ Retrieve the next element.
 
 ```java
-Cursor cursor = r.table("superheroes").run(conn);
-Object doc = cursor.next();
+try (Result<Object> result = r.table("superheroes").run(conn)) {
+    Object doc = result.next();
+}
 ```
 
 [Read more about this command &rarr;](next/)
 
-## [for](each/) ##
+## [forEach](each/) ##
 
 {% apibody %}
-for (doc : <Cursor>) { ... }
+result.forEach(doc -> { ... })
 {% endapibody %}
 
 Lazily iterate over a result set one element at a time.
@@ -307,9 +314,9 @@ Lazily iterate over a result set one element at a time.
 __Example:__ Let's process all the elements!
 
 ```java
-Cursor cursor = r.table("users").run(conn);
-for (Object doc : cursor) {
-    System.out.println(doc);
+
+try (Result<Object> result = r.table("users").run(conn)) {
+    result.forEach(doc -> { System.out.println(doc); });
 }
 ```
 
@@ -318,17 +325,17 @@ for (Object doc : cursor) {
 ## [toList](to_array/) ##
 
 {% apibody %}
-cursor.toList()
+result.toList()
 {% endapibody %}
 
-Retrieve all results from a cursor as a list.
+Retrieve all results from a result as a list.
 
 __Example:__ For small result sets it may be more convenient to process them at once as a list.
 
 ```java
-Cursor cursor = r.table("users").run(conn);
-List users = cursor.toList();
-processResults(users);
+try (Result<Object> result = r.table("users").run(conn)) {
+    processResults(result.toList());
+}
 ```
 
 [Read more about this command &rarr;](to_array/)
@@ -336,16 +343,16 @@ processResults(users);
 ## [close](close-cursor/) ##
 
 {% apibody %}
-cursor.close()
+result.close()
 {% endapibody %}
 
-Close a cursor. Closing a cursor cancels the corresponding query and frees the memory
+Close a result. Closing a result cancels the corresponding query and frees the memory
 associated with the open request.
 
-__Example:__ Close a cursor.
+__Example:__ Close a result.
 
 ```java
-cursor.close();
+result.close();
 ```
 
 [Read more about this command &rarr;](close-cursor/)

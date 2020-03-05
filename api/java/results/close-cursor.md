@@ -12,17 +12,17 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-cursor.close()
+result.close()
 {% endapibody %}
 
 # Description #
 
 
-Close a cursor. Closing a cursor cancels the corresponding query and frees the memory
+Close a result. Closing a result cancels the corresponding query and frees the memory
 associated with the open request.
 
-__Example:__ Close a cursor.
+__Example:__ Close a result.
 
 ```java
-cursor.close();
+result.close();
 ```

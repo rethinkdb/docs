@@ -66,6 +66,6 @@ __Example:__ Save the binary representation of the index:
 
 ```java
 byte[] func = r.table("test").indexStatus("timestamp").nth(0).g("function")
-    .run(conn);
+    .run(conn, byte[].class).first();
 
 ```

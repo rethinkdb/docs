@@ -24,11 +24,11 @@
         - name: optArg
           permalink: optarg
 - section:
-    name: Cursors
+    name: Handling Results
     commands:
         - name: next
           permalink: next
-        - name: for
+        - name: forEach
           permalink: each
         - name: toList
           permalink: to_array

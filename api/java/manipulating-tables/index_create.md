@@ -63,7 +63,7 @@ __Example:__ Create a compound index based on the fields `postId` and `date`.
 
 ```java
 r.table("comments").indexCreate("postAndDate",
-    row -> r.array(row.g("postId"), row.g("date"))
+    row -> r.array(row.g("postId"), row.g("date"))./transformations/slice.md
 ).run(conn);
 ```
 
@@ -94,7 +94,7 @@ __Example:__ Create a new secondary index based on an existing one.
 
 ```java
 byte[] index = r.table("posts").indexStatus("authors").nth(0).g("function")
-    .run(conn);
+    .run(conn, byte[].class).first();
 r.table("newPosts").indexCreate("authors", index).run(conn);
 ```
 
@@ -102,7 +102,7 @@ __Example:__ Rebuild an outdated secondary index on a table.
 
 ```java
 byte[] oldIndex = r.table("posts")
-    .indexStatus("oldIndex").nth(0).g("function").run(conn);
+    .indexStatus("oldIndex").nth(0).g("function").run(conn, byte[].class).first();
 
 r.table("posts").indexCreate("newIndex", oldIndex).run(conn);
 r.table("posts").indexWait("newIndex").run(conn);
