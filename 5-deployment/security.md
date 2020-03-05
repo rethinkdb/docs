@@ -110,7 +110,9 @@ directly from a remote machine. You can bind it to a specific IP address using t
 
 [cfg]: /docs/config-file/
 
-Now, use one of the following two methods to enable secure access.
+{% infobox %}
+**Important!** Not using a proxy can lead to exploits. Make sure you set up proxy before start using RethinkDB in production. Use one of the following two methods to enable secure access.
+{% endinfobox %}
 
 ## Via a SOCKS proxy ##
 

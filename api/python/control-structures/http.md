@@ -19,7 +19,7 @@ r.http(url[, options]) &rarr; stream
 
 # Description #
 
-Retrieve data from the specified URL over HTTP.  The return type depends on the `result_format` option, which checks the `Content-Type` of the response by default.
+Retrieve data from the specified URL over HTTP.  The return type depends on the `result_format` option, which checks the `Content-Type` of the response by default.  Make sure that you **never** use this command for **user provided** URLs.
 
 __Example:__ Perform an HTTP `GET` and store the result in a table.
 

@@ -18,7 +18,7 @@ RethinkDB provides an [r.http](/api/javascript/http/) command for
 accessing external APIs directly from the database. Since many APIs
 accept and return JSON, RethinkDB is a convenient platform for
 manipulating and analyzing API data, both interactively and in running
-applications.
+applications. Make sure that you **never** use this command for **user provided** URLs.
 
 # Basic usage #
 

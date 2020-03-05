@@ -6,7 +6,7 @@ permalink: docs/vulnerabilities/
 ---
 
 {% infobox %}
-**Important!** In case you found vulnerability or security issue in one of the drivers or the database, please contact us via e-mail at [gabor.brs@gmail.com](mailto:gabor.brs@gmail.com). Please do **not** use this channel for support.
+**Important!** In case you found vulnerability or security issue in one of the drivers or the database, please contact us via e-mail at [security@rethinkdb.com](mailto:security@rethinkdb.com). Please do **not** use this channel for support.
 {% endinfobox %}
 
 
@@ -18,7 +18,7 @@ permalink: docs/vulnerabilities/
 
 ## In case you found a vulnerability
 
-In case you found vulnerability or security issue in one of the drivers or the database, please do not publish it, instead, contact us via e-mail at [gabor.brs@gmail.com](mailto:gabor.brs@gmail.com). We will take the necessary steps to fix the issue. We are handling the vulnerabilities privately to keep our users' data as safe as we can.
+In case you found vulnerability or security issue in one of the drivers or the database, please do not publish it, instead, contact us via e-mail at [security@rethinkdb.com](mailto:security@rethinkdb.com). We will take the necessary steps to fix the issue. We are handling the vulnerabilities privately to keep our users' data as safe as we can.
 
 To make report processing easier, please consider the following:
 
