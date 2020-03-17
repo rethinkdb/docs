@@ -208,3 +208,6 @@
       - name: Vulnerabilities
         permalink: vulnerabilities
         url: /docs/vulnerabilities/
+      - name: Connections from mobile devices
+        permalink: mobile-connections
+        url: /docs/mobile-connections/
