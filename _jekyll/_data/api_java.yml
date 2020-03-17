@@ -96,6 +96,8 @@
           permalink: between
         - name: filter
           permalink: filter
+        - name: pathspec
+          permalink: pathspec
 - section:
     name: Joins
     commands:
