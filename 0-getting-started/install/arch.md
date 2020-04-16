@@ -74,7 +74,7 @@ $ makepkg -s
 You will need to install the `base-devel` group and several additional build dependencies:
 
 ```bash
-# pacman -S base-devel protobuf boost python2 jemalloc
+# pacman -S clang protobuf boost jemalloc git python2 make
 ```
 
 ## Get the source code ##
@@ -107,11 +107,11 @@ To run the build:
 
 ```bash
 $ cd ~/rethinkdb-{{site.version.full}}
-$ ./configure --dynamic jemalloc
+$ ./configure --dynamic jemalloc CXX=clang++
 $ make
 ```
 
-Once successfully built, the `rethinkdb` binary may be found in the `build/release/` subdirectory.  
+Once successfully built, the `rethinkdb` binary may be found in the `build/release_clang/` subdirectory.
 
 To install RethinkDB globally:
 
