@@ -25,6 +25,7 @@ sequence.count([value | predicate_function]) &rarr; number
 binary.count() &rarr; number
 string.count() &rarr; number
 object.count() &rarr; number
+array.count() &rarr; number
 r.count(sequence | binary | string | object[, predicate_function]) &rarr; number
 {% endapibody %}
 
@@ -66,4 +67,12 @@ __Example:__ Return the length of a Unicode string.
 r.expr("こんにちは").count().run(conn, callback);
 // Result passed to callback
 5
+```
+
+__Example:__ Return the length of an array.
+
+```js
+r.expr(['0','1','2']).count().run(conn, callback);
+// Result passed to callback
+3
 ```
