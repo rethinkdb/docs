@@ -46,7 +46,7 @@ Create a new connection to the database server. `connection` returns a connectio
 - `authKey(String)`: the auth key to connect with (default `null`).
 - `sslContext(SSLContext)`: an instance of an [SSLContext](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html) class to use for SSL connections.
 - `certFile(InputStream)`: an [InputStream](https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html), which will be read and converted into an [SSLContext](https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/SSLContext.html).
-- `timeout(Long)`: timeout period in seconds for the connection to be opened (default `null`).
+- `timeout(Long)`: timeout period in milliseconds for the connection to be opened (default `null`).
 - `socketFactory(ConnectionSocket.Factory)`: A factory to override the default connection socket (default `null`, which uses the default factory).
 - `pumpFactory(ResponsePump.Factory)`: A factory to override the default response pump (default `null`, which uses the default factory).
 - `unwrapLists(boolean)`: If enabled, will unwrap atom responses which are lists for convenience (default `false`).
