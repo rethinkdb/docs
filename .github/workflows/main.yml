@@ -1,17 +1,17 @@
-name: "Update website"	
+name: "Update website"
 
-on:	
-  push:	
-    branches:	
-    - master	
+on:
+  push:
+    branches:
+    - master
 
-jobs:	
-  build:	
+jobs:
+  build:
 
-    runs-on: ubuntu-latest	
+    runs-on: ubuntu-latest
 
-    steps:	
-    - name: Trigger website deploy	
-      run: |	
-        echo "Triggering deploy on www repo",	
+    steps:
+    - name: Trigger website deploy
+      run: |
+        echo "Triggering deploy on www repo",
         curl -X POST -d {} https://api.netlify.com/build_hooks/5db5427494d914e3817eda8b
