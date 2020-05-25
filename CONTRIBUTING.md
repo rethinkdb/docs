@@ -1,25 +1,45 @@
 # Contributing
 
-We're happy you want to contribute! You can help us in one of two ways:
+Contributions are welcome, and they are greatly appreciated! Every little bit helps! You can contribute in many ways, not limited to this document.
 
-- [Open an issue][1] with suggestions for improvements
-- Fork this repository and submit a pull request
+## Types of Contributions
 
-[1]: https://github.com/rethinkdb/docs/issues
+### Report Bugs
 
-To submit a pull request, fork the [documentation repository][2] and then clone your fork:
+First of all, please check that the bug is not reported yet. If that's already reported then upvote the existing bug instead of opening a new bug report.
 
-    git clone git@github.com:<your-name>/docs.git rethinkdb-docs
+Report bugs at https://github.com/rethinkdb/docs/issues. If you are reporting a bug, please include:
 
-[2]: https://github.com/rethinkdb/docs
+- Your operating system name and version.
+- Any details about your local setup that might be helpful in troubleshooting.
+- Detailed steps to reproduce the bug.
 
-Make your suggested changes, `git push` and then [submit a pull request][3]. Note that before we can accept your pull requests, you need to sign our [Contributor License Agreement][4].
+### Fix Bugs
 
-[3]: https://github.com/rethinkdb/docs/compare/
-[4]: http://rethinkdb.com/community/cla/
+Look through the GitHub issues for bugs. Anything tagged with "bug", "good first issue" and "help wanted" is open to whoever wants to implement it.
 
-## Guidelines
+### Implement Features
 
-See the [README][5] file for the scoop on how the documentation is put together.
+Look through the GitHub issues for features. Anything tagged with "enhancement",  "good first issue" and "help wanted" is open to whoever wants to implement it. In case you added a new Rule or Precondition, do not forget to add them to the docs as well.
 
-[5]: https://github.com/rethinkdb/docs/blob/master/README.md
+### Write Documentation
+
+RethinkDB could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such. To extend the documentation on the website, visit the [www](https://github.com/rethinkdb/www) repo. For extending the docs, you can check the [docs](https://github.com/rethinkdb/docs) repo.
+
+### Submit A Feature
+
+First of all, please check that the feature request is not reported yet. If that's already reported then upvote the existing request instead of opening a new one.
+
+If you are proposing a feature:
+
+- Check if there is an opened feature request for the same idea.
+- Explain in detail how it would work.
+- Keep the scope as narrow as possible, to make it easier to implement.
+- Remember that this is an open-source project, and that contributions are welcome :)
+
+## Pull Request Guidelines
+
+Before you submit a pull request, check that it meets these guidelines:
+
+1. The pull request should include tests (if applicable)
+2. If the pull request adds functionality, the docs should be updated too.
