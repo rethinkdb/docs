@@ -9,9 +9,13 @@ permalink: docs/install/windows/
 
 # Downloading #
 
+{% infobox %}
+The Windows port of RethinkDB is not available for the {{site.version.full}} version yet. As an alternative, you can use the docker based version.
+{% endinfobox %}
+
 _Prerequisites:_ We provide native 64-bit binaries for Windows 7 and above. A 64-bit version of Windows is required.
 
-[Download](https://download.rethinkdb.com/windows/rethinkdb-{{site.version.full}}.zip) the ZIP archive and unpack it in a directory of your choice.
+[Download](https://download.rethinkdb.com/repository/raw/windows/rethinkdb-{{site.version.full}}.zip) the ZIP archive and unpack it in a directory of your choice.
 
 {% infobox %}
 The Windows port of RethinkDB is a recent addition and hasn't received as much tuning as the Linux and OS X versions yet. Please report any performance issues on [GitHub][gh-issues].
@@ -55,8 +59,8 @@ To install RethinkDB as a Windows service, read [Start RethinkDB at system start
 
 # Compile from source #
 
-To build RethinkDB under Windows, you'll need to download and extract the archive at <https://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz>. Requirements and build directions are in the [`WINDOWS.md`][readme] file.
+To build RethinkDB under Windows, you'll need to download and extract the archive at <https://download.rethinkdb.com/repository/raw/dist/rethinkdb-{{site.version.full}}.tgz>. Requirements and build directions are in the [`WINDOWS.md`][readme] file.
 
-[readme]: https://github.com/rethinkdb/rethinkdb/blob/atnnn/windows3/WINDOWS.md
+[readme]: https://github.com/rethinkdb/rethinkdb/blob/master/WINDOWS.md
 
 {% include docs/install-next-step.md %}

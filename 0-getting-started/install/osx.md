@@ -13,7 +13,7 @@ __Prerequisites:__ We provide native binaries for OS X 10.7 (Lion) and above. _O
 
 [i5681]: https://github.com/rethinkdb/rethinkdb/issues/5681
 
-[Download](https://download.rethinkdb.com/osx/rethinkdb-{{site.version.full}}.dmg) the disk
+[Download](https://download.rethinkdb.com/repository/raw/osx/rethinkdb-{{site.version.full}}.dmg) the disk
 image, run `rethinkdb.pkg`, and follow the installation instructions.
 
 # Using Homebrew #
@@ -37,7 +37,7 @@ build from source.
 Download and extract the archive:
 
 ```bash
-curl -O https://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz
+curl -O https://download.rethinkdb.com/repository/raw/dist/rethinkdb-{{site.version.full}}.tgz
 tar xf rethinkdb-{{site.version.full}}.tgz
 ```
 
