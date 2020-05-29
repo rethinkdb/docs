@@ -34,7 +34,7 @@ The `./configure` script can install some of these dependencies if they are miss
 Download and extract the archive:
 
 ```bash
-wget https://download.rethinkdb.com/dist/rethinkdb-{{site.version.full}}.tgz
+wget https://download.rethinkdb.com/repository/raw/dist/rethinkdb-{{site.version.full}}.tgz
 tar xf rethinkdb-{{site.version.full}}.tgz
 ```
 
