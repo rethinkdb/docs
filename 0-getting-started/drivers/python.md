@@ -19,7 +19,7 @@ creating a virtual environment to use:
 
 ```bash
 # Python 2
-$ sudo pip install virtualenv && vitualenv ./venv
+$ sudo pip install virtualenv && virtualenv ./venv
 # Python 3
 $ python3 -m venv ./venv
 ```
