@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'jekyll', '~>3.6.3'
+gem 'jekyll', '~>3.9.0'
 gem 'therubyracer', '~>0.12.3'
 gem 'rouge', '~> 2.2.1'
 gem 'bourbon', '~> 4.2.1'
