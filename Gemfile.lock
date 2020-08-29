@@ -3,9 +3,8 @@ GEM
   specs:
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    bourbon (4.2.7)
-      sass (~> 3.4)
-      thor (~> 0.19)
+    bourbon (7.0.0)
+      thor (~> 1.0)
     colorator (1.1.0)
     concurrent-ruby (1.1.7)
     em-websocket (0.5.1)
@@ -68,13 +67,13 @@ GEM
     therubyracer (0.12.3)
       libv8 (~> 3.16.14.15)
       ref
-    thor (0.20.3)
+    thor (1.0.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  bourbon (~> 4.2.1)
+  bourbon (~> 7.0.0)
   jekyll (~> 3.9.0)
   kramdown (~> 2.3.0)
   kramdown-parser-gfm (~> 1.1.0)
