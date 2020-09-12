@@ -12,7 +12,7 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-r.dbList() &rarr; array
+r.dbList() &rarr; DbList
 {% endapibody %}
 
 # Description #
@@ -22,5 +22,9 @@ List all database names in the cluster. The result is a list of strings.
 __Example:__ List all databases.
 
 ```java
-r.dbList().run(conn);
+List<?> dbList = r.dbList().run(connection, ArrayList.class).single();
+
+if (dbList != null) {
+    dbList.forEach(System.out::println);
+}
 ```
