@@ -11,16 +11,19 @@ related_commands:
 # Command syntax #
 
 {% apibody %}
-db.tableList() &rarr; array
+db.tableList() &rarr; TableList
 {% endapibody %}
 
 # Description #
 
 List all table names in a database. The result is a list of strings.
 
-__Example:__ List all tables of the 'test' database.
+__Example:__ List all tables of the 'test' (`DEFAULT_DB_NAME`) database.
 
 ```java
-r.db("test").tableList().run(conn);
-```
+List<?> tableList = r.db(DEFAULT_DB_NAME).tableList().run(connection, ArrayList.class).single();
 
+if (tableList != null) {
+    tableList.forEach(System.out::println);
+}
+```
