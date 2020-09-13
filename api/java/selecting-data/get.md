@@ -34,7 +34,7 @@ r.table("heroes").get(3).merge(
 ).run(conn);
 ```
 
-___Example:__ Subscribe to a document's [changefeed](/docs/changefeeds/).
+__Example:__ Subscribe to a document's [changefeed](/docs/changefeeds/).
 
 ```java
 r.table("heroes").get(3).changes().run(conn);
