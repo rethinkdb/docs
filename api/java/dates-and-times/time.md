@@ -29,13 +29,13 @@ A few restrictions exist on the arguments:
 - `minutes` is an integer.
 - `seconds` is a double. Its value will be rounded to three decimal places
 (millisecond-precision).
-- `timezone` can be `'Z'` (for UTC) or a string with the format `±[hh]:[mm]`.
+- `timezone` can be `"Z"` (for UTC) or a string with the format `±[hh]:[mm]`.
 
 
 __Example:__ Update the birthdate of the user "John" to November 3rd, 1986 UTC.
 
 ```java
 r.table("user").get("John").update(
-    r.hashMap("birthdate", r.time(1986, 11, 3, 'Z'))
+    r.hashMap("birthdate", r.time(1986, 11, 3, "Z"))
 ).run(conn);
 ```
