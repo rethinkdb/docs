@@ -66,9 +66,9 @@ reduces the time and effort necessary to build scalable realtime apps.
 
 RethinkDB is being used in production by hundreds of technology
 startups, consulting studios, and Fortune 500 companies. Here are some
-example use cases:
+example use cases (possibly out of date):
 
-- [Jive Software][] and [Mediafly][] use RethinkDB to power reactive web and mobile apps
+- [Jive Software][] uses RethinkDB to power reactive web and mobile apps
 - [Pristine.io][] and [Narrative Clip][] use RethinkDB to power cloud infrastructure for connected devices
 - [Platzi][] and [Workshape.io][] use RethinkDB to power realtime analytics
 - [NodeCraft][] and [GameServerKings][] use RethinkDB to power massively scalable multiplayer games
@@ -76,7 +76,6 @@ example use cases:
 [Pristine.io]: https://pristine.io/
 [Narrative Clip]: http://getnarrative.com/
 [Jive Software]: https://www.jivesoftware.com/
-[Mediafly]: http://www.mediafly.com/
 [Platzi]: https://platzi.com/
 [Workshape.io]: https://www.workshape.io/
 [NodeCraft]: https://nodecraft.com/
