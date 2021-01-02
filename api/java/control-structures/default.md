@@ -13,13 +13,13 @@ io:
 # Command syntax #
 
 {% apibody %}
-value.default(default_value) &rarr; any
-sequence.default(default_value) &rarr; any
+value.default_(default_value) &rarr; any
+sequence.default_(default_value) &rarr; any
 {% endapibody %}
 
 # Description #
 
-Provide a default value in case of non-existence errors. The `default` command evaluates its first argument (the value it's chained to). If that argument returns `null` or a non-existence error is thrown in evaluation, then `default` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
+Provide a default value in case of non-existence errors. The `default_` command evaluates its first argument (the value it's chained to). If that argument returns `null` or a non-existence error is thrown in evaluation, then `default_` returns its second argument. The second argument is usually a default value, but it can be a function that returns a value.
 
 __Example:__ Suppose we want to retrieve the titles and authors of the table `posts`.
 In the case where the author field is missing or `null`, we want to retrieve the string
