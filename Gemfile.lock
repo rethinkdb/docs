@@ -34,7 +34,7 @@ GEM
       sass (~> 3.4)
     jekyll-watch (2.2.1)
       listen (~> 3.0)
-    kramdown (2.3.0)
+    kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
@@ -76,7 +76,7 @@ PLATFORMS
 DEPENDENCIES
   bourbon (~> 4.2.1)
   jekyll (~> 3.9.0)
-  kramdown (~> 2.3.0)
+  kramdown (~> 2.3.1)
   kramdown-parser-gfm (~> 1.1.0)
   neat (~> 1.7.1)
   nokogiri (~> 1.10.10)
