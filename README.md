@@ -52,7 +52,7 @@ permalink: docs/introduction-to-reql/ # URL of the page
 
 ### Markdown parser ###
 
-We use use [kramdown](http://kramdown.gettalong.org/) to parse the Markdown files, so make sure you use the appropriate syntax. See this [handy guide](http://kramdown.gettalong.org/quickref.html) to get started with Markdown and kramdown syntax. Use Markdown as much as you can. Use HTML markup only if needed.
+We use [kramdown](http://kramdown.gettalong.org/) to parse the Markdown files, so make sure you use the appropriate syntax. See this [handy guide](http://kramdown.gettalong.org/quickref.html) to get started with Markdown and kramdown syntax. Use Markdown as much as you can. Use HTML markup only if needed.
 
 ### Consistency for multi-version docs ###
 
