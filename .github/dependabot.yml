@@ -1,0 +1,29 @@
+version: 2
+updates:
+- package-ecosystem: bundler
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: jekyll
+    versions:
+    - 3.9.1
+    - 4.1.1
+  - dependency-name: kramdown
+    versions:
+    - 2.3.1
+  - dependency-name: nokogiri
+    versions:
+    - 1.11.0
+  - dependency-name: rouge
+    versions:
+    - 3.22.0
+    - 3.26.0
+  - dependency-name: bourbon
+    versions:
+    - 7.0.0
+  - dependency-name: neat
+    versions:
+    - 4.0.0
