@@ -10,6 +10,7 @@ io:
         - array
 related_commands:
     map: map/
+    reduce: reduce/
 ---
 
 # Command syntax #

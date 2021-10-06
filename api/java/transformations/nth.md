@@ -8,6 +8,7 @@ related_commands:
     limit: limit/
     bracket: bracket/
     slice: slice/
+    orderBy: order_by/
 ---
 
 # Command syntax #

@@ -3,6 +3,10 @@ layout: api-command
 language: Ruby
 permalink: api/ruby/close-cursor/
 command: close
+related_commands:
+    next: next/
+    to_a: to_array/
+    each: each/
 ---
 
 # Command syntax #

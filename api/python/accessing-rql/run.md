@@ -4,8 +4,8 @@ language: Python
 permalink: api/python/run/
 command: run
 related_commands:
-    connect: #connect
-    repl: #repl
+    connect: connect/
+    repl: repl/
 ---
 
 # Command syntax #

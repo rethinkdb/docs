@@ -11,6 +11,7 @@ related_commands:
     setInsert: set_insert/
     setUnion: set_union/
     setDifference: set_difference/
+    union: union/
 ---
 
 # Command syntax #

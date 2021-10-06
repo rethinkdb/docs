@@ -3,8 +3,9 @@ layout: api-command
 language: Ruby
 permalink: api/ruby/em_run/
 command: em_run
-javascript: false
-python: false
+js: false
+java: false
+py: false
 related_commands:
     run: run/
 ---

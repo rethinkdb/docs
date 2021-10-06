@@ -4,6 +4,7 @@ language: Ruby
 permalink: api/ruby/repl/
 command: repl
 js: false
+java: false
 related_commands:
     connect: connect/
     use: use/

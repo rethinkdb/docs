@@ -5,6 +5,7 @@ permalink: api/java/concat_map/
 command: concatMap
 related_commands:
     map: map/
+    reduce: reduce/
 ---
 
 # Command syntax #

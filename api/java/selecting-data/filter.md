@@ -6,7 +6,7 @@ command: filter
 related_commands:
     get: get/
     getAll: get_all/
-
+    between: between/
 ---
 
 # Command syntax #

@@ -7,6 +7,8 @@ related_commands:
     '>, gt': gt/
     '>=, ge': ge/
     '<, lt': lt/
+    '==, eq': eq/
+    '!=, ne': ne/
 ---
 
 # Command syntax #

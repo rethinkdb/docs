@@ -5,6 +5,8 @@ permalink: api/python/and/
 command: '&, and_'
 related_commands:
     '|, or_': or/
+    '==, eq': eq/
+    '!=, ne': ne/
 ---
 
 # Command syntax #

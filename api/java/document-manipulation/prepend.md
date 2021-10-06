@@ -8,6 +8,7 @@ related_commands:
     insertAt: insert_at/
     deleteAt: delete_at/
     changeAt: change_at/
+    merge: merge/
 ---
 
 # Command syntax #

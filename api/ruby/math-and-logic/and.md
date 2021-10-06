@@ -5,6 +5,8 @@ permalink: api/ruby/and/
 command: '&, and'
 related_commands:
     '|, or': or/
+    '==, eq': eq/
+    '!=, ne': ne/
 ---
 
 # Command syntax #

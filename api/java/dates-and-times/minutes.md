@@ -6,6 +6,7 @@ command: minutes
 related_commands:
     now: now/
     time: time/
+    inTimezone: in_timezone/
 ---
 
 # Command syntax #

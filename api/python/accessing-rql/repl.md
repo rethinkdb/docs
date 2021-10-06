@@ -4,6 +4,7 @@ language: Python
 permalink: api/python/repl/
 command: repl
 js: false
+java: false
 related_commands:
     connect: connect/
     use: use/

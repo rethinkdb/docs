@@ -6,6 +6,7 @@ command: db_drop
 related_commands:
     db_create: db_create/
     db_list: db_list/
+    table_create: table_create/
 ---
 
 

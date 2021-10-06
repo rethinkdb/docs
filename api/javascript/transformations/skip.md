@@ -12,6 +12,7 @@ related_commands:
     limit: limit/
     slice: slice/
     nth: nth/
+    orderBy: order_by/
 ---
 
 # Command syntax #

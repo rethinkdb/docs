@@ -6,6 +6,7 @@ command: toEpochTime
 related_commands:
     now: now/
     time: time/
+    toIso8601: to_iso8601/
 ---
 
 # Command syntax #

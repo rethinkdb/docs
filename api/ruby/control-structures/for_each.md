@@ -3,6 +3,8 @@ layout: api-command
 language: Ruby
 permalink: api/ruby/for_each/
 command: for_each
+related_commands:
+    map: map/
 ---
 
 # Command syntax #

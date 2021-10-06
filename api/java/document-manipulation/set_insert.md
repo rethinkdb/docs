@@ -8,6 +8,7 @@ related_commands:
     setUnion: set_union/
     setIntersection: set_intersection/
     setDifference: set_difference/
+    union: union/
 ---
 
 # Command syntax #

@@ -6,6 +6,10 @@ command: match
 io:
     -   - string
         - object
+related_commands:
+    upcase: upcase/
+    downcase: downcase/
+    split: split/
 ---
 
 # Command syntax #

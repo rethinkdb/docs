@@ -7,6 +7,7 @@ related_commands:
     connect: connect/
     repl: repl/
     close: close/
+    reconnect: reconnect/
 ---
 
 # Command syntax #
