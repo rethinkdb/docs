@@ -13,6 +13,7 @@ alias:
 command: "EventEmitter (connection)"
 py: false
 rb: false
+java: false
 io:
     -   - connection
         - undefined

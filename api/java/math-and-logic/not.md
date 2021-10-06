@@ -4,7 +4,7 @@ language: Java
 permalink: api/java/not/
 command: not
 related_commands:
-    eq: eq
+    eq: eq/
     ne: ne/
 ---
 

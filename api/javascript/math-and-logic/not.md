@@ -7,7 +7,7 @@ io:
     -   - bool
         - bool
 related_commands:
-    eq: eq
+    eq: eq/
     ne: ne/
 ---
 

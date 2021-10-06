@@ -13,6 +13,7 @@ alias:
 command: "EventEmitter (cursor)"
 py: false
 rb: false
+java: false
 io:
     -   - cursor 
         - undefined

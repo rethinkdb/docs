@@ -27,7 +27,7 @@ r.expr("Sentence about LaTeX.").upcase().run(conn);
 
 Result:
 
-```
+```java
 "SENTENCE ABOUT LATEX."
 ```
 

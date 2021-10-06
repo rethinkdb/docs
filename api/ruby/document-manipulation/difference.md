@@ -4,6 +4,11 @@ language: Ruby
 permalink: api/ruby/difference/
 command: difference
 related_commands:
+    union: union/
+    set_insert: set_insert/
+    set_union: set_union/
+    set_intersection: set_intersection/
+    set_difference: set_difference/
 ---
 
 # Command syntax #

@@ -12,6 +12,7 @@ related_commands:
     skip: skip/
     slice: slice/
     nth: nth/
+    orderBy: order_by/
 ---
 
 # Command syntax #

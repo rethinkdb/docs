@@ -9,6 +9,7 @@ io:
 related_commands:
     get: get/
     between: between/
+    filter: filter/
 ---
 
 # Command syntax #

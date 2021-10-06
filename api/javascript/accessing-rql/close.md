@@ -9,6 +9,7 @@ io:
 related_commands:
     connect: connect/
     use: use/
+    reconnect: reconnect/
 ---
 
 # Command syntax #

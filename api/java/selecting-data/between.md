@@ -9,6 +9,7 @@ alias:
 related_commands:
     get: get/
     getAll: get_all/
+    filter: filter/
 ---
 
 # Command syntax #

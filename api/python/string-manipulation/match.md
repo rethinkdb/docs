@@ -3,6 +3,10 @@ layout: api-command
 language: Python
 permalink: api/python/match/
 command: match
+related_commands:
+    upcase: upcase/
+    downcase: downcase/
+    split: split/
 ---
 
 # Command syntax #

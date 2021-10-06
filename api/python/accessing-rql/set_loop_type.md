@@ -4,7 +4,9 @@ language: Python
 permalink: api/python/set_loop_type/
 command: set_loop_type
 javascript: false
-ruby: false
+rb: false
+js: false
+java: false
 related_commands:
     connect: connect/
     run: run/

@@ -8,6 +8,7 @@ related_commands:
     setInsert: set_insert/
     setIntersection: set_intersection/
     setDifference: set_difference/
+    union: union/
 ---
 
 # Command syntax #

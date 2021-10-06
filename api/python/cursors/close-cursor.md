@@ -3,6 +3,10 @@ layout: api-command
 language: Python
 permalink: api/python/close-cursor/
 command: close
+related_commands:
+    next: next/
+    list: to_array/
+    each: each/
 ---
 
 # Command syntax #

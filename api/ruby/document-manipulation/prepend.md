@@ -4,6 +4,11 @@ language: Ruby
 permalink: api/ruby/prepend/
 command: prepend
 related_commands:
+    append: append/
+    merge: merge/
+    insert_at: insert_at/
+    delete_at: delete_at/
+    change_at: change_at/
 ---
 
 # Command syntax #

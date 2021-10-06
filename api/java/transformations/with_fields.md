@@ -6,6 +6,7 @@ command: withFields
 related_commands:
     pluck: pluck/
     hasFields: has_fields/
+    without: without/
 ---
 
 # Command syntax #

@@ -4,7 +4,8 @@ language: Ruby
 permalink: api/ruby/day_of_week/
 command: day_of_week
 related_commands:
-
+    now: now/
+    time: time/
 ---
 
 # Command syntax #
