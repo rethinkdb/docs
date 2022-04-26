@@ -16,12 +16,12 @@ if you are looking for a specific platform.
 There are a number of packages required for the build process. Most
 should be available for your operating system's repository. These packages are:
 
-- [GCC (G++)](https://gcc.gnu.org/) or [Clang](http://clang.llvm.org/)
+- [GCC (g++)](https://gcc.gnu.org/) or [Clang](http://clang.llvm.org/)
 - [Protocol Buffers](https://github.com/google/protobuf/)
 - [jemalloc](http://www.canonware.com/jemalloc/)
 - [Ncurses](https://www.gnu.org/software/ncurses/)
 - [Boost](http://www.boost.org/)
-- [Python 2](https://www.python.org/)
+- [Python 2 or 3](https://www.python.org/)
 - [libcurl](http://curl.haxx.se/libcurl/)
 - [libcrypto](https://www.openssl.org/)
 
@@ -53,17 +53,18 @@ make
 The git version of RethinkDB contains unreleased and unstable
 changes. It is meant for developers and contributors.
 
-## Get the build dependencies ##
-
-In addition to the standard dependencies, building from git also
-depends on [npm](http://nodejs.org/).
-
 ## Get the source code ##
 
 Clone the development branch:
 
 ```bash
 git clone https://github.com/rethinkdb/rethinkdb.git
+```
+
+Check out the branch or tag you want:
+
+```bash
+git checkout v2.4.x
 ```
 
 ## Build RethinkDB ##
