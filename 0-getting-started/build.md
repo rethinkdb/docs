@@ -73,9 +73,7 @@ Kick off the build process:
 ```bash
 cd rethinkdb
 ./configure --allow-fetch
-make
+make -j8
 ```
-
-If you're compiling on a multicore or multiprocessor machine, you may be able to use `make -j #` to speed up the build process, where '#' is the total number of CPU cores. (On a 4-core machine, you can use `make -j 4`.) However, some older versions of `make` will produce a segmentation fault error when using `-j` with RethinkDB; if that happens, just run `make` without the `-j` option.
 
 You'll find the `rethinkdb` binary in the `build/release/` subfolder.
