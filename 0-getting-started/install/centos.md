@@ -9,19 +9,33 @@ permalink: docs/install/centos/
 
 # With binaries #
 
-We provide binaries for both 32-bit and 64-bit CentOS 6, 64-bit CentOS
-7, and 64-bit CentOS 8.
+We provide binaries for 64-bit CentOS 7, 64-bit AlmaLinux 8, and 64-bit RockyLinux 8.
 
-To install the server, first add the [RethinkDB yum repository](https://download.rethinkdb.com/repository/centos) to your list of repositories.
+To install the server, first add the RethinkDB yum repository for [CentOS](https://download.rethinkdb.com/repository/centos), [AlmaLinux](https://download.rethinkdb.com/repository/alma), or [RockyLinux](https://download.rethinkdb.com/repository/rocky), to your list of repositories.
 
-## For CentOS 8
+## For AlmaLinux 8
 
 ```bash
 sudo cat << EOF > /etc/yum.repos.d/rethinkdb.repo
 [rethinkdb]
 name=RethinkDB
 enabled=1
-baseurl=https://download.rethinkdb.com/repository/centos/8/x86_64/
+baseurl=https://download.rethinkdb.com/repository/alma/8/x86_64/
+gpgkey=https://download.rethinkdb.com/repository/raw/pubkey.gpg
+gpgcheck=1
+EOF
+
+sudo yum install rethinkdb
+```
+
+## For RockyLinux 8
+
+```bash
+sudo cat << EOF > /etc/yum.repos.d/rethinkdb.repo
+[rethinkdb]
+name=RethinkDB
+enabled=1
+baseurl=https://download.rethinkdb.com/repository/rocky/8/x86_64/
 gpgkey=https://download.rethinkdb.com/repository/raw/pubkey.gpg
 gpgcheck=1
 EOF
@@ -46,6 +60,9 @@ sudo yum install rethinkdb
 
 ## For CentOS 6
 
+To get a 2.4.2 or later package, please complain on the [RethinkDB issue
+tracker](https://github.com/rethinkdb/rethinkdb/issues).
+
 ```bash
 sudo cat << EOF > /etc/yum.repos.d/rethinkdb.repo
 [rethinkdb]
@@ -67,14 +84,14 @@ Install the main dependencies:
 
 ```
 sudo yum install openssl-devel libcurl-devel wget tar m4 git-core \
-                 boost-static m4 gcc-c++ npm ncurses-devel which \
-                 make ncurses-static zlib-devel zlib-static bzip2 \
-                 patch
+                 gcc-c++ which make zlib-devel \
+                 protobuf-devel bzip2 patch
 ```
 
 ### Install optional build dependencies ###
 
-Additional build dependencies are available in the EPEL repository. Installing these will speed up the build process.
+Additional build dependencies are available in the EPEL
+repository.
 
 ```bash
 sudo yum install epel-release
@@ -96,7 +113,7 @@ Kick off the build process:
 
 ```bash
 cd rethinkdb-{{site.version.full}}
-./configure --allow-fetch --dynamic jemalloc
+./configure --allow-fetch
 make
 sudo make install
 ```
@@ -104,6 +121,8 @@ sudo make install
 # Compile from source on CentOS 6 #
 
 These instructions have been tested on CentOS 6.5.
+
+**These instructions have not been tested for RethinkDB 2.4.2 or later.**
 
 ## Get the build dependencies ##
 
