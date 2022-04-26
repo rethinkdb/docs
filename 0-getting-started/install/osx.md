@@ -29,7 +29,7 @@ brew update && brew install rethinkdb
 
 # Compile from source #
 
-Building RethinkDB from source requires OS X 10.9 (Mavericks) or greater. [Xcode](https://developer.apple.com/xcode/) is required to
+Building RethinkDB from source requires OS X 10.9 (Maverick) or greater. [Xcode](https://developer.apple.com/xcode/) is required to
 build from source.
 
 ## Get the source code ##

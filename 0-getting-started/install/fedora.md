@@ -31,7 +31,8 @@ sudo yum install rethinkdb
 
 # Compile from source #
 
-The following instructions were tested on Fedora 20.
+The following instructions were tested on Fedora 20 with a RethinkDB
+version prior to 2.4.2.
 
 ## Get the build dependencies ##
 

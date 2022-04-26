@@ -9,10 +9,10 @@ permalink: docs/install/ubuntu/
 
 # With binaries #
 
-We provide binaries for both 32-bit and 64-bit Ubuntu Precise and above (>= 12.04).
+We provide binaries for 64-bit Ubuntu Trusty and above (>= 14.04).
 
 To install the server, you have to add the RethinkDB repository to your list of
-repositories and install via `apt-get`. To do this, paste the following lines into 
+repositories and install via `apt-get`. To do this, paste the following lines into
 your terminal:
 
 ```bash
