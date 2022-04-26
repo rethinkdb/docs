@@ -49,7 +49,7 @@ Ensure you have the `abs` package installed, `/etc/abs.conf` configured for the 
 
 Copy the `PKGBUILD` and related files to a working directory:
 
-```bash
+```
 $ sudo abs community/rethinkdb
 $ cp -r /var/abs/community/rethinkdb/ ~
 ```
@@ -59,7 +59,7 @@ Edit `PKGBUILD` to customize the build at this point.
 Install the dependencies, build and install the package (the `-s` flag causes `makepkg` to attempt to
 install explicit build dependencies):
 
-```bash
+```
 # pacman -S base-devel
 $ cd ~/rethinkdb
 $ makepkg -s
@@ -73,8 +73,8 @@ $ makepkg -s
 
 You will need to install the `base-devel` group and several additional build dependencies:
 
-```bash
-# pacman -S clang protobuf boost jemalloc git python2 make
+```
+# pacman -S gcc protobuf git python3 make
 ```
 
 ## Get the source code ##
@@ -88,34 +88,29 @@ $ tar xf rethinkdb-{{site.version.full}}.tgz
 
 ## Build RethinkDB ##
 
-RethinkDB's `configure` script assumes the `python` executable will be Python 2 (i.e., `/usr/bin/python` is symlinked to `/usr/bin/python2`), which will break your build ('python 3.4.2 is too recent' etc.). Rather than rewriting this symlink and potentially breaking other software, consider installing the following script as `/usr/local/bin/python` (replace `/home/user/rethinkdb` with the absolute path of your own working directory):
+RethinkDB's `configure` script assumes the `python` executable exists
+on the `PATH`.  It may be a symlink to `python3` or `python2`.
+(Python 3 has been tested.)  For example,
 
-```bash
-#!/bin/bash
-script=$(readlink -f -- "$1")
-case "$script" in (/home/user/rethinkdb/*)
-    exec python2 "$@"
-    ;;
-esac
 
-exec python3 "$@"
 ```
-
-This will redirect calls to `python` originating from your RethinkDB working directory to `python2` and leave others untouched. Ensure that the script is executable (`chmod +x`) and, if necessary, reload your shell before continuing.
+$ export PATH="$PATH":~/bin
+$ ln -s /usr/bin/python3 ~/bin/python
+```
 
 To run the build:
 
 ```bash
 $ cd ~/rethinkdb-{{site.version.full}}
-$ ./configure --dynamic jemalloc CXX=clang++
+$ ./configure --dynamic jemalloc
 $ make
 ```
 
-Once successfully built, the `rethinkdb` binary may be found in the `build/release_clang/` subdirectory.
+Once successfully built, the `rethinkdb` binary may be found in the `build/release/` subdirectory.
 
 To install RethinkDB globally:
 
-```bash
+```
 $ cd ~/rethinkdb
 # make install
 ```
