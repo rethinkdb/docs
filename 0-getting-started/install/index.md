@@ -18,7 +18,7 @@ alias: install/
             <li>
                 <a href="centos/">
                     <img src="/assets/images/docs/install-platforms/centos.png" />
-                    <p class="name">CentOS</p>
+                    <p class="name">CentOS/AlmaLinux/RockyLinux</p>
                 </a>
             </li>
             <li>
@@ -39,6 +39,7 @@ alias: install/
                     <p class="name">OS X</p>
                 </a>
             </li>
+
             <!--
             <li>
                 <a href="windows/">
