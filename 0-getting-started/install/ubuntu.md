@@ -15,7 +15,10 @@ To install the server, you have to add the RethinkDB repository to
 your list of repositories and install via `apt-get`. To do this, paste
 the following lines into your terminal:
 
-## Ubuntu 22.04 and above ##
+## Ubuntu 20.04 and above ##
+
+(This set of instructions might also work on earlier Ubuntus, but that
+has not been verified.)
 
 ```bash
 # Download the public key.
@@ -34,8 +37,7 @@ rethinkdb --version
 
 ## Earlier Ubuntu versions ##
 
-These instructions would work on Ubuntu 22.04, but you'll get
-deprecation warnings.
+As of 22.04, you'll get deprecation warnings if you use `apt-key`.
 
 ```bash
 source /etc/lsb-release && echo "deb https://download.rethinkdb.com/repository/ubuntu-$DISTRIB_CODENAME $DISTRIB_CODENAME main" | \
