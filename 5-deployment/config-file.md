@@ -126,4 +126,6 @@ config file without the `.conf` extension.
 * `cluster-reconnect-timeout`: the amount of time, in seconds, this server will try to reconnect to a cluster if it loses connection before giving up.  
   *Default*: `86400`
 
+* `initial-password`: Specifies the admin account password to use when creating a new server instance. This option is ignored on subsequent startups. If set to `auto`, a randomly generated password will be used. If ommitted, the admin account will have no password.
+
 [sar]: /docs/sharding-and-replication/
