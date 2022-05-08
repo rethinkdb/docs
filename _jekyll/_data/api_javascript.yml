@@ -219,6 +219,8 @@
           permalink: upcase
         - name: downcase
           permalink: downcase
+        - name: fmt
+          permalink: fmt
 - section:
     name: Math and logic
     commands:

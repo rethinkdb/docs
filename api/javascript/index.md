@@ -2009,6 +2009,28 @@ Result:
 
 [Read more about this command &rarr;](split/)
 
+## [fmt](fmt/) ##
+
+{% apibody %}
+r.fmt(string, object) &rarr; string
+{% endapibody %}
+
+Formats a template string based on a string-string key-value object.
+
+__Example:__
+
+```js
+r.fmt("{name} loves {candy}.", {"name": "Bob", "candy": "candy floss"}).run(conn, callback)
+```
+
+Result:
+
+```js
+"Bob loves candy floss."
+```
+
+[Read more about this command &rarr;](fmt/)
+
 ## [upcase](upcase/) ##
 
 {% apibody %}
