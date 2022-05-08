@@ -3,6 +3,9 @@ layout: api-command
 language: JavaScript
 permalink: api/javascript/fmt/
 command: fmt
+io:
+    -   - r
+        - string
 related_commands:
     match: match/
     split: split/

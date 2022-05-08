@@ -3,6 +3,9 @@ layout: api-command
 language: Python
 permalink: api/python/fmt/
 command: fmt
+io:
+    -   - r
+        - string
 related_commands:
     match: match/
     split: split/

@@ -3,6 +3,9 @@ layout: api-command
 language: Ruby
 permalink: api/ruby/fmt/
 command: fmt
+io:
+    -   - r
+        - string
 related_commands:
     match: match/
     split: split/
