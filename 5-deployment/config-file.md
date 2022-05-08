@@ -34,17 +34,17 @@ For some options below, the default value depends on `<name>`, the name of the
 config file without the `.conf` extension.
 
 * `runuser` and `rungroup`: specifies which
-  user and group should be used launch the Rethinkdb process.   
+  user and group should be used launch the Rethinkdb process.  
   *Default*: `rethinkdb` and `rethinkdb`.
 
 * `pid-file`: the location of the file with the RethinkDB instance process ID (used by the init script to communicate with
-  the server process).   
-  *Default*: `/var/run/rethinkdb/<name>/pid_file` 
+  the server process).  
+  *Default*: `/var/run/rethinkdb/<name>/pid_file`
 
 * `directory`: the data directory where
   database tables will be stored. This location must be readable and
   writable by the user or group (or both) specified by `runuser`
-  and `rungroup`.   
+  and `rungroup`.  
   _Note_: It is best to create the database manually via
   `rethinkdb create --directory ...` as `runuser` or `rungroup` before
   enabling auto-start.  
@@ -87,7 +87,7 @@ config file without the `.conf` extension.
 
 * `tls-ecdh-curve`: A named elliptic curve to use for ECDHE.  
   *Default*: `prime256v1`
-  
+
 * `tls-dhparams`: A filename containing parameters for DHE key agreement; this is required if using DHE cipher suites, and unused otherwise. At least a 2048-bit key is recommended.
 
 * `canonical-address`: Address that other rethinkdb instances will use to connect to this machine.
@@ -104,7 +104,7 @@ config file without the `.conf` extension.
 
 * `port-offset` All ports used locally will have this value added.  
   *Default*: 0
-  
+
 * `no-http-admin`: Disable web administration console.
 
 * `cores`: Number of cores to use.  
@@ -116,14 +116,16 @@ config file without the `.conf` extension.
 * `io-threads`: Number of simultaneous I/O operations can happen at the same time.  
   *Default*: 64
 
-* `direct-io`: Use direct I/O for file system access. 
+* `direct-io`: Use direct I/O for file system access.
 
 * `server-name`: The name for this machine (as it will appear in the metadata).  
   *Default*: Randomly chosen from a short list of names.
 
 * `server-tag`: Specifies tags for this server, which can be used to group servers together for administration purposes (for instance, servers in the same data center). See [Sharding and replication][sar] for more details. To assign multiple tags to a server, repeat `server-tag` lines for each tag.
 
-* `cluster-reconnect-timeout`: the amount of time, in seconds, this server will try to reconnect to a cluster if it loses connection before giving up.  
+* `cluster-reconnect-timeout`: The amount of time, in seconds, this server will try to reconnect to a cluster if it loses connection before giving up.  
   *Default*: `86400`
+
+* `initial-password`: Specifies the admin user password to use when creating a new server instance. This option is ignored on subsequent startups. If set to `auto` a randomly generated password will be used. If ommitted, the admin account will have no password.
 
 [sar]: /docs/sharding-and-replication/
