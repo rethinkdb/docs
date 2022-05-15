@@ -10,7 +10,7 @@ related_commands:
     downcase: downcase/
     match: match/
     split: split/
-    fmt: fmt/
+    format: format/
 ---
 
 # Command syntax #
