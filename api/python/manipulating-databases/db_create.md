@@ -29,7 +29,7 @@ If successful, the command returns an object with two fields:
 
 If a database with the same name already exists, the command throws `ReqlRuntimeError`.
 
-Note: Only alphanumeric characters and underscores are valid for the database name.
+Note: Only alphanumeric characters, hyphens and underscores are valid for the database name.
 
 __Example:__ Create a database named 'superheroes'.
 
