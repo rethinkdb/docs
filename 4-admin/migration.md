@@ -9,8 +9,8 @@ The steps necessary for migrating data to current RethinkDB versions from previo
 
 {% toctag %}
 
-* **1.16 or higher:** Migration is handled automatically. (This is also true for upgrading from 1.14 onward to versions earlier than 2.2.) After migration, follow the "Rebuild indexes" directions.
-* **1.13&ndash;1.15:** Upgrade to RethinkDB 2.0.5 *first,* rebuild the secondary indexes by following the "Rebuild indexes" directions, then upgrade to 2.1 or higher. (Migration from 2.0.5 to 2.1+ will be handled automatically.)
+* **1.16 or higher:** Migration is handled automatically. (This is also true for upgrading from 1.14 onward to versions earlier than 2.2.) See "General instructions" below.
+* **1.13&ndash;1.15:** Upgrade to RethinkDB 2.0.5 *first,* rebuild the secondary indexes by following the "Rebuilding indexes" directions, then upgrade to 2.1 or higher. (Migration from 2.0.5 to 2.1+ will be handled automatically.)
 * **1.7&ndash;1.12:** Follow the "Migrating old data" directions.
 * **1.6 or earlier:** Read the "Deprecated versions" section.
 
@@ -36,15 +36,47 @@ __Note:__ The `dump` and `restore` commands require the [Python driver](/docs/in
 If you don't have the Python driver installed, you can install a previous version using `pip install rethinkdb==<version>`. (You can use the [Python Package Index](https://pypi.python.org/pypi/rethinkdb "PyPI > rethinkdb") to check on current and older versions.)
 {% endinfobox %}
 
-# Rebuild indexes
+# General instructions
 
-When you upgrade a major release (i.e., 2.1 to 2.2), you should rebuild outdated secondary indexes manually. This can be done easily from the command line:
+Check the release notes in `NOTES.md` to see if there are
+cluster-incompatible changes.
 
-    rethinkdb index-rebuild
+For major version updates, which have cluster-incompatible changes,
+upgrading your cluster involves temporary down time and consists of the
+following steps:
+
+  - Shut down every node of the cluster.
+  - Replace the `rethinkdb` binaries with newer versions.
+  - Start up every node of the cluster.
+  - If necessary, rebuild indexes.
+
+For minor version updates, you can shut down and restart each node
+individually.
+
+# Rebuilding indexes
+
+When you upgrade a major release (i.e., 2.1 to 2.2), you should rebuild *outdated* secondary indexes manually. After starting up your cluster, this can be done easily from the command line.  This will connect to the cluster and tell it to rebuild outdated indexes:
+
+    rethinkdb index-rebuild [-c HOST:PORT] [-n NUM] [-r (DB | DB.TABLE)] [--tls-cert FILENAME] [-p] [--password-file FILENAME]...
 
 This is *required* if you're upgrading from versions before 1.16; in those cases, you'll need to upgrade to version 2.0.5 first. (You can download 2.0.5 and other older versions at RethinkDB's [download archive](https://download.rethinkdb.com)). If you're upgrading from RethinkDB version 1.16 or later, you can move to 2.2 or higher directly.
 
-Note that rebuilding indexes is *not* required if you're upgrading between minor releases (i.e., 2.2.0 to 2.2.1).
+Note that rebuilding indexes is typically *not* required if you're
+upgrading between minor releases (i.e., 2.2.0 to 2.2.1).  (Check the
+release notes in `NOTES.md` to be sure.)
+
+## What are outdated secondary indexes?
+
+A document's location or presence within a secondary index can be affected if
+
+  - a ReQL command changes its behavior, and
+  - that ReQL command is used by the secondary index.
+
+Upon migration, that secondary index becomes *outdated*.  The outdated
+index will continue to function, using the previous versioned behavior
+of the command, with the documents in their original locations.  To
+avoid any subtly confusing behavior, you will probably want to rebuild
+the index.
 
 # Migrating old data
 
@@ -111,3 +143,9 @@ Upgrading from RethinkDB versions 1.6 or earlier has *not* been tested with Reth
 [ms]: https://github.com/rethinkdb/rethinkdb/tree/02b4f29e1e7f15b3edffcb68bf015578ec5783ab/scripts/migration
 
 Follow the directions in the README file to perform the migration.
+
+# Downgrading RethinkDB
+
+Downgrading RethinkDB clusters to previous versions is not supported,
+and generally, will not work.  A possible exception is downgrading
+between certain minor releases.
