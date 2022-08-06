@@ -132,8 +132,17 @@ RethinkDB on FreeBSD by testing the build!
 
 ## Other architectures ##
 
-Currently, the RethinkDB server supports x86_64, ARM, and s390x architectures
-on Unix-based platforms and Windows Subsystem for Linux.
+Currently, the RethinkDB server supports the x86_64, ARM, and s390x architectures
+on Unix-based platforms and Windows Subsystem for Linux (WSL 2).
+
+RethinkDB is "known working" on 32-bit x86_64, 32-bit ARM, and 64-bit
+PowerPC, on some Unix-based platforms.
+
+RethinkDB builds on MacOS ARM systems, but DMG package generation only
+works on x86_64.  So there are DMG packages only for x86_64.
+
+RethinkDB does not require support for any "special" processor
+instructions (such as AVX instructions).
 
 Special thanks to the effort of [@davidthomas426](http://github.com/davidthomas426)
 for making the ARM support available. Also, thank you [Open Source Software Developer
