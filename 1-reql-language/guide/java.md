@@ -16,7 +16,7 @@ __Before you start:__
 * Read the [thirty-second quickstart](/docs/quickstart/).
 {% endinfobox %}
 
-<img src="/assets/images/docs/api_illustrations/10-minute-guide_javascript.png" class="api_command_illustration" />
+<img src="/assets/images/docs/api_illustrations/10-minute-guide.png" class="api_command_illustration" />
 
 # Start the server #
 
