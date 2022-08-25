@@ -6,7 +6,7 @@ permalink: docs/guide/
 ---
 Choose your language:
 
-- [JavaScript](javascript/)
-- [Python](python/)
-- [Ruby](ruby/)
-- [Java](java/)
+- [JavaScript](/docs/guide/javascript/)
+- [Python](/docs/guide/python/)
+- [Ruby](/docs/guide/ruby/)
+- [Java](/docs/guide/java/)
