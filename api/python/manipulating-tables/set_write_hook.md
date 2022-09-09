@@ -32,14 +32,30 @@ Whenever a write operation on the table inserts, deletes or modifies a given doc
 
 For simplicity, the write hook function is allowed to return `null` exactly if and only if `newVal` is `null`. This is just a safeguard to ensure you don't accidentally turn an insert/update into a deletion, or a deletion into an update.
 
-If successful, `set_write_hook` returns an object of the following form:
+If successful, `set_write_hook` returns an object of the form:
 
 ```py
 {
-  "function": <binary>,
-  "query": "setWriteHook(function(_var1, _var2, _var3) { return ...; })",
+  "created": 1,
 }
 ```
+
+or
+
+```py
+{
+  "replaced": 1,
+}
+```
+
+or
+
+```py
+{
+  "deleted": 1,
+}
+```
+
 
 __Example:__ Create a write hook that sets `modified_at` to the current time on each write operation.
 
