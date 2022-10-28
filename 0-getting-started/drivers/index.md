@@ -36,7 +36,7 @@ alias: docs/guides/drivers/
             </li>
         </ul>
     </section>
-    
+
     <section class="platform-category">
         <h2>Current community-supported drivers</h2>
         <p>These drivers have been updated to use the JSON driver protocol and at least RethinkDB 2.0 ReQL.</p>
@@ -153,6 +153,12 @@ alias: docs/guides/drivers/
                 <a href="https://github.com/pixelspark/rethink-swift">
                     <img src="/assets/images/docs/driver-languages/swift.png" />
                     <p class="name">Swift</p>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/kingsleyh/crystal-rethinkdb">
+                    <img src="/assets/images/docs/driver-languages/crystal.svg" />
+                    <p class="name">Crystal</p>
                 </a>
             </li>
         </ul>
