@@ -39,15 +39,12 @@ alias: install/
                     <p class="name">OS X</p>
                 </a>
             </li>
-
-            <!--
             <li>
                 <a href="windows/">
                     <img src="/assets/images/docs/install-platforms/windows.png" />
                     <p class="name">Windows</p>
                 </a>
             </li>
-            -->
         </ul>
     </section>
     <section class="platform-category">
