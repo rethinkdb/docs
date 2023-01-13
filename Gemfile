@@ -6,5 +6,5 @@ gem "kramdown-parser-gfm", "~> 1.1.0"
 gem 'therubyracer', '~>0.12.3'
 gem 'rouge', '~> 2.2.1'
 gem 'bourbon', '~> 4.2.1'
-gem 'neat', '~> 1.7.1'
+gem 'neat', '~> 3.0.1'
 gem 'nokogiri', '~> 1.14.0'
