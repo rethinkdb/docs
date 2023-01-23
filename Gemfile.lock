@@ -17,7 +17,7 @@ GEM
     http_parser.rb (0.8.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    jekyll (4.3.1)
+    jekyll (4.3.2)
       addressable (~> 2.4)
       colorator (~> 1.0)
       em-websocket (~> 0.5)
@@ -88,7 +88,7 @@ PLATFORMS
 
 DEPENDENCIES
   bourbon (~> 6.0.0)
-  jekyll (~> 4.3.1)
+  jekyll (~> 4.3.2)
   kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)
   neat (~> 3.0.1)
