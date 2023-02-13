@@ -64,7 +64,7 @@ GEM
       ffi (~> 1.0)
     ref (2.0.0)
     rexml (3.2.5)
-    rouge (4.0.1)
+    rouge (4.1.0)
     safe_yaml (1.0.5)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
@@ -93,7 +93,7 @@ DEPENDENCIES
   kramdown-parser-gfm (~> 1.1.0)
   neat (~> 3.0.1)
   nokogiri (~> 1.14.0)
-  rouge (~> 4.0.1)
+  rouge (~> 4.1.0)
   therubyracer (~> 0.12.3)
 
 BUNDLED WITH
