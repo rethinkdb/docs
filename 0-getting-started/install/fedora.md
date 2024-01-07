@@ -16,7 +16,7 @@ Fedora.
 To install the server, add the RethinkDB yum repository to your list of repositories and install:
 
 ```bash
-cat << EOF | sudo tee -a /etc/yum.repos.d/rethinkdb.repo
+cat << EOF | sudo tee /etc/yum.repos.d/rethinkdb.repo
 [rethinkdb]
 name=RethinkDB
 enabled=1
