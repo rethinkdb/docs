@@ -230,5 +230,6 @@ __Thanks to all our amazing driver contributors!__
 - [@pixelspark](https://github.com/pixelspark) (Swift): <https://github.com/pixelspark/rethink-swift>
 - [@rgv151](https://github.com/rgv151) (Nim): <https://github.com/rgv151/rethinkdb.nim>
 - [@rushmorem](https://github.com/rushmorem) (Rust): <https://github.com/rust-rethinkdb/reql>
+- [@vettich](https://github.com/vettich) (Rust): <https://github.com/vettich/un-rethinkdb-rs>
 - [@unbit](https://github.com/unbit) (C): <https://github.com/unbit/librethinkdb>
 - The [rethinkdb-net team](https://github.com/mfenniak/rethinkdb-net/graphs/contributors) (C#/.NET): <https://github.com/mfenniak/rethinkdb-net>
