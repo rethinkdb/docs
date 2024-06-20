@@ -1,10 +1,9 @@
+import codecs
+import json
+import os
 import re
 import markdown
-import os
-import sys
 import yaml
-import json
-import codecs
 
 IGNORED_FILES = ["index.md", "accessing-rql/event_emitter.md"]
 
@@ -118,7 +117,7 @@ def add_io_field(file_name, result):
             if is_yaml == True:
                 yaml_raw += line
 
-    yaml_data = yaml.load(yaml_raw)
+    yaml_data = yaml.load(yaml_raw, Loader=yaml.Loader)
     if "io" in yaml_data:
         result[yaml_data["permalink"]]["io"] = yaml_data["io"]
     else:
@@ -131,7 +130,7 @@ def browse_files(base, result):
     for path, dirs, files in os.walk(base):
         rel = path[len(base)+1:]
         for item in files:
-            print os.path.join(rel, item)
+            print(os.path.join(rel, item))
             if os.path.join(rel, item) not in IGNORED_FILES:
                 add_io_field(os.path.join(path, item), result)
 

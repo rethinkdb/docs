@@ -10,6 +10,7 @@ related_commands:
     upcase: upcase/
     downcase: downcase/
     match: match/
+    format: format/
 ---
 
 # Command syntax #
