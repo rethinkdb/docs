@@ -9,11 +9,30 @@ permalink: docs/install/debian/
 
 # With binaries #
 
-We provide binaries for Wheezy and Jessie, 32-bit and 64-bit.
+We provide binaries for 64-bit Debian versions.
 
 To install the server, you have to add the repository to your list of
 repositories and install via `apt-get`. To do this, paste the
 following lines into your terminal:
+
+```bash
+# Download the public key.
+wget -qO- https://download.rethinkdb.com/repository/raw/pubkey.gpg | \
+    sudo gpg --dearmor -o /usr/share/keyrings/rethinkdb-archive-keyrings.gpg
+
+# Add the repository.
+echo "deb [signed-by=/usr/share/keyrings/rethinkdb-archive-keyrings.gpg] https://download.rethinkdb.com/repository/debian-$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+
+sudo apt-get update
+sudo apt-get install rethinkdb
+
+# Check installation.
+rethinkdb --version
+```
+
+## Earlier Debian versions ##
+
+As of Debian Trixie, `apt-key` is no longer available.
 
 ```bash
 export CODENAME=`lsb_release -cs`
