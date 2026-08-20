@@ -15,7 +15,7 @@ To install the server, you have to add the RethinkDB repository to
 your list of repositories and install via `apt-get`. To do this, paste
 the following lines into your terminal:
 
-## Ubuntu 20.04 and above ##
+## Ubuntu 20.04 and later ##
 
 (This set of instructions might also work on earlier Ubuntus, but that
 has not been verified.)
@@ -26,7 +26,13 @@ wget -qO- https://download.rethinkdb.com/repository/raw/pubkey.gpg | \
     sudo gpg --dearmor -o /usr/share/keyrings/rethinkdb-archive-keyrings.gpg
 
 # Add the repository.
-echo "deb [signed-by=/usr/share/keyrings/rethinkdb-archive-keyrings.gpg] https://download.rethinkdb.com/repository/ubuntu-$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+cat <<EOD | sudo tee /etc/apt/sources.list.d/rethinkdb.sources
+Types: deb
+URIs: https://download.rethinkdb.com/repository/ubuntu-$(lsb_release -cs)/
+Suites: $(lsb_release -cs)
+Components: main
+Signed-By: /usr/share/keyrings/rethinkdb-archive-keyrings.gpg
+EOD
 
 sudo apt-get update
 sudo apt-get install rethinkdb
