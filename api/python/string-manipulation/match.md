@@ -7,6 +7,7 @@ related_commands:
     upcase: upcase/
     downcase: downcase/
     split: split/
+    format: format/
 ---
 
 # Command syntax #
