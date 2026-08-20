@@ -21,7 +21,13 @@ wget -qO- https://download.rethinkdb.com/repository/raw/pubkey.gpg | \
     sudo gpg --dearmor -o /usr/share/keyrings/rethinkdb-archive-keyrings.gpg
 
 # Add the repository.
-echo "deb [signed-by=/usr/share/keyrings/rethinkdb-archive-keyrings.gpg] https://download.rethinkdb.com/repository/debian-$(lsb_release -cs) $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
+cat <<EOD | sudo tee /etc/apt/sources.list.d/rethinkdb.sources
+Types: deb
+URIs: https://download.rethinkdb.com/repository/debian-$(lsb_release -cs)/
+Suites: $(lsb_release -cs)
+Components: main
+Signed-By: /usr/share/keyrings/rethinkdb-archive-keyrings.gpg
+EOD
 
 sudo apt-get update
 sudo apt-get install rethinkdb
